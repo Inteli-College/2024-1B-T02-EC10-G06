@@ -1,5 +1,5 @@
 ---
-title: Personas
+title: Personas e User Stories
 sidebar_position: 5
 ---
 
@@ -65,6 +65,18 @@ Dra. Marina Silva reside na mesma cidade do hospital onde trabalha, valorizando 
 
 Usaria a solução para comunicação com outros setores por de criação de chamados de requisição de medicamentos para o Técnico de Enfermagem
 
+## User Storie
+
+1. Como médico, desejo uma integração perfeita entre os sistemas hospitalares para evitar atrasos na administração de medicamentos e garantir que meus pacientes recebam tratamento oportuno e eficaz.
+
+2. Como médico, quero utilizar tecnologia médica especializada para otimizar processos e aumentar a eficiência no atendimento, permitindo-me dedicar mais tempo à interação com os pacientes e menos tempo em tarefas administrativas.
+
+3. Como médico, preciso de sistemas de comunicação eficazes e rápidos para lidar com situações de emergência e garantir uma resposta imediata e coordenada da equipe médica.
+
+4. Como médico, busco liderar uma equipe bem organizada e eficiente, pois isso não só melhora a qualidade do atendimento, mas também aumenta a satisfação no trabalho e o bem-estar da equipe médica.
+
+5. Como médico, desejo um sistema de gerenciamento de medicamentos que garanta o acesso rápido e adequado aos medicamentos necessários para cada paciente, reduzindo assim os riscos de atrasos e erros na administração de medicamentos.
+
 ## 2°Persona: Técnica de Enfermagem Carla Ferreira 
 
 ![img alt](./img/persona_2.jpg)
@@ -114,6 +126,18 @@ Carla Ferreira reside na mesma cidade do hospital onde trabalha, valorizando a p
 ### Uso da Solução
 
 Usaria a solução para comunicação com outros setores por meio de notificações vindas do médico para atendimento de requisição de medicamentos e/ou divergências no Pyxis
+
+## User Storie
+
+1. Como técnico em enfermagem, quero participar de treinamentos contínuos sobre administração de medicamentos, para aprimorar minha prática e garantir a segurança dos pacientes.
+
+2. Como parte de um projeto de melhoria de processos, desejo colaborar na revisão e atualização dos protocolos de administração de medicamentos, visando aprimorar a eficiência e minimizar erros.
+
+3. Como técnico em enfermagem, quero participar de cursos de atualização em tecnologia hospitalar, para estar sempre atualizado sobre os sistemas utilizados e melhorar minha eficiência no trabalho.
+
+4. Como profissional de enfermagem, desejo contribuir ativamente em projetos de melhoria de práticas clínicas, buscando implementar novas abordagens que otimizem o cuidado aos pacientes e promovam melhores resultados de saúde.
+
+5. Como técnico em enfermagem, espero que as atualizações no Pyxis melhorem a disponibilidade e precisão dos medicamentos, para que eu possa administrá-los de forma segura e eficaz, sem interrupções no tratamento dos pacientes.
 
 ## 3°Persona: Farmaceutico
 
@@ -165,7 +189,18 @@ Roberto Almeida reside na mesma cidade do hospital onde trabalha, valorizando a 
 
 Usaria a solução para  comunicação com outros setores por meio de notificações vindas do Técnico de Enfermagem para reposição de medicamentos.
 
-# Desenvolvimento
+## User Storie
+
+1. Como um farmacêutico hospitalar, desejo uma aplicação que me permita gerenciar eficientemente o estoque de medicamentos, facilitando a reposição rápida e precisa, para garantir a disponibilidade dos medicamentos necessários aos pacientes.
+
+2. Como um profissional com conhecimento aprofundado em farmacologia, desejo uma aplicação que me forneça informações claras e atualizadas sobre interações medicamentosas, para garantir a segurança e eficácia dos tratamentos prescritos.
+
+3. Como um farmacêutico hospitalar, desejo uma aplicação que me permita uma comunicação direta e eficaz com a equipe médica, de enfermagem e outros profissionais de saúde, facilitando a troca de informações sobre prescrições, dispensações e necessidades de estoque.
+
+4. Como um usuário que valoriza a eficiência, desejo uma aplicação que integre os sistemas hospitalares relevantes, para evitar a frustração causada pela falta de comunicação e sincronização entre diferentes plataformas, melhorando assim a coordenação e eficácia do trabalho em equipe.
+
+5. Como um farmacêutico hospitalar, desejo uma aplicação que me permita registrar e monitorar as atividades relacionadas à dispensação de medicamentos, para garantir o cumprimento das normas e regulamentações farmacêuticas, bem como a rastreabilidade dos medicamentos utilizados.
+
 
 # Desenvolvimento
 
