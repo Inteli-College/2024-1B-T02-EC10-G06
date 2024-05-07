@@ -87,4 +87,15 @@ const config = {
     }),
 };
 
+module.exports = {
+  scripts: [
+    {
+      src: 'https://polyfill.io/v3/polyfill.min.js?features=es6',
+    },
+    {
+      src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+    },
+  ],
+};
+
 export default config;
