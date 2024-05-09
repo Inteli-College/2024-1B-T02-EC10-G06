@@ -11,7 +11,7 @@ load_dotenv()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="./login")
 
-def generate_token(data: dict, expires_delta: timedelta | None = None):
+def generate_token(data: dict, expires_delta: timedelta):
     print(data)
     to_encode = data.copy()
     if expires_delta:
