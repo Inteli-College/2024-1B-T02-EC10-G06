@@ -1,31 +1,35 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from models.user import User, UserWithPermission
+from fastapi import APIRouter, Depends, HTTPException
+from models.user import User, UserWithPermission, PermissionRequest
 from controller.user_controller import addUserToQueue
 from controller.user_controller import getUser
-from middleware.auth import oauth2_scheme,generate_token, get_password_hash, validate_token
+from middleware.auth import oauth2_scheme,generate_token, get_password_hash, validate_token, verify_password
 router = APIRouter()
 
 
 @router.get("/createUser/")
-def create_user(user: User):
+def create_user(user: UserWithPermission):
     
     return addUserToQueue(user)
 
 
 @router.get("/login/")
 def login(user: User):
-    user = getUser(user.username)
+    userDb = getUser(user.username)
     if not user:
         raise HTTPException(status_code=400, detail="User not found")
-    if not get_password_hash(user.password) == user.password:
-        raise HTTPException(status_code=400, detail="Invalid password")
-    token = generate_token({"username": user.username,"permission": user.permission})
-    return {"token": token}
+    if verify_password(user.password, userDb["password"]):
+        token = generate_token({"username": user.username,"permission": userDb["permission"]})
+        return {"token": token}
+    raise HTTPException(status_code=400, detail="Invalid password")
 
 @router.get("/getPermission/")
-def get_permission(token: str = Depends(oauth2_scheme),permission: int = 0):
+def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
+    if permission is None:
+        raise HTTPException(status_code=400, detail="Permission not provided")
+    
     user,tokenPermission = validate_token(token)
-    if permission == tokenPermission:
+    
+    if permission.permission == tokenPermission:
         return {"message": "Token is valid"}
     else:
         raise HTTPException(status_code=401, detail="Invalid permission")

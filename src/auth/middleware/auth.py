@@ -1,10 +1,11 @@
-from passlib.context import CryptContext
 import jwt
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 import os
 from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
+import bcrypt
+
 
 load_dotenv() 
 
@@ -21,10 +22,15 @@ def generate_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, os.environ["SECRET_KEY"], algorithm=os.environ["ALGORITHM"])
     return encoded_jwt
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def get_password_hash(password):
-    return pwd_context.hash(password)
+    bytePassword=  bcrypt.hashpw(bytes(password, "utf-8"), bcrypt.gensalt())
+    stringPassword = bytePassword.decode()
+    return stringPassword
+
+def verify_password(plain_password, hashed_password):
+    return bcrypt.checkpw(bytes(plain_password, "utf-8"), bytes(hashed_password, "utf-8"))
 
 def validate_token(token):
     try:
