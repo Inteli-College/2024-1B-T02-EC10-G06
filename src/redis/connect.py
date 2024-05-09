@@ -20,14 +20,16 @@ class redis_interface():
         self.index = {}
     
     def index_create(self, tag_name, schema):
-         self.index[tag_name] = self.engnie.ft(f"idx:{tag_name}")
-         print("Gerou o indexador: ",tag_name)
-         
-         # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez.
-         self.index[tag_name].create_index(
-            schema,
-            definition=IndexDefinition(prefix=[f"{tag_name}:"], index_type=IndexType.JSON),
-            )
+        if  tag_name in self.index:
+            self.index[tag_name] = self.engnie.ft(f"idx:{tag_name}")
+            print("Gerou o indexador: ",tag_name)
+
+            # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez.
+            self.index[tag_name].create_index(
+                schema,
+                definition=IndexDefinition(prefix=[f"{tag_name}:"], index_type=IndexType.JSON),
+                )
+        print("Index já criado")
     
     def set_value(self,value, key):
         self.engnie.json().set(f"{key}", Path.root_path(), value)
@@ -37,6 +39,8 @@ class redis_interface():
             self.engnie.json().set(f"{tag_name}:{bid}", Path.root_path(), value)
     
     def get_value(self, tag_name, query="*") -> dict:
+        if tag_name not in self.index:
+            return {"Erro":f"{tag_name} indexador não encontrado."}
         res = self.index[tag_name].search(Query(f"{query}"))
         return res
 
@@ -240,18 +244,13 @@ r.index_create("remedios",(
 r.set_values(tag_name="bicycle", values=bicycles)
 r.set_values(tag_name="remedios", values=remedios)
 
-print("Meu DBUG: ",r.get_value(tag_name="remedios", query="@urgencia:media"))
-
-# index = r.ft("idx:bicycle")
-
-# print("Gerou o index: ",index)
+print("Meus remidios: ",r.get_value( tag_name="",query="@urgencia:media"))
 
 # # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez
 # index.create_index(
 #     schema,
 #     definition=IndexDefinition(prefix=["bicycle:"], index_type=IndexType.JSON),
 # )
-
 
 
 # for bid, bicycle in enumerate(bicycles):
