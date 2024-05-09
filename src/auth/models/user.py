@@ -7,4 +7,8 @@ class User(BaseModel):
 
 
 class UserWithPermission(User):
-    permission: str
+    permission: int
+
+
+class PermissionRequest(BaseModel):
+    permission: int
