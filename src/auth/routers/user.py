@@ -3,6 +3,7 @@ from models.user import User, UserWithPermission, PermissionRequest
 from controller.user_controller import addUserToQueue
 from controller.user_controller import getUser
 from middleware.auth import oauth2_scheme,generate_token, get_password_hash, validate_token, verify_password
+from datetime import timedelta
 router = APIRouter()
 
 
@@ -18,7 +19,7 @@ def login(user: User):
     if not user:
         raise HTTPException(status_code=400, detail="User not found")
     if verify_password(user.password, userDb["password"]):
-        token = generate_token({"username": user.username,"permission": userDb["permission"]})
+        token = generate_token({"username": user.username,"permission": userDb["permission"]}, timedelta(minutes=15))
         return {"token": token}
     raise HTTPException(status_code=400, detail="Invalid password")
 
