@@ -1,14 +1,19 @@
-FROM python:3.8-slim
+# 
+FROM python:3.9
 
-WORKDIR /app
+# 
+WORKDIR /code
 
-COPY requirements.txt requirements.txt
+# 
+COPY ./auth/requirements.txt /code/requirements.txt
 
-RUN pip install -r requirements.txt
+# 
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-EXPOSE 8000
+# 
+COPY ./auth/ .
 
-COPY . .
+ENV PYTHONPATH "${PYTHONPATH}:/code/"
 
-# Comando para executar a aplicação usando Gunicorn
-CMD ["python", "src/app.py"]
+# 
+CMD ["python3", "app.py", "--port", "5001"]
