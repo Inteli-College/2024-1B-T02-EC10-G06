@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from routers.user import  router as user_router
+from routers.pyxi import  router as pyxi_router
 
 import uvicorn
 
 app = FastAPI()
 
-app.include_router(user_router, tags=["users"])
+app.include_router(pyxi_router)
 
 @app.get("/")
 def read_root():
