@@ -6,6 +6,9 @@
 
 import { themes as prismThemes } from "prism-react-renderer";
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Grupo 6",
@@ -46,6 +49,8 @@ const config = {
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
           routeBasePath: "/",
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
         },
         blog: false,
         theme: {
@@ -85,17 +90,14 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
+  scripts: [
+    {
+      src: "https://polyfill.io/v3/polyfill.min.js?features=es6",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js",
+    },
+  ],
 };
-
-// module.exports = {
-//   scripts: [
-//     {
-//       src: 'https://polyfill.io/v3/polyfill.min.js?features=es6',
-//     },
-//     {
-//       src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
-//     },
-//   ],
-// };
 
 export default config;
