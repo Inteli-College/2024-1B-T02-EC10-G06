@@ -1,11 +1,9 @@
 
 import datetime
 
-post = {
-    "author": "Mike",
-    "text": "My first blog post!",
-    "tags": ["mongodb", "python", "pymongo"],
-    "date": datetime.datetime.now(tz=datetime.timezone.utc),
+pyxi = {
+    "descrition": "str",
+    "medicines": {}
 }
 
 def pyxi_created(producer, pyxi):

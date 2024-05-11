@@ -7,6 +7,8 @@ class PyxiBase(BaseModel):
     medicines: dict
 
 
+
+
 class PyxiUpdate(PyxiBase):
     descrition: str
     medicines: dict
