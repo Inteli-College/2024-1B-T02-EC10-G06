@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from datetime import datetime
+#from bson.objectid import ObjectId 
 
 class Ticket(BaseModel):
-    idLote: str
+    id: str
     idPyxis: str
     descrition: str
     body: dict

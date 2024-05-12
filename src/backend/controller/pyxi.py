@@ -1,30 +1,60 @@
-
+from bson.objectid import ObjectId
 import datetime
+from pymongo.collection import Collection
 
-pyxi = {
-    "descrition": "str",
-    "medicines": {}
-}
 
-def pyxi_created(producer, pyxi):
-    print("Debug: ", producer, "\n pix: ", pyxi)
+def pyxi_created(producer, raw_pyxi):
+    pyxi = {
+            "descrition": raw_pyxi.descrition,
+            "medicines": raw_pyxi.medicines
+            }
+    post_id = producer.insert_one(pyxi).inserted_id
+    pyxi["id"] = str(post_id)
+    return pyxi
     
 
-def all_pyxis(db, skip, limit):
+def all_pyxis(db:Collection):
+    pyxis = []
     for document in db.find():
-        print(document)
+        #print(document)
+        pyxis.append({
+            "id":str(document["_id"]),
+            "descrition": document["descrition"],
+            "medicines": document["medicines"]
+        })
+    #print("Toma ae os Pyxis: ", pyxis)
+    return pyxis
     
 
-def one_pyxi(db):
-    print("Debug: ", db)
+def one_pyxi(db:Collection, pyxi_id):
+    raw_pyxis = db.find_one( {"_id": ObjectId(pyxi_id)} )
+    if raw_pyxis is None :
+        return None
+    pyxis = {
+        "id":str(raw_pyxis["_id"]),
+        "descrition": raw_pyxis["descrition"],
+        "medicines": raw_pyxis["medicines"]
+    }
+    return pyxis
 
-def check_pyxi(db, pyxi_id):
-    print("Debug: ", db, "\n pix: ", pyxi_id)
+def delete_response(db:Collection, pyxi_id):
+    db.delete_one({"_id": ObjectId(pyxi_id)})
+    return {
+        "id":pyxi_id,
+        "status":"Deletado com sucesso"
+    }
 
-def delete_response(db, pyxi_id):
-    print("Debug: ", db, "\n pix: ", pyxi_id)
 
 
-
-def update_response(db, pyxi_id, pyxi_update):
-    print("Debug: ", db, "\n pix: ", pyxi_id, pyxi_update)
+def update_response(db:Collection, pyxi_id, pyxi_update):
+    db.update_one(
+        {"_id": ObjectId(pyxi_id)},
+        {'$set':{
+            "descrition": pyxi_update.descrition,
+            "medicines": pyxi_update.medicines
+            }
+        }
+        )
+    return {
+        "status":"Atualizado com sucesso",
+    }
