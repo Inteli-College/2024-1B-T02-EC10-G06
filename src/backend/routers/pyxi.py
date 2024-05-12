@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from models.pyxi import PyxiBase, PyxiUpdate, PyxiDelete, PyxiCreate
 from controller.pyxi import pyxi_created, all_pyxis, one_pyxi, delete_response, update_response
-from datetime import datetime
 
 
-from utils.kafka import ProducerController
+#from utils.kafka import ProducerController
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -13,12 +12,12 @@ load_dotenv()
 
 uri = os.getenv("MONGO_URI")
 client = MongoClient(uri)
-server = os.getenv("KAFKA_BROKER")
-client_id = "python-producer"
-apikey = os.getenv("KAFKA_APIKEY")
-password = os.getenv("KAFKA_PASSWORD")
+# server = os.getenv("KAFKA_BROKER")
+# client_id = "python-producer"
+# apikey = os.getenv("KAFKA_APIKEY")
+# password = os.getenv("KAFKA_PASSWORD")
 
-producer = ProducerController(server,client_id,apikey,password)
+#producer = ProducerController(server,client_id,apikey,password)
 pyxis_db = client["Hermes"]
 collection = pyxis_db["Pyxis"]
 

@@ -3,14 +3,17 @@ from pydantic import BaseModel
 
 class MedicinesBase(BaseModel):
     id: str
-    nome: str
+    name: str
     descrition: str
 
 class MedicinesCreate(BaseModel):
     descrition: str
-    nome: str
+    name: str
+
+class MedicinesDelete(BaseModel):
+    id: str
+    status: str
 
 
-class MedicinesUpdate(MedicinesBase):
-    pass
+
 
