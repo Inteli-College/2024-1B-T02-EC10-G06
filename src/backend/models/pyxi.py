@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+#from bson.objectid import ObjectId 
 
 
 class PyxiBase(BaseModel):
@@ -9,10 +10,15 @@ class PyxiBase(BaseModel):
 
 
 
-class PyxiUpdate(PyxiBase):
+class PyxiCreate(BaseModel):
     descrition: str
     medicines: dict
 
-class PyxiDelete(PyxiBase):
+class PyxiUpdate(BaseModel):
+    status:str
+
+
+class PyxiDelete(BaseModel):
     id: str
+    status: str
 
