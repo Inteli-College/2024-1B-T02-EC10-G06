@@ -21,12 +21,13 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    # restart: on-failure
+    restart: on-failure
 
   kafka2:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
       - zookeeper
+      - kafka
     ports:
       - 29093:29093
     environment:
@@ -42,6 +43,8 @@ services:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
       - zookeeper
+      - kafka
+      - kafka2
     ports:
       - 29094:29094
     environment:
@@ -51,7 +54,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    # restart: on-failure
+    restart: on-failure
   kafka-connect:
     build:
       context: .
@@ -74,6 +77,8 @@ services:
     #   - /path/to/your/config/directory:/etc/kafka/  # If you have custom configurations
     depends_on:
       - kafka
+      - kafka2
+      - kafka3
       - zookeeper
     restart: on-failure
 
