@@ -6,17 +6,16 @@ slug: /
 
 # Introdução
 
-TO DO
+...
 
 ## Objetivo
 
-TO DO
+...
 
 
-### Sprint 1: 
-## Objetivos da Sprint
+## Sprint 1: 
 
-A sprint visa avançar no projeto por meio de artefatos específicos, cada um essencial para diferentes aspectos do desenvolvimento:
+Para avançarmos nesta sprint, focamos nos artefatos abaixo:
 
 - **Proposta de Valor:** O Canvas Proposta de Valor é necessário para clarificar as dores, potenciais e ganhos da solução, alinhando as expectativas do cliente e orientando o desenvolvimento.
 
@@ -33,9 +32,17 @@ A sprint visa avançar no projeto por meio de artefatos específicos, cada um es
 
 **Apresentação de sprint review**
 
+<iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=editor"></iframe>
+
+
+## Sprint 2: TO DO
+
 TO DO
 
-### Sprint 2: TO DO
+**Apresentação de sprint review**
+
+
+## Sprint 3: TO DO
 
 TO DO
 
@@ -43,7 +50,7 @@ TO DO
 
 TO DO
 
-### Sprint 3: TO DO
+## Sprint 4: TO DO
 
 TO DO
 
@@ -51,15 +58,7 @@ TO DO
 
 TO DO
 
-### Sprint 4: TO DO
-
-TO DO
-
-**Apresentação de sprint review**
-
-TO DO
-
-### Sprint 5: TO DO
+## Sprint 5: TO DO
 
 TO DO
 
