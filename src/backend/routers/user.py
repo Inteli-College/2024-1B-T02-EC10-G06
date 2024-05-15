@@ -9,7 +9,6 @@ router = APIRouter()
 
 @router.get("/createUser/")
 def create_user(user: UserWithPermission):
-    
     return addUserToQueue(user)
 
 

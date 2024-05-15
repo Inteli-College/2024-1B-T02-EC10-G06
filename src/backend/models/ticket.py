@@ -17,3 +17,7 @@ class TicketCreate(BaseModel):
 
 class TicketCreateResponse(TicketBase): 
     update: str
+
+
+class TicketResponse(BaseModel): 
+    msg: dict
