@@ -36,11 +36,6 @@ class MinhaPrimeiraTela extends StatelessWidget {
         children:  <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/i-hate-water.gif',
-              width: 300,
-              height: 300,
-              fit: BoxFit.cover,
-            ),
           ),
           ElevatedButton(onPressed: 
           (){

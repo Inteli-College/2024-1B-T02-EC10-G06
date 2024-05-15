@@ -1,22 +1,63 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:http/http.dart' as http;
 
 class DashboardPage extends StatefulWidget {
+  const DashboardPage({super.key});
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  Future<Map<String, dynamic>> fetchData() async {
-    final response = await http.get(Uri.parse('https://api.example.com/data'));
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchTickets();
+    _fetchPyxis();
+  }
+
+  List<Ticket> _tickets = [];
+  Future<void>_fetchTickets() async {
+    final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
+    
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+      });
     } else {
-      throw Exception('Failed to load data');
+      const String mockData = '''
+  [
+    {
+      "idPyxis": "1",
+      "descrition": "Sample ticket 1",
+      "body": ["Body content 1"],
+      "created_at": "2024-05-15T10:00:00Z",
+      "status": "Open"
+    },
+    {
+      "idPyxis": "2",
+      "descrition": "Sample ticket 2",
+      "body": ["Body content 2"],
+      "created_at": "2024-05-14T12:00:00Z",
+      "status": "Closed"
     }
+  ]
+  ''';
+
+      final List<dynamic> data = jsonDecode(mockData);
+      setState(() {
+        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+      });
+      //throw Exception('Failed to load tickets');
+    }
+  }
+
+  Future _fetchPyxis() async {
+    final response = await http.get(Uri.parse('https://api.hermes.com/pyxis'));
+    return response.body;
   }
 
   @override
@@ -25,106 +66,139 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: fetchData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            final data = snapshot.data;
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildInfoCard('Tickets Totais', 10, Colors.yellow),
-                        _buildInfoCard('Abertos', 5, Colors.red),
-                        _buildInfoCard('Finalizados', 5, Colors.green),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text('Histórico de Tickets - Por dia', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 200,
-                      child: LineChart(
-                        LineChartData(
-                          gridData: FlGridData(show: false),
-                          titlesData: FlTitlesData(show: false),
-                          borderData: FlBorderData(show: false),
-                          lineBarsData: [
-                            LineChartBarData(
-                                spots: [
-                                FlSpot(1, 10),
-                                FlSpot(2, 15),
-                                FlSpot(3, 20),
-                                FlSpot(4, 18),
-                                FlSpot(5, 12),
-                                FlSpot(6, 16),
-                                FlSpot(7, 22),
-                                ],
-                              isCurved: true,
-                              colors: [Colors.purple],
-                              dotData: FlDotData(show: false),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    //_buildRecentTickets(data['recentTickets']),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        // Expanded(child: _buildOrderedList('Pyxis mais pedidos', data['mostOrderedPyxis'])),
-                        // SizedBox(width: 20),
-                        // Expanded(child: _buildOrderedList('Remédios mais pedidos', data['mostOrderedMedicines'])),
-                      ],
-                    ),
-                  ],
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
               ),
-            );
-          }
-        },
+            ),
+            ListTile(
+              leading: Icon(Icons.dashboard),
+              title: Text('Dashboard'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                // Navegue para a página de configurações ou qualquer outra página
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildInfoCard(String title, int count, Color color) {
-    return Card(
-      color: color,
-      child: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                _buildInfoCard(
+                  'Tickets Totais',
+                  _tickets.length,
+                  Colors.yellow),
+
+                _buildInfoCard(
+                  'Abertos',
+                  _tickets.where((ticket) => ticket.status == 'Open').length,
+                  Colors.red),
+
+                _buildInfoCard(
+                  'Finalizados',
+                  _tickets.where((ticket) => ticket.status == 'Closed').length,
+                  Colors.green),
+              ],
+            ),
+            
+            SizedBox(height: 20),
+            Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            //_buildGraph(_tickets),
+
+            SizedBox(height: 20),
+            Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
-            Text(count.toString(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            _buildRecentTickets(_tickets),
+            
+            SizedBox(height: 20),
+            // Row(
+            //   children: [
+            //     Expanded(child: _buildOrderedList('Pyxis mais pedidos', data?['mostOrderedPyxis'])),
+            //     SizedBox(width: 20),
+            //     Expanded(child: _buildOrderedList('Remédios mais pedidos', data?['mostOrderedMedicines'])),
+            //   ],
+            // ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildRecentTickets(List<dynamic> tickets) {
+  Widget _buildInfoCard(String title, int? count, Color color) {
+    return SizedBox(
+      width: 180,
+      height: 110,
+      child: Card(
+        color: color,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
+              Text(count.toString(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGraph(List<dynamic>? data) {
+    return SizedBox(
+      height: 200,
+      width: 720,
+      child: LineChart(
+        LineChartData(
+          gridData: FlGridData(show: false),
+          titlesData: FlTitlesData(show: false),
+          borderData: FlBorderData(show: false),
+          lineBarsData: [
+            LineChartBarData(
+              spots: data?.map<FlSpot>((item) => FlSpot(item['day'], item['count'])).toList() ?? [],
+              isCurved: true,
+              colors: [Colors.purple],
+              dotData: FlDotData(show: false),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentTickets(List<Ticket> tickets) {
     return Column(
       children: tickets.map((ticket) {
         return Card(
           child: ListTile(
-            title: Text(ticket['pyxis']),
+            title: Text(ticket.idPyxis),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: (ticket['medicines'] as List<dynamic>).map((med) => Text(med)).toList(),
+              children: ticket.body.map((bodyItem) => Text(bodyItem)).toList(),
             ),
           ),
         );
@@ -132,17 +206,83 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildOrderedList(String title, List<dynamic> items) {
+  Widget _buildOrderedList(String title, List<dynamic>? items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 10),
-        ...items.map((item) => ListTile(
+        ...items?.map((item) => ListTile(
           title: Text(item['name']),
           trailing: Text(item['count'].toString()),
-        )).toList(),
+        )).toList() ?? [],
       ],
+    );
+  }
+}
+
+class Ticket {
+  final String idPyxis;
+  final String descrition;
+  final List<String> body;
+  final DateTime created_at;
+  final String status;
+
+  Ticket({
+    required this.idPyxis,
+    required this.descrition,
+    required this.body,
+    required this.created_at,
+    required this.status,
+  });
+
+  factory Ticket.fromJson(Map<String, dynamic> json) {
+    return Ticket(
+      idPyxis: json['idPyxis'],
+      descrition: json['descrition'],
+      body: List<String>.from(json['body']),
+      created_at: DateTime.parse(json['created_at']),
+      status: json['status'],
+    );
+  }
+}
+
+class Medicine {
+  final String id;
+  final String name;
+  final String descrition;
+
+  Medicine({
+    required this.id,
+    required this.name,
+    required this.descrition,
+  });
+
+  factory Medicine.fromJson(Map<String, dynamic> json) {
+    return Medicine(
+      id: json['id'],
+      name: json['name'],
+      descrition: json['descrition'],
+    );
+  }
+}
+
+class Pyxi {
+  final String id;
+  final String descrition;
+  final Medicine medicine;
+
+  Pyxi({
+    required this.id,
+    required this.descrition,
+    required this.medicine,
+  });
+
+  factory Pyxi.fromJson(Map<String, dynamic> json) {
+    return Pyxi(
+      id: json['id'],
+      descrition: json['descrition'],
+      medicine: Medicine.fromJson(json['medicine']),
     );
   }
 }
