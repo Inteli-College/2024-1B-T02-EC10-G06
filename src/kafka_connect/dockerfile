@@ -1,0 +1,15 @@
+FROM confluentinc/cp-kafka-connect:6.2.0
+
+# Add any additional plugins or configurations you need here
+
+# Example: To install a JDBC connector
+# RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
+
+# Example: To copy custom connector JAR files
+# COPY ./path/to/your/connector.jar /usr/share/java/kafka/
+COPY ./kafka_connect/connector.jar /usr/share/java/kafka/
+
+RUN rm /usr/share/java/cp-base-new/slf4j-log4j12-*.jar
+
+# Example: To copy custom configurations
+# COPY ./kafka_connect/meta.properties ./../../var/lib/kafka/data/meta.properties
