@@ -113,3 +113,41 @@ services:
   #   ports:
   #     - "8001:8001"
     
+# version: '3.8'
+
+# services:
+#   zookeeper:
+#     image: confluentinc/cp-zookeeper:7.4.4
+#     environment:
+#       ZOOKEEPER_CLIENT_PORT: 2181
+#     ports:
+#       - "2181:2181"
+#     restart: on-failure
+
+#   kafka:
+#     image: confluentinc/cp-kafka:7.4.4
+#     depends_on:
+#       - zookeeper
+#     ports:
+#       - 29092:29092
+#     environment:
+#       KAFKA_BROKER_ID: 1
+#       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#       KAFKA_ADVERTISED_LISTENERS: SASL_SSL://kafka:9093,PLAINTEXT_HOST://localhost:29092
+#       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SASL_SSL:SASL_SSL,PLAINTEXT_HOST:PLAINTEXT
+#       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
+#       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#       KAFKA_SECURITY_PROTOCOL: SASL_SSL
+#       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+#       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+#       KAFKA_SSL_KEYSTORE_FILENAME: kafka.keystore.jks
+#       KAFKA_SSL_KEYSTORE_CREDENTIALS: keystore_creds
+#       KAFKA_SSL_KEY_CREDENTIALS: key_creds
+#       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.truststore.jks
+#       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: truststore_creds
+#       KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: ""
+#       KAFKA_OPTS: -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
+#     volumes:
+#       - ./C:/etc/kafka/kafka_server_jaas.conf
+#       - ./secrets:/etc/kafka/secrets
+#     restart: on-failure

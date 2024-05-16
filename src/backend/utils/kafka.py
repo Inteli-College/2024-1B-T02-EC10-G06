@@ -5,10 +5,10 @@ class ProducerController:
         self.producer = Producer({
             'bootstrap.servers': servers,
             'client.id': client_id,
-            "sasl.mechanism" : "PLAIN",
-            "security.protocol" : "SASL_SSL",
-            "sasl.username" : username,
-            "sasl.password" : password,
+            # "sasl.mechanism" : "PLAIN",
+            # "security.protocol" : "SASL_SSL",
+            # "sasl.username" : username,
+            # "sasl.password" : password,
         })
 
     def delivery_callback(self, err, msg):
