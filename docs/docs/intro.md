@@ -6,11 +6,11 @@ slug: /
 
 # Introdução
 
-...
+Este documento descreve o projeto colaborativo entre o Instituto de Tecnologia e Liderança (INTELI) e o Hospital Sírio Libanês, no âmbito do módulo de Engenharia da Computação, para enfrentar os desafios da degradação ambiental urbana. Além de abordar a implementação de uma solução tecnológica inovadora para ajudar no desempenho e comunicação entre setores em um ambiente hospitalar, em conjunto com uma plataforma web que metrifica essa performance, o projeto inclui no desenvolvimento de um aplicativo online. Essa aplicação servirá como um canal de interação entre os funcionários, permitindo maior eficiência na resposta de gerênciamento de medicações no Pyxis.
 
 ## Objetivo
 
-...
+O objetivo do projeto é ajudar o Hospital a melhorar sua eficiência na reposição e entendimento no de eventuais inconsistências na quantidade de medicamentos encontrados nos Pyxis, utilizando uma aplicação mobile (Android)
 
 ## Sprint 1
 
