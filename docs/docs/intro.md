@@ -30,12 +30,11 @@ Nesta sprint, estabelecemos nosso primeiro contato com o parceiro de projeto, e 
 
 **Apresentação de sprint review**
 
-<iframe loading="lazy"
-  src="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
-</iframe>
+  <iframe loading="lazy" 
+    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFyTPtqOFE&#x2F;ZKer5UDsw8Zz2TPyj8lexA&#x2F;view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
+  </iframe>
 
-<a href="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?utm_content=DAGEvH8gQCY&;utm_campaign=designshare&;utm_medium=embeds&;utm_source=link" target="_blank" rel="noopener">HERMES sprint2</a> by Daniel Davila
-
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFyTPtqOFE&#x2F;ZKer5UDsw8Zz2TPyj8lexA&#x2F;view?utm_content=DAFyTPtqOFE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">apresentação sprint 1</a>
 
 ## Sprint 2
 
@@ -77,7 +76,11 @@ Nesta etapa do projeto, avançamos para consolidar as bases estabelecidas na spr
 
 **Apresentação de sprint review**
 
-<iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=view" width="600" height="400"></iframe>
+<iframe loading="lazy"
+  src="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
+</iframe>
+
+<a href="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?utm_content=DAGEvH8gQCY&;utm_campaign=designshare&;utm_medium=embeds&;utm_source=link" target="_blank" rel="noopener">HERMES sprint2</a>
 
 ## Sprint 3: TO DO
 
