@@ -202,6 +202,48 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
+class TicketCard extends StatefulWidget {
+  final Ticket ticket;
+
+  TicketCard({required this.ticket});
+
+  @override
+  _TicketCardState createState() => _TicketCardState();
+}
+
+class _TicketCardState extends State<TicketCard> {
+  bool _clickedTicket = false;
+
+  void _toggleDescription() {
+    setState(() {
+      _clickedTicket = !_clickedTicket;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: _toggleDescription,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.ticket.idPyxis, style: TextStyle(fontWeight: FontWeight.bold)),
+              if (_clickedTicket) Text(widget.ticket.descrition),
+              Text('Status: ${widget.ticket.status}'),
+              if (_clickedTicket) Text('Enviado por: ${widget.ticket.sender}'),
+              if (_clickedTicket) Text('Recebido por: ${widget.ticket.receiver}'),
+              Text('Criado em: ${widget.ticket.created_at}'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class Ticket {
   final String idPyxis;
   final String descrition;
@@ -270,48 +312,6 @@ class Pyxi {
       id: json['id'],
       descrition: json['descrition'],
       medicine: Medicine.fromJson(json['medicine']),
-    );
-  }
-}
-
-class TicketCard extends StatefulWidget {
-  final Ticket ticket;
-
-  TicketCard({required this.ticket});
-
-  @override
-  _TicketCardState createState() => _TicketCardState();
-}
-
-class _TicketCardState extends State<TicketCard> {
-  bool _isDescriptionVisible = false;
-
-  void _toggleDescription() {
-    setState(() {
-      _isDescriptionVisible = !_isDescriptionVisible;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: _toggleDescription,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.ticket.idPyxis, style: TextStyle(fontWeight: FontWeight.bold)),
-              if (_isDescriptionVisible) Text(widget.ticket.descrition),
-              Text('Status: ${widget.ticket.status}'),
-              Text('Enviado por: ${widget.ticket.sender}'),
-              Text('Recebido por: ${widget.ticket.receiver}'),
-              Text('Criado em: ${widget.ticket.created_at}'),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
