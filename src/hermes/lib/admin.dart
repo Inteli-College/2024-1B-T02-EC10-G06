@@ -10,7 +10,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
   @override
   void initState() {
     super.initState();
@@ -19,9 +18,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   List<Ticket> _tickets = [];
-  Future<void>_fetchTickets() async {
+
+  Future<void> _fetchTickets() async {
     final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
-    
+
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
@@ -29,29 +29,32 @@ class _DashboardPageState extends State<DashboardPage> {
       });
     } else {
       const String mockData = '''
-  [
-    {
-      "idPyxis": "1",
-      "descrition": "Sample ticket 1",
-      "body": ["Body content 1"],
-      "created_at": "2024-05-15T10:00:00Z",
-      "status": "Open"
-    },
-    {
-      "idPyxis": "2",
-      "descrition": "Sample ticket 2",
-      "body": ["Body content 2"],
-      "created_at": "2024-05-14T12:00:00Z",
-      "status": "Closed"
-    }
-  ]
-  ''';
+      [
+        {
+          "idPyxis": "1",
+          "descrition": "Sample ticket 1",
+          "body": ["Body content 1"],
+          "created_at": "2024-05-15T10:00:00Z",
+          "status": "Open",
+          "sender": "John Doe",
+          "receiver": "Jane Doe"
+        },
+        {
+          "idPyxis": "2",
+          "descrition": "Sample ticket 2",
+          "body": ["Body content 2"],
+          "created_at": "2024-05-14T12:00:00Z",
+          "status": "Closed",
+          "sender": "yoda",
+          "receiver": "luke"
+        }
+      ]
+      ''';
 
       final List<dynamic> data = jsonDecode(mockData);
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
       });
-      //throw Exception('Failed to load tickets');
     }
   }
 
@@ -93,7 +96,7 @@ class _DashboardPageState extends State<DashboardPage> {
               leading: Icon(Icons.settings),
               title: Text('Settings'),
               onTap: () {
-                // Navegue para a página de configurações ou qualquer outra página
+                // Navigate to settings page or any other page
                 Navigator.pop(context);
               },
             ),
@@ -107,32 +110,18 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             Row(
               children: [
-                _buildInfoCard(
-                  'Tickets Totais',
-                  _tickets.length,
-                  Colors.yellow),
-
-                _buildInfoCard(
-                  'Abertos',
-                  _tickets.where((ticket) => ticket.status == 'Open').length,
-                  Colors.red),
-
-                _buildInfoCard(
-                  'Finalizados',
-                  _tickets.where((ticket) => ticket.status == 'Closed').length,
-                  Colors.green),
+                _buildInfoCard('Tickets Totais', _tickets.length, Colors.yellow),
+                _buildInfoCard('Abertos', _tickets.where((ticket) => ticket.status == 'Open').length, Colors.red),
+                _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'Closed').length, Colors.green),
               ],
             ),
-            
             SizedBox(height: 20),
             Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            //_buildGraph(_tickets),
-
+            // _buildGraph(_tickets),
             SizedBox(height: 20),
             Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
             _buildRecentTickets(_tickets),
-            
             SizedBox(height: 20),
             // Row(
             //   children: [
@@ -193,15 +182,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildRecentTickets(List<Ticket> tickets) {
     return Column(
       children: tickets.map((ticket) {
-        return Card(
-          child: ListTile(
-            title: Text(ticket.idPyxis),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: ticket.body.map((bodyItem) => Text(bodyItem)).toList(),
-            ),
-          ),
-        );
+        return TicketCard(ticket: ticket);
       }).toList(),
     );
   }
@@ -227,6 +208,8 @@ class Ticket {
   final List<String> body;
   final DateTime created_at;
   final String status;
+  final String sender;
+  final String receiver;
 
   Ticket({
     required this.idPyxis,
@@ -234,6 +217,8 @@ class Ticket {
     required this.body,
     required this.created_at,
     required this.status,
+    required this.sender,
+    required this.receiver,
   });
 
   factory Ticket.fromJson(Map<String, dynamic> json) {
@@ -243,6 +228,8 @@ class Ticket {
       body: List<String>.from(json['body']),
       created_at: DateTime.parse(json['created_at']),
       status: json['status'],
+      sender: json['sender'],
+      receiver: json['receiver'],
     );
   }
 }
@@ -283,6 +270,48 @@ class Pyxi {
       id: json['id'],
       descrition: json['descrition'],
       medicine: Medicine.fromJson(json['medicine']),
+    );
+  }
+}
+
+class TicketCard extends StatefulWidget {
+  final Ticket ticket;
+
+  TicketCard({required this.ticket});
+
+  @override
+  _TicketCardState createState() => _TicketCardState();
+}
+
+class _TicketCardState extends State<TicketCard> {
+  bool _isDescriptionVisible = false;
+
+  void _toggleDescription() {
+    setState(() {
+      _isDescriptionVisible = !_isDescriptionVisible;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: _toggleDescription,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.ticket.idPyxis, style: TextStyle(fontWeight: FontWeight.bold)),
+              if (_isDescriptionVisible) Text(widget.ticket.descrition),
+              Text('Status: ${widget.ticket.status}'),
+              Text('Enviado por: ${widget.ticket.sender}'),
+              Text('Recebido por: ${widget.ticket.receiver}'),
+              Text('Criado em: ${widget.ticket.created_at}'),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
