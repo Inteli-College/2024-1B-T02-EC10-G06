@@ -11,11 +11,11 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "idPyxis": raw_ticket.idPyxis,
             "descrition": raw_ticket.descrition,
             "body":  raw_ticket.body,
-            "created_at": datetime.utcnow(),
+            "created_at": datetime.now(),
             "status": "on progress",
             }
 
-    producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
+    producer.produceWithoutAuth("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     producer.flush()
     ticket["update"] = "Adicinado a fila"
     return ticket
