@@ -148,28 +148,17 @@ class _DashboardPageState extends State<DashboardPage> {
       width: 400,
       child: LineChart(
         LineChartData(
-          gridData: FlGridData(show: true),
-          titlesData: FlTitlesData(
-            leftTitles: SideTitles(showTitles: true),
-            bottomTitles: SideTitles(
-              showTitles: true,
-              getTitles: (value) {
-                int idx = value.toInt();
-                if (idx < ticketData.keys.length) {
-                  return ticketData.keys.elementAt(idx);
-                }
-                return '';
-              },
-            ),
-          ),
-          borderData: FlBorderData(show: true),
+          gridData: FlGridData(show: false),
+          titlesData: FlTitlesData(show: false),
+          borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              colors: [Colors.blue],
+              color: Colors.blue,
               barWidth: 4,
-              belowBarData: BarAreaData(show: true, colors: [Colors.blue.withOpacity(0.3)]),
+              isStrokeCapRound: true,
+              dotData: FlDotData(show: false),
             ),
           ],
         ),

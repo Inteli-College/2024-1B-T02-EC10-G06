@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hermes/admin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hermes/services/notifi.dart';
+import 'package:hermes/admin.dart';
+import 'package:hermes/receiver.dart';
 import 'package:hermes/camera_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           title: 'Login Successful',
           body: 'Welcome back, ${data['username']}!',
         );
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
       } else {
         // Handle login error
         setState(() {
@@ -58,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = 'Failed to login';
           // APAGAR DEPOIS
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverPage()));
         });
     }
   }
