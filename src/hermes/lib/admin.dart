@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
+import 'package:hermes/models.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -47,6 +48,15 @@ class _DashboardPageState extends State<DashboardPage> {
           "status": "Closed",
           "sender": "yoda",
           "receiver": "luke"
+        },
+        {
+          "idPyxis": "3",
+          "descrition": "Sample ticket 3",
+          "body": ["Body content 3"],
+          "created_at": "2024-05-13T14:00:00Z",
+          "status": "Open",
+          "sender": "JJJameson",
+          "receiver": "Peter Parker"
         }
       ]
       ''';
@@ -58,22 +68,126 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  List<Pyxi> _pyxis = [];
+
   Future _fetchPyxis() async {
     final response = await http.get(Uri.parse('https://api.hermes.com/pyxis'));
-    return response.body;
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      setState(() {
+        _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
+      });
+    } else {
+      const String mockData = '''
+      [
+        {
+          "id": "1",
+          "descrition": "Sample pyxi 1",
+          "medicine": {
+            "id": "1",
+            "name": "Medicine 1",
+            "descrition": "Sample medicine 1"
+          }
+        },
+        {
+          "id": "2",
+          "descrition": "Sample pyxi 2",
+          "medicine": {
+            "id": "2",
+            "name": "Medicine 2",
+            "descrition": "Sample medicine 2"
+          }
+        },
+        {
+          "id": "3",
+          "descrition": "Sample pyxi 3",
+          "medicine": {
+            "id": "3",
+            "name": "Medicine 3",
+            "descrition": "Sample medicine 3"
+          }
+        }
+      ]
+      ''';
+
+      final List<dynamic> data = jsonDecode(mockData);
+      setState(() {
+        _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
+      });
+    }
+  }
+
+  Map<String, int> _prepareTicketData(List<Ticket> tickets) {
+    Map<String, int> data = {};
+
+    for (var ticket in tickets) {
+      String date = ticket.created_at.toLocal().toString().split(' ')[0]; // Get the date part
+      if (data.containsKey(date)) {
+        data[date] = data[date]! + 1;
+      } else {
+        data[date] = 1;
+      }
+    }
+
+    return data;
+  }
+
+  Widget _buildTicketGraph(List<Ticket> tickets) {
+    Map<String, int> ticketData = _prepareTicketData(tickets);
+    List<FlSpot> spots = [];
+
+    int index = 0;
+    for (var entry in ticketData.entries) {
+      spots.add(FlSpot(index.toDouble(), entry.value.toDouble()));
+      index++;
+    }
+
+    return SizedBox(
+      height: 200,
+      width: 400,
+      child: LineChart(
+        LineChartData(
+          gridData: FlGridData(show: true),
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTitles: (value) {
+                int idx = value.toInt();
+                if (idx < ticketData.keys.length) {
+                  return ticketData.keys.elementAt(idx);
+                }
+                return '';
+              },
+            ),
+          ),
+          borderData: FlBorderData(show: true),
+          lineBarsData: [
+            LineChartBarData(
+              spots: spots,
+              isCurved: true,
+              colors: [Colors.blue],
+              barWidth: 4,
+              belowBarData: BarAreaData(show: true, colors: [Colors.blue.withOpacity(0.3)]),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -86,17 +200,16 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text('Dashboard'),
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashboard'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
-                // Navigate to settings page or any other page
                 Navigator.pop(context);
               },
             ),
@@ -105,7 +218,10 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child:
+          SingleChildScrollView(
+          child:
+          Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -115,24 +231,25 @@ class _DashboardPageState extends State<DashboardPage> {
                 _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'Closed').length, Colors.green),
               ],
             ),
-            SizedBox(height: 20),
-            Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            // _buildGraph(_tickets),
-            SizedBox(height: 20),
-            Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
+            const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            _buildTicketGraph(_tickets),
+            const SizedBox(height: 20),
+            const Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
             _buildRecentTickets(_tickets),
-            SizedBox(height: 20),
-            // Row(
-            //   children: [
-            //     Expanded(child: _buildOrderedList('Pyxis mais pedidos', data?['mostOrderedPyxis'])),
-            //     SizedBox(width: 20),
-            //     Expanded(child: _buildOrderedList('Remédios mais pedidos', data?['mostOrderedMedicines'])),
-            //   ],
-            // ),
+            const SizedBox(height: 20),
+            const Text('Pyxis mais Pedidos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            _buildPyxisTable(_pyxis),
+            const SizedBox(height: 20),
+            const Text('Medicamentos mais Pedidos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            _buildMedicineTable(_pyxis),
           ],
         ),
       ),
+    ),
     );
   }
 
@@ -147,9 +264,9 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Text(count.toString(), style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              Text(count.toString(), style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -157,25 +274,37 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildGraph(List<dynamic>? data) {
-    return SizedBox(
-      height: 200,
-      width: 720,
-      child: LineChart(
-        LineChartData(
-          gridData: FlGridData(show: false),
-          titlesData: FlTitlesData(show: false),
-          borderData: FlBorderData(show: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: data?.map<FlSpot>((item) => FlSpot(item['day'], item['count'])).toList() ?? [],
-              isCurved: true,
-              colors: [Colors.purple],
-              dotData: FlDotData(show: false),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildPyxisTable(List<Pyxi> pyxis) {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text('ID')),
+        DataColumn(label: Text('Medicamento')),
+        DataColumn(label: Text('Descrição')),
+      ],
+      rows: pyxis.map((pyxi) {
+        return DataRow(cells: [
+          DataCell(Text(pyxi.id)),
+          DataCell(Text(pyxi.medicine.name)),
+          DataCell(Text(pyxi.descrition)),
+        ]);
+      }).toList(),
+    );
+  }
+
+  Widget _buildMedicineTable(List<Pyxi> pyxis) {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text('ID')),
+        DataColumn(label: Text('Nome')),
+        DataColumn(label: Text('Descrição')),
+      ],
+      rows: pyxis.map((pyxi) {
+        return DataRow(cells: [
+          DataCell(Text(pyxi.medicine.id)),
+          DataCell(Text(pyxi.medicine.name)),
+          DataCell(Text(pyxi.medicine.descrition)),
+        ]);
+      }).toList(),
     );
   }
 
@@ -186,26 +315,12 @@ class _DashboardPageState extends State<DashboardPage> {
       }).toList(),
     );
   }
-
-  Widget _buildOrderedList(String title, List<dynamic>? items) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        SizedBox(height: 10),
-        ...items?.map((item) => ListTile(
-          title: Text(item['name']),
-          trailing: Text(item['count'].toString()),
-        )).toList() ?? [],
-      ],
-    );
-  }
 }
 
 class TicketCard extends StatefulWidget {
   final Ticket ticket;
 
-  TicketCard({required this.ticket});
+  const TicketCard({required this.ticket});
 
   @override
   _TicketCardState createState() => _TicketCardState();
@@ -230,88 +345,16 @@ class _TicketCardState extends State<TicketCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.ticket.idPyxis, style: TextStyle(fontWeight: FontWeight.bold)),
-              if (_clickedTicket) Text(widget.ticket.descrition),
+              Text(widget.ticket.idPyxis, style: const TextStyle(fontWeight: FontWeight.bold)),
               Text('Status: ${widget.ticket.status}'),
+              Text('Criado em: ${widget.ticket.created_at}'),
               if (_clickedTicket) Text('Enviado por: ${widget.ticket.sender}'),
               if (_clickedTicket) Text('Recebido por: ${widget.ticket.receiver}'),
-              Text('Criado em: ${widget.ticket.created_at}'),
+              if (_clickedTicket) Text(widget.ticket.descrition),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class Ticket {
-  final String idPyxis;
-  final String descrition;
-  final List<String> body;
-  final DateTime created_at;
-  final String status;
-  final String sender;
-  final String receiver;
-
-  Ticket({
-    required this.idPyxis,
-    required this.descrition,
-    required this.body,
-    required this.created_at,
-    required this.status,
-    required this.sender,
-    required this.receiver,
-  });
-
-  factory Ticket.fromJson(Map<String, dynamic> json) {
-    return Ticket(
-      idPyxis: json['idPyxis'],
-      descrition: json['descrition'],
-      body: List<String>.from(json['body']),
-      created_at: DateTime.parse(json['created_at']),
-      status: json['status'],
-      sender: json['sender'],
-      receiver: json['receiver'],
-    );
-  }
-}
-
-class Medicine {
-  final String id;
-  final String name;
-  final String descrition;
-
-  Medicine({
-    required this.id,
-    required this.name,
-    required this.descrition,
-  });
-
-  factory Medicine.fromJson(Map<String, dynamic> json) {
-    return Medicine(
-      id: json['id'],
-      name: json['name'],
-      descrition: json['descrition'],
-    );
-  }
-}
-
-class Pyxi {
-  final String id;
-  final String descrition;
-  final Medicine medicine;
-
-  Pyxi({
-    required this.id,
-    required this.descrition,
-    required this.medicine,
-  });
-
-  factory Pyxi.fromJson(Map<String, dynamic> json) {
-    return Pyxi(
-      id: json['id'],
-      descrition: json['descrition'],
-      medicine: Medicine.fromJson(json['medicine']),
     );
   }
 }

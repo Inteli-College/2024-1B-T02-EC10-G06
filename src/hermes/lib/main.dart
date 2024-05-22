@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hermes/admin.dart';
+import 'package:hermes/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hermes/services/notifi.dart';
-import 'package:hermes/camera_screen.dart';
 
-void main() {
+Future <void> main() async {
+  await dotenv.load(fileName: ".env");
   NotificationService().initNotification();
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -70,7 +70,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DashboardPage()),
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
                   child: const Text("Vamos começar"),
@@ -78,23 +78,6 @@ class MinhaPrimeiraTela extends StatelessWidget {
               ],
           ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CameraScreen()),
-                    );
-                  },
-                  child: const Text("Open Camera"),
-                ),
-              ],
-          ),
-          )
         ],
       )
     ),
