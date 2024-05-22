@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hermes/admin.dart';
+import 'package:hermes/login.dart';
 import 'package:hermes/services/notifi.dart';
-void main() {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future <void> main() async {
+  await dotenv.load(fileName: ".env");
   NotificationService().initNotification();
   runApp(const MyApp());
 }
@@ -66,7 +69,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DashboardPage()),
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
                   child: const Text("Vamos começar"),
