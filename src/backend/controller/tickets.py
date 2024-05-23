@@ -15,9 +15,9 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "status": "on progress",
             }
 
-    producer.produceWithoutAuth("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
+    val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     producer.flush()
-    ticket["update"] = "Adicinado a fila"
+    ticket["update"] = str(val)
     return ticket
     
 

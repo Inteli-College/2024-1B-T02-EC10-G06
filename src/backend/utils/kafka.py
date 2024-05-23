@@ -4,14 +4,14 @@ import json
 
 class ProducerController:
     def __init__(self,servers = 'kafka:9002', client_id = 'python-producer', username = "apikey", password = "yourpassword"):
-        # self.producer = Producer({
-        #     'bootstrap.servers': servers,
-        #     'client.id': client_id,
-        #     "sasl.mechanism" : "PLAIN",
-        #     "security.protocol" : "SASL_SSL",
-        #     "sasl.username" : username,
-        #     "sasl.password" : password,
-        # })
+        self.producer = Producer({
+            'bootstrap.servers': servers,
+            'client.id': client_id,
+            "sasl.mechanism" : "PLAIN",
+            "security.protocol" : "SASL_SSL",
+            "sasl.username" : username,
+            "sasl.password" : password,
+        })
         self.bridge_url = f"http://{servers}/topics/"
 
     def delivery_callback(self, err, msg):
@@ -39,6 +39,7 @@ class ProducerController:
             raise Exception(f"Failed to produce message: {response.status_code}, {response.text}")
             
     def flush(self):
-        self.producer.flush()
+        # self.producer.flush()
+        pass
 
 
