@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'pyxis_pedido.dart';
 
 class QRCodePage extends StatefulWidget {
   const QRCodePage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class _QRCodePageState extends State<QRCodePage> {
   @override
   void initState() {
     super.initState();
-    readQRCode(); // Chamando a função para fazer a leitura do QR code ao iniciar a página
+    readQRCode();
   }
 
   readQRCode() async {
@@ -25,7 +26,17 @@ class _QRCodePageState extends State<QRCodePage> {
       false,
       ScanMode.QR,
     );
-    setState(() => ticket = code != '-1' ? code : 'Não validado');
+    if (code != '-1') {
+      setState(() => ticket = code);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PyxisPedidoPage(qrCode: ticket),
+        ),
+      );
+    } else {
+      setState(() => ticket = 'Não validado');
+    }
   }
 
   @override
