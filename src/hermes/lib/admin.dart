@@ -6,19 +6,22 @@ import 'package:hermes/models.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
   @override
   _DashboardPageState createState() => _DashboardPageState();
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  List<Ticket> _tickets = [];
+  List<Pyxi> _pyxis = [];
+  String? _clickedTicketId;
+
   @override
   void initState() {
     super.initState();
     _fetchTickets();
     _fetchPyxis();
   }
-
-  List<Ticket> _tickets = [];
 
   Future<void> _fetchTickets() async {
     final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
@@ -68,9 +71,7 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  List<Pyxi> _pyxis = [];
-
-  Future _fetchPyxis() async {
+  Future<void> _fetchPyxis() async {
     final response = await http.get(Uri.parse('https://api.hermes.com/pyxis'));
 
     if (response.statusCode == 200) {
@@ -118,6 +119,16 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  void _handleCardTapped(String ticketId) {
+    setState(() {
+      if (_clickedTicketId == ticketId) {
+        _clickedTicketId = null;
+      } else {
+        _clickedTicketId = ticketId;
+      }
+    });
+  }
+
   Map<String, int> _prepareTicketData(List<Ticket> tickets) {
     Map<String, int> data = {};
 
@@ -163,82 +174,6 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text('Dashboard'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child:
-          SingleChildScrollView(
-          child:
-          Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                _buildInfoCard('Tickets Totais', _tickets.length, Colors.yellow),
-                _buildInfoCard('Abertos', _tickets.where((ticket) => ticket.status == 'Open').length, Colors.red),
-                _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'Closed').length, Colors.green),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            _buildTicketGraph(_tickets),
-            const SizedBox(height: 20),
-            const Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            _buildRecentTickets(_tickets),
-            const SizedBox(height: 20),
-            const Text('Pyxis mais Pedidos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            _buildPyxisTable(_pyxis),
-            const SizedBox(height: 20),
-            const Text('Medicamentos mais Pedidos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            _buildMedicineTable(_pyxis),
-          ],
-        ),
-      ),
-    ),
     );
   }
 
@@ -300,46 +235,120 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildRecentTickets(List<Ticket> tickets) {
     return Column(
       children: tickets.map((ticket) {
-        return TicketCard(ticket: ticket);
+        return TicketCard(
+          ticket: ticket,
+          isExpanded: ticket.idPyxis == _clickedTicketId,
+          onCardTapped: _handleCardTapped,
+        );
       }).toList(),
     );
-  }
-}
-
-class TicketCard extends StatefulWidget {
-  final Ticket ticket;
-
-  const TicketCard({required this.ticket});
-
-  @override
-  _TicketCardState createState() => _TicketCardState();
-}
-
-class _TicketCardState extends State<TicketCard> {
-  bool _clickedTicket = false;
-
-  void _toggleFunc() {
-    setState(() {
-      _clickedTicket = !_clickedTicket;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: _toggleFunc,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('Dashboard'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  _buildInfoCard('Tickets Totais', _tickets.length, Colors.yellow),
+                  _buildInfoCard('Abertos', _tickets.where((ticket) => ticket.status == 'Open').length, Colors.red),
+                  _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'Closed').length, Colors.green),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              _buildTicketGraph(_tickets),
+              const SizedBox(height: 20),
+              const Text('Tabela de Pyxis', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              _buildPyxisTable(_pyxis),
+              const SizedBox(height: 20),
+              const Text('Tabela de Medicamentos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              _buildMedicineTable(_pyxis),
+              const SizedBox(height: 20),
+              const Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              _buildRecentTickets(_tickets),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TicketCard extends StatelessWidget {
+  final Ticket ticket;
+  final bool isExpanded;
+  final Function(String) onCardTapped;
+
+  const TicketCard({
+    required this.ticket,
+    required this.isExpanded,
+    required this.onCardTapped,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onCardTapped(ticket.idPyxis),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.ticket.idPyxis, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text('Status: ${widget.ticket.status}'),
-              Text('Criado em: ${widget.ticket.created_at}'),
-              if (_clickedTicket) Text('Enviado por: ${widget.ticket.sender}'),
-              if (_clickedTicket) Text('Recebido por: ${widget.ticket.receiver}'),
-              if (_clickedTicket) Text(widget.ticket.descrition),
+              Text(ticket.descrition, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              Text('ID Pyxis: ${ticket.idPyxis}'),
+              Text('Descrição: ${ticket.descrition}'),
+              Text('Status: ${ticket.status}'),
+              if (isExpanded) ...[
+                Text('Conteúdo: ${ticket.body.join(', ')}'),
+                Text('Data de Criação: ${ticket.created_at}'),
+                Text('Remetente: ${ticket.sender}'),
+                Text('Destinatário: ${ticket.receiver}'),
+              ],
             ],
           ),
         ),

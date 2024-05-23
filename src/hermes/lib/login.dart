@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = 'Failed to login';
           // APAGAR DEPOIS
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ReceiverPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
         });
     }
   }
