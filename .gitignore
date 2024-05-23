@@ -7,8 +7,5 @@ __pycache__/
 pyvenv.cfg
 
 # Ignore pipenv virtual environment
-<<<<<<< HEAD
+
 venv/
-=======
-venv/
->>>>>>> backend

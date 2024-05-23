@@ -6,19 +6,6 @@ slug: /
 
 # Introdução
 
-<<<<<<< HEAD
-TO DO
-
-## Objetivo
-
-TO DO
-
-## Execução
-
-TO DO
-
-### Sprint 1: TO DO
-=======
 ...
 
 ## Objetivo
@@ -96,62 +83,31 @@ Nesta etapa do projeto, avançamos para consolidar as bases estabelecidas na spr
 <a href="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?utm_content=DAGEvH8gQCY&;utm_campaign=designshare&;utm_medium=embeds&;utm_source=link" target="_blank" rel="noopener">HERMES sprint2</a>
 
 ## Sprint 3: TO DO
->>>>>>> backend
 
 TO DO
 
 **Apresentação de sprint review**
 
-<<<<<<< HEAD
-TO DO
-
-### Sprint 2: TO DO
-=======
 <iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=view" width="600" height="400"></iframe>
 
 TO DO
 
 ## Sprint 4: TO DO
->>>>>>> backend
 
 TO DO
 
 **Apresentação de sprint review**
 
-<<<<<<< HEAD
-TO DO
-
-### Sprint 3: TO DO
-=======
 <iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=view" width="600" height="400"></iframe>
 
 TO DO
 
 ## Sprint 5: TO DO
->>>>>>> backend
 
 TO DO
 
 **Apresentação de sprint review**
 
-<<<<<<< HEAD
-TO DO
-
-### Sprint 4: TO DO
-
-TO DO
-
-**Apresentação de sprint review**
-
-TO DO
-
-### Sprint 5: TO DO
-
-TO DO
-
-**Apresentação de sprint review**
-=======
 <iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=view" width="600" height="400"></iframe>
->>>>>>> backend
 
 TO DO
