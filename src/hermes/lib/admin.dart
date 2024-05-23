@@ -159,8 +159,8 @@ class _DashboardPageState extends State<DashboardPage> {
       width: 400,
       child: LineChart(
         LineChartData(
-          gridData: FlGridData(show: false),
-          titlesData: FlTitlesData(show: false),
+          gridData: const FlGridData(show: false),
+          titlesData: const FlTitlesData(show: false),
           borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
@@ -169,7 +169,7 @@ class _DashboardPageState extends State<DashboardPage> {
               color: Colors.blue,
               barWidth: 4,
               isStrokeCapRound: true,
-              dotData: FlDotData(show: false),
+              dotData: const FlDotData(show: false),
             ),
           ],
         ),
@@ -321,7 +321,7 @@ class TicketCard extends StatelessWidget {
   final bool isExpanded;
   final Function(String) onCardTapped;
 
-  const TicketCard({
+  const TicketCard({super.key, 
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,

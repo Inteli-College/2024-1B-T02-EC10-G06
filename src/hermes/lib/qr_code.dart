@@ -3,7 +3,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'pyxis_pedido.dart';
 
 class QRCodePage extends StatefulWidget {
-  const QRCodePage({Key? key}) : super(key: key);
+  const QRCodePage({super.key});
 
   @override
   State<QRCodePage> createState() => _QRCodePageState();
@@ -11,7 +11,7 @@ class QRCodePage extends StatefulWidget {
 
 class _QRCodePageState extends State<QRCodePage> {
   String ticket = '';
-  List<String> tickets = [];
+  
 
   @override
   void initState() {
@@ -27,10 +27,12 @@ class _QRCodePageState extends State<QRCodePage> {
       ScanMode.QR,
     );
     if (code != '-1') {
+      print(ticket)
       setState(() => ticket = code);
       Navigator.push(
         context,
         MaterialPageRoute(
+          
           builder: (context) => PyxisPedidoPage(qrCode: ticket),
         ),
       );

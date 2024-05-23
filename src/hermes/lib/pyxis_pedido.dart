@@ -19,7 +19,7 @@ class Task {
 class PyxisPedidoPage extends StatefulWidget {
   final String qrCode;
 
-  const PyxisPedidoPage({Key? key, required this.qrCode}) : super(key: key);
+  const PyxisPedidoPage({super.key, required this.qrCode});
 
   @override
   _PyxisPedidoPageState createState() => _PyxisPedidoPageState();
@@ -37,7 +37,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   }
 
   Future<void> _consultarPyxis() async {
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
+    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/663fb8124ee113672c92646f'));
     if (response.statusCode == 200) {
       setState(() {
         _rawJson = response.body;
@@ -55,21 +55,21 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pyxis Pedido'),
+        title: const Text('Pyxis Pedido'),
       ),
       body: Center(
         child: _isLoading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : Column(
                 children: [
                   Text(
                     'Código QR: ${widget.qrCode}',
-                    style: TextStyle(fontSize: 24),
+                    style: const TextStyle(fontSize: 24),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(_rawJson, style: TextStyle(fontSize: 16)),
+                      child: Text(_rawJson, style: const TextStyle(fontSize: 16)),
                     ),
                   ),
                   Expanded(
