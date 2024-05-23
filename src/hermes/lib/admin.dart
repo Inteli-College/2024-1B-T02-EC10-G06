@@ -318,7 +318,7 @@ class TicketCard extends StatefulWidget {
 class _TicketCardState extends State<TicketCard> {
   bool _clickedTicket = false;
 
-  void _toggleDescription() {
+  void _toggleFunc() {
     setState(() {
       _clickedTicket = !_clickedTicket;
     });
@@ -328,7 +328,7 @@ class _TicketCardState extends State<TicketCard> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: _toggleDescription,
+        onTap: _toggleFunc,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

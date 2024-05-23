@@ -9,15 +9,15 @@ class ReceiverPage extends StatefulWidget {
 }
 
 class _ReceiverPageState extends State<ReceiverPage> {
+  List<Ticket> _tickets = [];
+  List<Ticket> _openTickets = [];
+  String? _clickedTicketId;
 
   @override
   void initState() {
     super.initState();
     _fetchTickets();
   }
-
-  List<Ticket> _tickets = [];
-  List<Ticket> _openTickets = [];
 
   Future<void> _fetchTickets() async {
     final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
@@ -69,6 +69,16 @@ class _ReceiverPageState extends State<ReceiverPage> {
     }
   }
 
+  void _handleCardTapped(String ticketId) {
+    setState(() {
+      if (_clickedTicketId == ticketId) {
+        _clickedTicketId = null;
+      } else {
+        _clickedTicketId = ticketId;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,11 +93,22 @@ class _ReceiverPageState extends State<ReceiverPage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: _openTickets.length,
-        itemBuilder: (context, index) {
-          return TicketCard(ticket: _openTickets[index]);
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            _clickedTicketId = null;
+          });
         },
+        child: ListView.builder(
+          itemCount: _openTickets.length,
+          itemBuilder: (context, index) {
+            return TicketCard(
+              ticket: _openTickets[index],
+              isExpanded: _openTickets[index].idPyxis == _clickedTicketId,
+              onCardTapped: _handleCardTapped,
+            );
+          },
+        ),
       ),
     );
   }
@@ -95,14 +116,53 @@ class _ReceiverPageState extends State<ReceiverPage> {
 
 class TicketCard extends StatefulWidget {
   final Ticket ticket;
+  final bool isExpanded;
+  final Function(String) onCardTapped;
 
-  const TicketCard({required this.ticket});
+  const TicketCard({
+    required this.ticket,
+    required this.isExpanded,
+    required this.onCardTapped,
+  });
 
   @override
   _TicketCardState createState() => _TicketCardState();
 }
 
 class _TicketCardState extends State<TicketCard> {
+  void _toggleFunc() {
+    widget.onCardTapped(widget.ticket.idPyxis);
+  }
+
+  Future<void> _confirmClose() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Encerrar Ticket'),
+          content: Text('Deseja encerrar o ticket?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _closeTicket();
+                Navigator.pop(context);
+              },
+              child: Text('Encerrar'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _closeTicket() async {
     final response = await http.put(
@@ -121,48 +181,49 @@ class _TicketCardState extends State<TicketCard> {
         ),
       );
     }
-    initState();
+    widget.onCardTapped(widget.ticket.idPyxis);
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.ticket.idPyxis,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              widget.ticket.descrition,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 8),
-            ...widget.ticket.body.map((medication) => Text(medication)).toList(),
-            SizedBox(height: 16),
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  _closeTicket();
-                },
-                child: Text('Encerrar Ticket'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+      child: InkWell(
+        onTap: _toggleFunc,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.ticket.idPyxis,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                widget.ticket.descrition,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+              SizedBox(height: 8),
+              ...widget.ticket.body.map((medication) => Text(medication)).toList(),
+              SizedBox(height: 16),
+              widget.isExpanded ? Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: _confirmClose,
+                  child: Text('Encerrar Ticket'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+              ) : Container(),
+            ],
+          ),
         ),
       ),
     );
