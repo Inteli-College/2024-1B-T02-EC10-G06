@@ -26,4 +26,4 @@ Devido a necessidade de ação imediata em certos casos clínicos, muitas vezes 
 
 ### **Mitigação de Riscos:**
 
-1. É de extrema importância que nosso sistema permite que usuários retirem remédios de forma rápida e flexível, se adequando para necessidades do hospital naquele momento. Por isso nossa sistema deve ter uma funcionalidade de override que permita a retirada de medicamentos sem a necessidade de autorização de um superior no instante de retirada. Essa funcionalidade ainda deve ser capaz de registrar quem retirou o medicamento e deve ser validada posteriormente por um médico após a estabilização da situação.
+1. É de extrema importância que nosso sistema permite que usuários retirem remédios de forma rápida e flexível, se adequando para necessidades do hospital naquele momento. Por isso nossa sistema deve ter uma funcionalidade de override que permita a retirada de medicamentos sem a necessidade de autorização de um superior no instante de retirada. Essa funcionalidade ainda deve ser capaz de registrar quem retirou o medicamento e deve ser validada posteriormente por um médico após a estabilização da situação.kf

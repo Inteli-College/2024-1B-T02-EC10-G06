@@ -1,0 +1,95 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Grupo6",
+    "collectionId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+    "dateExported": "2024-05-14T11:53:43.780Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "3d0e6982-3c41-4db7-8eef-ff6823a3f3aa",
+            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "containerId": "",
+            "name": "http://0.0.0.0:5001/pyxis/{id}",
+            "url": "http://0.0.0.0:5001/tickets/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-05-14T11:52:01.033Z",
+            "modified": "2024-05-14T11:52:01.033Z",
+            "headers": [
+                {
+                    "name": "permission",
+                    "value": "io"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            {\n              \"id\": \"6640fd1acdf84fa31ebf3ede\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            },\n            {\n              \"id\": \"6640fd21cdf84fa31ebf3ee0\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            }\n          ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "2b775989-ea2c-4ddd-bed9-e29d869bcb2b",
+            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "containerId": "",
+            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-14T11:52:12.907Z",
+            "modified": "2024-05-14T11:52:12.907Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "ticket_id",
+                    "value": "66412b3d06abdc490d181c39",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "db8b0c4f-8709-4828-baf7-230dd633c6d3",
+            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "containerId": "",
+            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2024-05-14T11:52:19.497Z",
+            "modified": "2024-05-14T11:52:19.497Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "ticket_id",
+                    "value": "66412b3d06abdc490d181c39",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            \n          ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6aa412a5-42c2-447e-af24-5c869b24f892",
+            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "containerId": "",
+            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-05-14T11:52:26.506Z",
+            "modified": "2024-05-14T11:52:26.506Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "ticket_id",
+                    "value": "66412b3d06abdc490d181c39",
+                    "isPath": true
+                }
+            ]
+        }
+    ],
+    "ref": "ge93LmMVAtBbvgajSLh77xR0Eg91HS264E4R4PosJQ5tV1AX_F5ISYEH0_U_UvaI8Nubn3cfN3bk76YU-1dYig"
+}
