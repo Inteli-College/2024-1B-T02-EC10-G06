@@ -100,8 +100,9 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: ../backend/Dockerfile
     container_name: backend
+    command: bash -c "cd src/ && python3 main.py" 
     ports:
       - "5001:5001"
 
@@ -112,3 +113,4 @@ services:
   #   container_name: auth
   #   ports:
   #     - "8001:8001"
+    
