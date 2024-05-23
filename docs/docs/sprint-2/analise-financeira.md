@@ -66,6 +66,7 @@ O aplicativo visa simplificar e agilizar os processos de solicitação e acompan
 - **Redução no Tempo de Acesso e Solicitação de Medicamentos:**
   - Estimativa de redução de tempo: 30% menos tempo gasto por cada enfermeiro ou médico por dia.
   - Impacto financeiro: Supondo que o hospital tenha 200 funcionários utilizando o sistema e cada um economize cerca de 15 minutos por dia, considerando uma média salarial de USD 30/hora, a economia seria aproximadamente:
+<<<<<<< HEAD
     \[
     \text{Economia diária} = 200 \times \left(\frac{15}{60}\right) \times 30 = USD 1,500 \text{ por dia}
     \]
@@ -73,6 +74,15 @@ O aplicativo visa simplificar e agilizar os processos de solicitação e acompan
     \[
     USD 1,500 \times 250 \text{ dias úteis} = USD 375,000
     \]
+=======
+   $$
+    \text{Economia diária} = 200 \times \left(\frac{15}{60}\right) \times 30 = USD 1,500 \text{ por dia}
+    $$
+  - Economia anual estimada:
+   $$
+    USD 1,500 \times 250 \text{ dias úteis} = USD 375,000
+    $$
+>>>>>>> backend
 
 #### 2. Redução de Erros
 
@@ -81,9 +91,15 @@ Erros na dispensação de medicamentos podem levar a custos significativos devid
 - **Diminuição de Erros de Medicação:**
   - Redução estimada de erros: 20% de redução nos erros de medicação.
   - Impacto financeiro: Considerando o custo médio de uma rehospitalização ou tratamento corretivo por erro de medicação em cerca de USD 2,000, e uma redução de 50 incidentes por ano:
+<<<<<<< HEAD
     \[
     \text{Economia anual} = 50 \times 2,000 = USD 100,000
     \]
+=======
+   $$
+    \text{Economia anual} = 50 \times 2,000 = USD 100,000
+    $$
+>>>>>>> backend
 
 #### 3. Melhor Gestão de Estoque
 
@@ -92,9 +108,15 @@ O controle eficiente de estoque pode reduzir o desperdício de medicamentos, esp
 - **Redução de Desperdício de Medicamentos:**
   - Redução estimada no desperdício: 15% de redução no desperdício de medicamentos.
   - Impacto financeiro: Considerando um custo anual de medicamentos de USD 1,000,000, a redução no desperdício pode economizar:
+<<<<<<< HEAD
     \[
     USD 1,000,000 \times 0.15 = USD 150,000
     \]
+=======
+   $$
+    USD 1,000,000 \times 0.15 = USD 150,000
+    $$
+>>>>>>> backend
 
 #### 4. Compatibilidade e Integração
 
@@ -103,9 +125,15 @@ A integração eficiente com outros sistemas pode reduzir custos operacionais e 
 - **Redução de Custos Operacionais e de TI:**
   - Estimativa de redução: 10% de economia nos custos operacionais relacionados.
   - Impacto financeiro: Se o custo operacional e de TI total for de USD 200,000 por ano:
+<<<<<<< HEAD
     \[
     USD 200,000 \times 0.10 = USD 20,000
     \]
+=======
+   $$
+    USD 200,000 \times 0.10 = USD 20,000
+    $$
+>>>>>>> backend
 
 #### Total de Economias Estimadas Após Um Ano
 
@@ -158,6 +186,7 @@ A análise financeira preliminar sugere um investimento inicial considerável, m
 Essa análise foi baseada em estimativas e pode variar de acordo com os fornecedores específicos, soluções tecnológicas escolhidas e a complexidade do ambiente hospitalar onde o sistema será implementado. Para uma análise mais precisa, seria ideal conduzir um estudo de viabilidade detalhado e consultar fornecedores de serviços de TI, desenvolvedores de software e especialistas em segurança da informação.
 Todas as estimativas foram baseadas em suposições gerais e devem ser ajustadas conforme dados específicos do hospital e análises detalhadas durante a implementação e operação do projeto.
 
+<<<<<<< HEAD
 <script type="text/x-mathjax-config">
   MathJax = {
     tex: {
@@ -170,3 +199,6 @@ Todas as estimativas foram baseadas em suposições gerais e devem ser ajustadas
   };
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+=======
+
+>>>>>>> backend
