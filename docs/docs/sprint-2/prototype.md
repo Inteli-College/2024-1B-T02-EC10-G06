@@ -8,7 +8,6 @@ A tela do Dashboard foi pensanda para a persona gestora do hospital. Nela é pos
 
 ![img dashboard](./img/dashboard.jpeg)
 
-
 ## Login (v.Mobile)
 
 A tela de login, na versão mobile, foi pensada para as personas farmacêuticas e técnicas. Nela, o usuário já cadastrado no sistema do Hospital Sírio Libanês poderá entrar no aplicativo com suas credênciais e ter acesso às funcionalidades ao qual seu cargo o permite.
@@ -16,7 +15,6 @@ A tela de login, na versão mobile, foi pensada para as personas farmacêuticas 
 ![img onboarding](./img/Onboarding.png)
 
 ![img login](./img/Login.png)
-
 
 ## Criação de Tickets
 
@@ -29,7 +27,6 @@ A tela de criação de tickets foi pensada para as personas farmacêuticas. Nela
 ![img](./img/Search%20-%20many%20items.png)
 
 ![img](./img/ticket%20confirmed.png)
-
 
 ## Recebimento e Encerramento de Tickets
 

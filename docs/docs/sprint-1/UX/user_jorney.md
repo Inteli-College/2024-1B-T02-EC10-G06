@@ -9,7 +9,6 @@ A jornada do usuário é uma ferramenta fundamental no design de experiências, 
 
 Abaixo está o mapa da jornada do usuário, ilustrando desde o cadastro dos sensores até a tomada de decisões baseadas nos insights fornecidos pela plataforma. Este mapa visual não apenas destaca a funcionalidade e os possíveis obstáculos que os usuários podem encontrar, mas também fornece insights valiosos para a melhoria contínua do sistema.
 
-
 * **Para maior riqueza de detalhes, acesso o link no fim dessa página**
 
 ### Médica
@@ -30,4 +29,4 @@ Através deste mapa, é possível visualizar as etapas que as nossas personas pe
 
 Acesse o nosso desenvolvimento feito na plataforma Miro para ler com mais riquezas de detalhes.
 
-link: https://miro.com/app/board/uXjVKPxoFFg=/?share_link_id=174406089938
+link: <https://miro.com/app/board/uXjVKPxoFFg=/?share_link_id=174406089938>
