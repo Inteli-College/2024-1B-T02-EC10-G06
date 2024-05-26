@@ -16,4 +16,4 @@ Através deste mapa, é possível visualizar as etapas que as nossas personas pe
 
 Acesse o nosso desenvolvimento feito na plataforma Miro para ler com mais riquezas de detalhes.
 
-link: <https://miro.com/app/board/uXjVKPxoFFg=/?share_link_id=174406089938>
+link: https://miro.com/app/board/uXjVKPxoFFg=/?share_link_id=174406089938

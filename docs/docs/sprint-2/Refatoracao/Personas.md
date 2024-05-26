@@ -79,4 +79,4 @@ Reside na mesma cidade do hospital onde trabalha, valorizando a proximidade para
 
 O desenvolvimento da Persona foi feito na plataforma Miro. Para consultar todas com maior nível de detalhes, segue o Link abaixo:
 
-<https://miro.com/app/board/uXjVKSJ_Dr0=/?share_link_id=442148356505>
+https://miro.com/app/board/uXjVKSJ_Dr0=/?share_link_id=442148356505
