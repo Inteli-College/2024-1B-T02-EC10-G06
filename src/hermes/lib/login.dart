@@ -5,9 +5,10 @@ import 'dart:convert';
 import 'package:hermes/services/notifi.dart';
 import 'package:hermes/admin.dart';
 import 'package:hermes/receiver.dart';
-import 'package:hermes/camera_screen.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
           _errorMessage = 'Failed to login';
           // APAGAR DEPOIS
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
         });
     }
   }
@@ -67,19 +68,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              const Text(
                 'Hermes',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     'Gerenciamento de medicamentos com qualidade dos deuses',
@@ -91,37 +92,37 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: _login,
-                      child: Text('Login'),
+                      child: const Text('Login'),
                     ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _errorMessage.isNotEmpty
                   ? Text(
                       _errorMessage,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     )
                   : Container(),
             ],

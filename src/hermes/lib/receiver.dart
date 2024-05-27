@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ReceiverPage extends StatefulWidget {
+  const ReceiverPage({super.key});
+
   @override
   _ReceiverPageState createState() => _ReceiverPageState();
 }
@@ -83,10 +85,10 @@ class _ReceiverPageState extends State<ReceiverPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tickets'),
+        title: const Text('Tickets'),
         actions: [
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               // Add your profile button action here
             },
@@ -119,7 +121,7 @@ class TicketCard extends StatefulWidget {
   final bool isExpanded;
   final Function(String) onCardTapped;
 
-  const TicketCard({
+  const TicketCard({super.key, 
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,
@@ -139,24 +141,24 @@ class _TicketCardState extends State<TicketCard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Encerrar Ticket'),
-          content: Text('Deseja encerrar o ticket?'),
+          title: const Text('Encerrar Ticket'),
+          content: const Text('Deseja encerrar o ticket?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             ElevatedButton(
               onPressed: () {
                 _closeTicket();
                 Navigator.pop(context);
               },
-              child: Text('Encerrar'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
+              child: const Text('Encerrar'),
             ),
           ],
         );
@@ -170,13 +172,13 @@ class _TicketCardState extends State<TicketCard> {
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Ticket encerrado com sucesso!'),
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Erro ao encerrar ticket!'),
         ),
       );
@@ -196,12 +198,12 @@ class _TicketCardState extends State<TicketCard> {
             children: [
               Text(
                 widget.ticket.idPyxis,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 widget.ticket.descrition,
                 style: TextStyle(
@@ -209,17 +211,17 @@ class _TicketCardState extends State<TicketCard> {
                   color: Colors.grey[700],
                 ),
               ),
-              SizedBox(height: 8),
-              ...widget.ticket.body.map((medication) => Text(medication)).toList(),
-              SizedBox(height: 16),
+              const SizedBox(height: 8),
+              ...widget.ticket.body.map((medication) => Text(medication)),
+              const SizedBox(height: 16),
               widget.isExpanded ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmClose,
-                  child: Text('Encerrar Ticket'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
+                  child: const Text('Encerrar Ticket'),
                 ),
               ) : Container(),
             ],

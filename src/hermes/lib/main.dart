@@ -31,7 +31,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/hermes.png'), // Substitua 'background_image.jpg' pelo nome do seu arquivo de imagem
             fit: BoxFit.cover, // Cobrir toda a tela
@@ -40,18 +40,18 @@ class MinhaPrimeiraTela extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            const Spacer(),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
               child: Column(
-                children: const <Widget>[
+                children: <Widget>[
                   Text("Hermes",
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
                   'Gerenciamento de medicamentos com qualidade dos Deuses',
@@ -72,7 +72,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(builder: (context) => const LoginPage()),
                       );
                     },
                     child: const Text("Vamos começar"),
@@ -91,7 +91,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                       onPressed: () async {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => QRCodePage()),
+                          MaterialPageRoute(builder: (context) => const QRCodePage()),
                         );
                       },
                     ),

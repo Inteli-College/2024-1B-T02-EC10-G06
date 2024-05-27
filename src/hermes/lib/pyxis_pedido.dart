@@ -19,7 +19,7 @@ class Task {
 class PyxisPedidoPage extends StatefulWidget {
   final String qrCode;
 
-  const PyxisPedidoPage({Key? key, required this.qrCode}) : super(key: key);
+  const PyxisPedidoPage({super.key, required this.qrCode});
 
   @override
   _PyxisPedidoPageState createState() => _PyxisPedidoPageState();
@@ -58,7 +58,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pyxis Pedido'),
+        title: const Text('Pyxis Pedido'),
       ),
       body: Center(
         child: _isLoading
