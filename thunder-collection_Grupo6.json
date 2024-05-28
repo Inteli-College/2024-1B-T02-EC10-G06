@@ -1,43 +1,43 @@
 {
     "clientName": "Thunder Client",
     "collectionName": "Grupo6",
-    "collectionId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
-    "dateExported": "2024-05-14T11:53:43.780Z",
+    "collectionId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+    "dateExported": "2024-05-28T12:20:20.721Z",
     "version": "1.2",
-    "folders": [],
-    "requests": [
+    "folders": [
         {
-            "_id": "3d0e6982-3c41-4db7-8eef-ff6823a3f3aa",
-            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "_id": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicines",
             "containerId": "",
-            "name": "http://0.0.0.0:5001/pyxis/{id}",
-            "url": "http://0.0.0.0:5001/tickets/",
-            "method": "POST",
-            "sortNum": 10000,
-            "created": "2024-05-14T11:52:01.033Z",
-            "modified": "2024-05-14T11:52:01.033Z",
-            "headers": [
-                {
-                    "name": "permission",
-                    "value": "io"
-                }
-            ],
-            "body": {
-                "type": "json",
-                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            {\n              \"id\": \"6640fd1acdf84fa31ebf3ede\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            },\n            {\n              \"id\": \"6640fd21cdf84fa31ebf3ee0\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            }\n          ]\n}",
-                "form": []
-            }
+            "created": "2024-05-28T11:49:34.424Z",
+            "sortNum": 20000
         },
         {
-            "_id": "2b775989-ea2c-4ddd-bed9-e29d869bcb2b",
-            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
+            "_id": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxis",
             "containerId": "",
-            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "created": "2024-05-28T12:00:22.680Z",
+            "sortNum": 25000
+        },
+        {
+            "_id": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Tickets",
+            "containerId": "",
+            "created": "2024-05-28T11:49:47.523Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "aa41cd26-d500-41f8-8137-69d642100def",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Ticket",
             "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
             "method": "GET",
-            "sortNum": 20000,
-            "created": "2024-05-14T11:52:12.907Z",
-            "modified": "2024-05-14T11:52:12.907Z",
+            "sortNum": 10000,
+            "created": "2024-05-28T11:28:14.833Z",
+            "modified": "2024-05-28T11:28:14.833Z",
             "headers": [],
             "params": [
                 {
@@ -48,15 +48,15 @@
             ]
         },
         {
-            "_id": "db8b0c4f-8709-4828-baf7-230dd633c6d3",
-            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
-            "containerId": "",
-            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "_id": "5da79590-e0f4-4048-8d68-b6eb8f888107",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Tickets",
             "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
             "method": "PUT",
-            "sortNum": 30000,
-            "created": "2024-05-14T11:52:19.497Z",
-            "modified": "2024-05-14T11:52:19.497Z",
+            "sortNum": 20000,
+            "created": "2024-05-28T11:28:14.834Z",
+            "modified": "2024-05-28T11:28:14.834Z",
             "headers": [],
             "params": [
                 {
@@ -72,15 +72,15 @@
             }
         },
         {
-            "_id": "6aa412a5-42c2-447e-af24-5c869b24f892",
-            "colId": "2503a1fe-8ffd-48e2-9fe0-8701a99e0b3b",
-            "containerId": "",
-            "name": "http://0.0.0.0:5001/tickets/{ticket_id}",
+            "_id": "3d5f4590-7d25-412e-9f1b-9baca21b5bfb",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Tickets",
             "url": "http://0.0.0.0:5001/tickets/{ticket_id}",
             "method": "DELETE",
-            "sortNum": 40000,
-            "created": "2024-05-14T11:52:26.506Z",
-            "modified": "2024-05-14T11:52:26.506Z",
+            "sortNum": 30000,
+            "created": "2024-05-28T11:28:14.835Z",
+            "modified": "2024-05-28T11:28:14.835Z",
             "headers": [],
             "params": [
                 {
@@ -89,7 +89,223 @@
                     "isPath": true
                 }
             ]
+        },
+        {
+            "_id": "3a1587d9-a9b8-4643-b92c-71b5a43f8a09",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Ticket",
+            "url": "http://0.0.0.0:5001/tickets/",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-05-28T11:28:14.832Z",
+            "modified": "2024-05-28T11:28:14.832Z",
+            "headers": [
+                {
+                    "name": "permission",
+                    "value": "io"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            {\n              \"id\": \"6640fd1acdf84fa31ebf3ede\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            },\n            {\n              \"id\": \"6640fd21cdf84fa31ebf3ee0\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            }\n          ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "fe3dd8bc-c941-4b33-83ab-691bae8e80fa",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "fd1ac297-0290-4c3d-a843-48d305ed1b55",
+            "name": "Tickets",
+            "url": "http://0.0.0.0:5001/tickets/",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-05-28T11:51:42.829Z",
+            "modified": "2024-05-28T11:51:56.426Z",
+            "headers": []
+        },
+        {
+            "_id": "1c0e00d0-ad3a-4c00-a692-c4d99927c31a",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicines",
+            "url": "http://0.0.0.0:5001/medicines/",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-05-28T11:53:20.251Z",
+            "modified": "2024-05-28T11:53:20.251Z",
+            "headers": []
+        },
+        {
+            "_id": "f5474246-2f31-4f73-97da-d07762158007",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxis",
+            "url": "http://0.0.0.0:5001/pyxis/",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2024-05-28T12:00:22.680Z",
+            "modified": "2024-05-28T12:15:58.633Z",
+            "headers": []
+        },
+        {
+            "_id": "53cbc4eb-7eb7-4df6-b847-6880d41b76b5",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicines",
+            "url": "http://0.0.0.0:5001/medicines/",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-05-28T11:53:43.346Z",
+            "modified": "2024-05-28T11:54:28.675Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"descrition\": \"str\",\n    \"name\": \"str\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "91e514b8-8a6c-4f9f-b1fa-578fe59796de",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxis",
+            "url": "http://0.0.0.0:5001/pyxis/",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2024-05-28T12:00:22.681Z",
+            "modified": "2024-05-28T12:15:50.714Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"descrition\": \"str\",\n    \"medicines\": [\n        \n      ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "0134555c-1bdf-4a03-894e-14d9fa37f004",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicine",
+            "url": "http://0.0.0.0:5001/medicines/{medicines_id}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-28T11:55:40.911Z",
+            "modified": "2024-05-28T12:14:52.313Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "medicines_id",
+                    "value": "6655caaff4239b3812f9145b",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "5c56be61-99c2-4d3b-af32-fd5fa4504882",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxi",
+            "url": "http://0.0.0.0:5001/pyxis/{pyxis_id}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-05-28T12:00:22.683Z",
+            "modified": "2024-05-28T12:16:09.992Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "pyxis_id",
+                    "value": "6655caf6f4239b3812f9145c",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "b7c5a4ab-34bb-42d1-b321-4d31ba4cf35e",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicine",
+            "url": "http://0.0.0.0:5001/medicines/{medicines_id}",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2024-05-28T11:56:24.080Z",
+            "modified": "2024-05-28T12:14:47.448Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "medicines_id",
+                    "value": "6655caaff4239b3812f9145b",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"descrition\": \"str\",\n    \"name\": \"Será?\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "44002911-0fb2-4d57-bc92-2c54adfcab43",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "b3fb634a-b832-4e9a-a06b-b1ad899e785b",
+            "name": "Medicine",
+            "url": "http://0.0.0.0:5001/medicines/{medicines_id}",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-05-28T11:56:56.331Z",
+            "modified": "2024-05-28T12:14:36.348Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "medicines_id",
+                    "value": "6655ca95f4239b3812f9145a",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "0f477c17-023e-49e4-a6f1-99c393626238",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxi",
+            "url": "http://0.0.0.0:5001/pyxis/{pyxis_id}",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2024-05-28T12:00:22.684Z",
+            "modified": "2024-05-28T12:19:18.439Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "pyxis_id",
+                    "value": "6655cbc1f4239b3812f9145d",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"descrition\": \"str\",\n    \"medicines\": [\n      \n      ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6e493741-452c-482c-95b9-b5241482f92a",
+            "colId": "b5ff661c-5a90-4e56-baaa-92d7fe957411",
+            "containerId": "11bd9585-8bbd-4e5e-892d-23d2fb52001d",
+            "name": "Pyxi",
+            "url": "http://0.0.0.0:5001/pyxis/{pyxis_id}",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-05-28T12:00:22.685Z",
+            "modified": "2024-05-28T12:17:51.146Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "pyxis_id",
+                    "value": "6655caf6f4239b3812f9145c",
+                    "isPath": true
+                }
+            ]
         }
     ],
-    "ref": "ge93LmMVAtBbvgajSLh77xR0Eg91HS264E4R4PosJQ5tV1AX_F5ISYEH0_U_UvaI8Nubn3cfN3bk76YU-1dYig"
+    "ref": "fGah3cJazaQpcH46LOOIJnk9Pem22fzM9Hb9B8BaVcWhYLXrGHKXvIG7hxVe-bSMq9MSlZdO_Okg2M3SjwRRkQ"
 }
