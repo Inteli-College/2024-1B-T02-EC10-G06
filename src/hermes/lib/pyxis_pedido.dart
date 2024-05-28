@@ -62,27 +62,27 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
       ),
       body: Center(
         child: _isLoading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Pyxis ID:',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
                       widget.qrCode,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Resposta:',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Expanded(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.all(8.0),
@@ -92,21 +92,21 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: Text(_rawJson, style: TextStyle(fontSize: 16)),
+                          child: Text(_rawJson, style: const TextStyle(fontSize: 16)),
                         ),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Tipo de Pedido:',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     DropdownButton<String>(
                       value: _selectedPedidoType,
-                      hint: Text('Selecione o tipo de pedido'),
+                      hint: const Text('Selecione o tipo de pedido'),
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedPedidoType = newValue;
@@ -119,20 +119,20 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       'Descrição:',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextField(
                       controller: _descriptionController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Digite a descrição do pedido',
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Center(
                       child: SizedBox(
                         width: double.infinity,
@@ -140,7 +140,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
                           onPressed: () {
                             // Ação do botão "Próximo"
                           },
-                          child: Text('Próximo'),
+                          child: const Text('Próximo'),
                         ),
                       ),
                     ),

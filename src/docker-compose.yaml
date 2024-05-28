@@ -105,6 +105,15 @@ services:
     ports:
       - "5001:5001"
 
+  mongodb:
+    build: ./mongo
+    restart: on-failure
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: username
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+
   # logging:
   #   build:
   #     context: .
