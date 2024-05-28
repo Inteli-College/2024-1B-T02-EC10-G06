@@ -11,7 +11,6 @@ class QRCodePage extends StatefulWidget {
 
 class _QRCodePageState extends State<QRCodePage> {
   String ticket = '';
-  
 
   @override
   void initState() {
@@ -27,11 +26,11 @@ class _QRCodePageState extends State<QRCodePage> {
       ScanMode.QR,
     );
     if (code != '-1') {
+      print(ticket);
       setState(() => ticket = code);
       Navigator.push(
         context,
         MaterialPageRoute(
-          
           builder: (context) => PyxisPedidoPage(qrCode: ticket),
         ),
       );

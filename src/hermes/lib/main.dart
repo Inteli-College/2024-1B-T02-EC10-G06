@@ -3,7 +3,6 @@ import 'package:hermes/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hermes/services/notifi.dart';
 import 'package:hermes/qr_code.dart';
-import 'package:hermes/pyxis_pedido.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -25,10 +24,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-const String ticket = '663fb8124ee113672c92646f';
 
 class MinhaPrimeiraTela extends StatelessWidget {
-  
   const MinhaPrimeiraTela({super.key});
   @override
   Widget build(BuildContext context) {
@@ -94,8 +91,7 @@ class MinhaPrimeiraTela extends StatelessWidget {
                       onPressed: () async {
                         Navigator.push(
                           context,
-                          //MaterialPageRoute(builder: (context) => const QRCodePage()),
-                          MaterialPageRoute(builder: (context) => const PyxisPedidoPage(qrCode: ticket)),
+                          MaterialPageRoute(builder: (context) => const QRCodePage()),
                         );
                       },
                     ),
