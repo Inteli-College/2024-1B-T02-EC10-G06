@@ -41,7 +41,8 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   }
 
   Future<void> _consultarPyxis() async {
-    final response = await http.get(Uri.parse('http://3.213.45.125:5001/pyxis/${widget.qrCode}'));
+    //final response = await http.get(Uri.parse('http://3.213.45.125:5001/pyxis/${widget.qrCode}'));
+    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
       setState(() {
         _rawJson = response.body;

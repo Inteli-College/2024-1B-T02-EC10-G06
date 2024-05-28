@@ -27,7 +27,6 @@ class _QRCodePageState extends State<QRCodePage> {
       ScanMode.QR,
     );
     if (code != '-1') {
-      print(ticket);
       setState(() => ticket = code);
       Navigator.push(
         context,
