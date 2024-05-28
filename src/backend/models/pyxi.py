@@ -5,16 +5,16 @@ from pydantic import BaseModel
 class PyxiBase(BaseModel):
     id: str
     descrition: str
-    medicines: dict
+    medicines: list
 
 
 
 
 class PyxiCreate(BaseModel):
     descrition: str
-    medicines: dict
+    medicines: list
 
-class PyxiUpdate(BaseModel):
+class PyxiUpdate(PyxiBase):
     status:str
 
 

@@ -11,13 +11,13 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "idPyxis": raw_ticket.idPyxis,
             "descrition": raw_ticket.descrition,
             "body":  raw_ticket.body,
-            "created_at": datetime.utcnow(),
+            "created_at": datetime.now(),
             "status": "on progress",
             }
 
-    producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
+    val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     producer.flush()
-    ticket["update"] = "Adicinado a fila"
+    ticket["update"] = str(val)
     return ticket
     
 
@@ -53,10 +53,12 @@ def one_ticket(db:Collection, ticket_id):
 
 def delete_response(db:Collection, ticket_id):
     db.delete_one({"_id": ObjectId(ticket_id)})
-    return {"msg":{
-        "id":ticket_id,
-        "status":"Deletado com sucesso"
-    }}
+    return {
+        "msg":{
+            "id":ticket_id,
+            "status":"Deletado com sucesso"
+        }
+    }
 
 
 
@@ -70,10 +72,12 @@ def update_response(db:Collection, ticket_id, ticket_update):
             }
         }
         )
-    return { "msg": {
+    return { 
+        "msg": {
             "id":ticket_id,
             "idPyxis": ticket_update.idPyxis,
             "descrition": ticket_update.descrition,
             "body": ticket_update.body,
             "status":"Atualizado com sucesso"
-    }}
+        }
+    }

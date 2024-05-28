@@ -1,0 +1,5 @@
+# syntax = docker/dockerfile:1.4
+
+FROM mongo
+
+EXPOSE 27017

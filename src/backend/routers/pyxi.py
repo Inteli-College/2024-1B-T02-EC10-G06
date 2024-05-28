@@ -10,7 +10,7 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
+uri = os.getenv("MONGO_LOCAL_URI")
 client = MongoClient(uri)
 # server = os.getenv("KAFKA_BROKER")
 # client_id = "python-producer"
@@ -28,7 +28,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=PyxiBase)
-def create_pyxi(pyxi: PyxiUpdate):
+def create_pyxi(pyxi: PyxiCreate):
     pyxi = pyxi_created(collection, pyxi) # Producer change Collection
     return pyxi
 

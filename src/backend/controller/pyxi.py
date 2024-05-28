@@ -56,5 +56,8 @@ def update_response(db:Collection, pyxi_id, pyxi_update):
         }
         )
     return {
+        "id":str(pyxi_id),
+        "descrition": pyxi_update.descrition,
+        "medicines": pyxi_update.medicines,
         "status":"Atualizado com sucesso",
     }

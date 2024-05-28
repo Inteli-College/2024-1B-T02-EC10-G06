@@ -9,11 +9,13 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
+uri = os.getenv("MONGO_LOCAL_URI")
 client = MongoClient(uri)
 
 pyxis_db = client["Hermes"]
 collection = pyxis_db["Medicines"]
+
+print(f"Conexão estabelecida {client} \n banco criado {pyxis_db} \n collaction criada {collection}")
 
 router = APIRouter(
     prefix="/medicines",
