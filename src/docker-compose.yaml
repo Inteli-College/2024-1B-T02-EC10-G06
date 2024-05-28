@@ -105,11 +105,28 @@ services:
     ports:
       - "5001:5001"
 
-  auth:
-    build:
-      context: .
-      dockerfile: auth/Dockerfile
-    container_name: auth
-    ports:
-      - "8001:8001"
+  # logging:
+  #   build:
+  #     context: .
+  #     dockerfile: logging/Dockerfile
+  #   container_name: logging
+  #   ports:
+  #     - "8003:8003"
+
+  # auth:
+  #   build:
+  #     context: .
+  #     dockerfile: auth/Dockerfile
+  #   container_name: auth
+  #   ports:
+  #     - "8001:8001"
     
+  # gateway:
+  #   build: ./gateway
+  #   ports:
+  #     - "8000:80"
+  #   depends_on:
+  #     - auth
+  #     - logging
+  #     - backend
+  #   restart: on-failure
