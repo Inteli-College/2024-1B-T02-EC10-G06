@@ -9,7 +9,7 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
+uri = os.getenv("MONGO_LOCAL_URI")
 client = MongoClient(uri)
 
 pyxis_db = client["Hermes"]

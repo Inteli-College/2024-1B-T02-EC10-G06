@@ -10,7 +10,7 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("MONGO_URI")
+uri = os.getenv("MONGO_LOCAL_URI")
 client = MongoClient(uri)
 server = os.getenv("KAFKA_BROKER")
 client_id = "python-producer"
