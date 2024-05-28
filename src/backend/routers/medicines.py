@@ -15,6 +15,8 @@ client = MongoClient(uri)
 pyxis_db = client["Hermes"]
 collection = pyxis_db["Medicines"]
 
+print(f"Conexão estabelecida {client} \n banco criado {pyxis_db} \n collaction criada {collection}")
+
 router = APIRouter(
     prefix="/medicines",
     tags=["medicines"]

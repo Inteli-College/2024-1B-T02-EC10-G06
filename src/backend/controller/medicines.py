@@ -55,5 +55,7 @@ def update_response(db:Collection, medicine_id, medicine_update):
         }
         )
     return {
-        "status":"Atualizado com sucesso",
-    }
+            "id":str(ObjectId(medicine_id)),
+            "descrition": medicine_update.descrition,
+            "name": medicine_update.name
+            }

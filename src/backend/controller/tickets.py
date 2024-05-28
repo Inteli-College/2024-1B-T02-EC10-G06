@@ -53,10 +53,12 @@ def one_ticket(db:Collection, ticket_id):
 
 def delete_response(db:Collection, ticket_id):
     db.delete_one({"_id": ObjectId(ticket_id)})
-    return {"msg":{
-        "id":ticket_id,
-        "status":"Deletado com sucesso"
-    }}
+    return {
+        "msg":{
+            "id":ticket_id,
+            "status":"Deletado com sucesso"
+        }
+    }
 
 
 
@@ -70,10 +72,12 @@ def update_response(db:Collection, ticket_id, ticket_update):
             }
         }
         )
-    return { "msg": {
+    return { 
+        "msg": {
             "id":ticket_id,
             "idPyxis": ticket_update.idPyxis,
             "descrition": ticket_update.descrition,
             "body": ticket_update.body,
             "status":"Atualizado com sucesso"
-    }}
+        }
+    }

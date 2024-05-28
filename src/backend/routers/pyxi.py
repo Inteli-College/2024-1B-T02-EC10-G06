@@ -28,7 +28,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=PyxiBase)
-def create_pyxi(pyxi: PyxiUpdate):
+def create_pyxi(pyxi: PyxiCreate):
     pyxi = pyxi_created(collection, pyxi) # Producer change Collection
     return pyxi
 
