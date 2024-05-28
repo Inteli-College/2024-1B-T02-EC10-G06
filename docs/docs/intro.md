@@ -31,10 +31,10 @@ Nesta sprint, estabelecemos nosso primeiro contato com o parceiro de projeto, e 
 **Apresentação de sprint review**
 
   <iframe loading="lazy" 
-    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFyTPtqOFE&#x2F;ZKer5UDsw8Zz2TPyj8lexA&#x2F;view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
+    src="https:www.canva.comdesignDAFyTPtqOFEZKer5UDsw8Zz2TPyj8lexAview?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
   </iframe>
 
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFyTPtqOFE&#x2F;ZKer5UDsw8Zz2TPyj8lexA&#x2F;view?utm_content=DAFyTPtqOFE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">apresentação sprint 1</a>
+<a href="https:www.canva.comdesignDAFyTPtqOFEZKer5UDsw8Zz2TPyj8lexAview?utm_content=DAFyTPtqOFE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">apresentação sprint 1</a>
 
 ## Sprint 2
 
@@ -82,15 +82,22 @@ Nesta etapa do projeto, avançamos para consolidar as bases estabelecidas na spr
 
 <a href="https://www.canva.com/design/DAGEvH8gQCY/Acm1h5MZTnyZoTlaQUd4wg/view?utm_content=DAGEvH8gQCY&;utm_campaign=designshare&;utm_medium=embeds&;utm_source=link" target="_blank" rel="noopener">HERMES sprint2</a>
 
-## Sprint 3: TO DO
+## Sprint 3
 
-TO DO
+Nessa sprint, o foco foi dar mais robustes ao desenvolvimento backend que já tinha sido iniciado, também começamos a desenvolver o frontend da aplicação Flutter e a integração inicial entre ambos.
+
+### Desenvolvimento
+
+O desenvolvimento do frontend está sendo baseado no Figma já validado com o cliente. As telas criadas já conseguem demonstrar um fluxo simplificado da solução. O maior avanço que tivemos em relação ao desenvolvimento foi a tela de Scan QRCode, que consegue ler um código, traduzir, faz um requisição para o Back e retorna as informações que estão atreladas ao ID lido.
 
 **Apresentação de sprint review**
 
-<iframe src="https://www.canva.com/design/DAGEvH8gQCY/c71lGj4wfewiMXaeBu55vw/view?utm_content=DAGEvH8gQCY&utm_campaign=designshare&utm_medium=link&utm_source=view" width="600" height="400"></iframe>
+<iframe loading="lazy"
+    src="https://www.canva.com/design/DAGGGRoL8IY/UTJ3t5gRUgZ5U5fvAXPqNw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" width="600" height="400">
+</iframe>
 
-TO DO
+<a href="https://www.canva.comdesignDAGGGRoL8IYUTJ3t5gRUgZ5U5fvAXPqNwview?utm_content=DAGGGRoL8IY&;utm_campaign=designshare&;utm_medium=embeds&;utm_source=link" target="_blank" rel="noopener">HERMES sprint3</a>
+
 
 ## Sprint 4: TO DO
 
