@@ -1,3 +1,11 @@
+---
+
+title: Análise PESTEL
+
+sidebar_position: 5
+
+---
+
 ## Análise PESTEL
 
 Abaixo se encontra uma avaliação do ambiente macroambiental do projeto considerando aspectos políticos, econômicos, sociais, tecnológicos, ambientais e legais, realçando a importância de uma abordagem cuidadosamente planejada para garantir que o projeto seja sustentável, inovador e legalmente sólido.

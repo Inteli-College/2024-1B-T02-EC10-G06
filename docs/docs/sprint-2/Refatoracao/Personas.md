@@ -41,7 +41,6 @@ O principal objetivo de Patrícia Mendes é garantir a eficiência operacional e
 - Participação em projetos de melhoria de processos e práticas administrativas
 - Utilização de tecnologia para otimização e eficiência operacional
 
-
 ### Conhecimentos Tecnológicos
 
 - Microsoft 365

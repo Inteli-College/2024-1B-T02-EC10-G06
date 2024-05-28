@@ -12,7 +12,7 @@ Este documento descreve a arquitetura do backend para o aplicativo de solicitaç
 
 A arquitetura do backend é composta por vários componentes que trabalham juntos para fornecer funcionalidades essenciais para o aplicativo. Os principais componentes incluem:
 Uma api de autenticação que gerencia a autenticação e autorização dos usuários. Uma api de tickets de reposição de
-medicamentos que gerencia a criação, atualização e exclusão de tickets de reposição de medicamentos. Isso inclui a validação de dados, a comunicação com o banco de dados e a notificação de usuários sobre o status do ticket. Uma fila de mensagens no kafka  para permitir a comunicação assíncrona entre os diferentes componentes do sistema. Isso inclui a comunicação entre a api de tickets e o banco de dados evitando sobrecarga no banco de dados. Um banco de dados não relacional para armazenar dados relacionados a usuários, tickets de reposição de medicamentos e outras informações relevantes. 
+medicamentos que gerencia a criação, atualização e exclusão de tickets de reposição de medicamentos. Isso inclui a validação de dados, a comunicação com o banco de dados e a notificação de usuários sobre o status do ticket. Uma fila de mensagens no kafka  para permitir a comunicação assíncrona entre os diferentes componentes do sistema. Isso inclui a comunicação entre a api de tickets e o banco de dados evitando sobrecarga no banco de dados. Um banco de dados não relacional para armazenar dados relacionados a usuários, tickets de reposição de medicamentos e outras informações relevantes.
 
 #### Decisões tecnológicas
 
@@ -34,4 +34,3 @@ medicamentos que gerencia a criação, atualização e exclusão de tickets de r
 4. **Mongodb**:
    - Utilizamos um cluster de mongo do atlas db para termos um banco de dados não relacional escalável e seguro.
    - A utilização de um banco de dados não relacional permite uma maior flexibilidade na modelagem dos dados e escalabilidade do sistema.
-

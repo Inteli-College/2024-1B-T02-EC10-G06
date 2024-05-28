@@ -21,10 +21,10 @@ Dra. Marina Silva é uma cardiologista que atua no hospital Sírio Libanés, ond
 
 ### Skills
 
-- Diagnóstico e tratamento de doenças cardíacas
-- Comunicação clara e empática com pacientes e familiares
-- Gerenciamento de situações de emergência cardiológica
-- Uso de tecnologia médica especializada
+* Diagnóstico e tratamento de doenças cardíacas
+* Comunicação clara e empática com pacientes e familiares
+* Gerenciamento de situações de emergência cardiológica
+* Uso de tecnologia médica especializada
 
 ### Seu objetivo
 
@@ -32,22 +32,22 @@ O principal objetivo de Dra. Marina Silva é proporcionar cuidados cardiológico
 
 ### Personalidade
 
-- Dedicada
-- Detalhista
-- Comprometida com a saúde de seus pacientes.
-- Valoriza a precisão, a ética profissional e a colaboração com a equipe  multidisciplinar.
+* Dedicada
+* Detalhista
+* Comprometida com a saúde de seus pacientes.
+* Valoriza a precisão, a ética profissional e a colaboração com a equipe  multidisciplinar.
 
 ### Interesses
 
-- Avanços em cardiologia e tecnologias médicas
-- Participação em conferências e workshops de cardiologia
-- Educação contínua e atualização em práticas médicas e procedimentos intervencionistas
+* Avanços em cardiologia e tecnologias médicas
+* Participação em conferências e workshops de cardiologia
+* Educação contínua e atualização em práticas médicas e procedimentos intervencionistas
 
 ### Conhecimentos Tecnológicos
 
-- Microsoft 365
-- Sistemas de imagens cardiológicas (ecocardiograma, cateterismo, etc.)
-- Prontuário eletrônico do paciente.
+* Microsoft 365
+* Sistemas de imagens cardiológicas (ecocardiograma, cateterismo, etc.)
+* Prontuário eletrônico do paciente.
 
 ### Seus Ganhos
 
@@ -77,11 +77,12 @@ Usaria a solução para comunicação com outros setores por de criação de cha
 
 5. Como médico, desejo um sistema de gerenciamento de medicamentos que garanta o acesso rápido e adequado aos medicamentos necessários para cada paciente, reduzindo assim os riscos de atrasos e erros na administração de medicamentos.
 
-## 2°Persona: Técnica de Enfermagem Carla Ferreira 
+## 2°Persona: Técnica de Enfermagem Carla Ferreira
 
 ![img alt](./img/persona_2.jpg)
 
 ### Breve Descrição
+
 É uma técnica de enfermagem com sete anos de experiência. Ela desempenha um papel crucial na administração  de medicamentos, cuidado direto aos pacientes e colaboração com a equipe  multidisciplinar. Carla está sempre em busca a eficiência e a segurança no processo de dispensação de medicamentos, assegurando que  os pacientes recebam o tratamento adequado e no tempo correto.
 
 ### Skills
@@ -107,9 +108,9 @@ Educação contínua e treinamentos em enfermagem e administração de medicamen
 
 ### Conhecimentos Tecnológicos
 
-- Microsoft 365
-- Sistemas de gerenciamento hospitalar e prontuário eletrônico do paciente
-- Dispositivos de controle de estoque e dispensação de medicamentos (Pyxis)
+* Microsoft 365
+* Sistemas de gerenciamento hospitalar e prontuário eletrônico do paciente
+* Dispositivos de controle de estoque e dispensação de medicamentos (Pyxis)
 
 ### Seus Ganhos
 
@@ -149,10 +150,10 @@ Farmacêutico com oito anos de experiência. Ele é responsável pela gestão do
 
 ### Skills
 
-- Gestão de estoque e dispensação de medicamentos
+* Gestão de estoque e dispensação de medicamentos
 Conhecimento aprofundado em farmacologia e interações medicamentosas
-- Comunicação eficaz com a equipe médica, de enfermagem e outros profissionais de saúde
-- Uso de tecnologia e sistemas de informação em farmácia hospitalar
+* Comunicação eficaz com a equipe médica, de enfermagem e outros profissionais de saúde
+* Uso de tecnologia e sistemas de informação em farmácia hospitalar
 
 ### Seu objetivo
 
@@ -167,10 +168,10 @@ Profissional detalhista organizado e comprometido com a qualidade e segurança d
 Ter mais eficiência no seu trabalho com uma aplicação que consiga trazer, principalmente uma comunicação clara, direta e concisa.
 
 ### Conhecimentos Tecnológicos
- 
-- Sistema básico Android
+
+* Sistema básico Android
 -Sistemas de gerenciamento de farmácia hospitalar
-- Sistemas de controle de estoque e dispensação de medicamentos (Pyxis)
+* Sistemas de controle de estoque e dispensação de medicamentos (Pyxis)
 
 ### Seus Ganhos
 
@@ -178,8 +179,8 @@ Ele espera sentir-se mais produtivo com a nova solução que melhore a comunica�
 
 ### Suas Dores
 
-- Dificuldades na reposição rápida de medicamentos devido a processos manuais (Whatsapp)
-- Frustração com a falta de integração entre os sistemas hospitalares.
+* Dificuldades na reposição rápida de medicamentos devido a processos manuais (Whatsapp)
+* Frustração com a falta de integração entre os sistemas hospitalares.
 
 ### Rotina
 
@@ -200,7 +201,6 @@ Usaria a solução para  comunicação com outros setores por meio de notificaç
 4. Como um usuário que valoriza a eficiência, desejo uma aplicação que integre os sistemas hospitalares relevantes, para evitar a frustração causada pela falta de comunicação e sincronização entre diferentes plataformas, melhorando assim a coordenação e eficácia do trabalho em equipe.
 
 5. Como um farmacêutico hospitalar, desejo uma aplicação que me permita registrar e monitorar as atividades relacionadas à dispensação de medicamentos, para garantir o cumprimento das normas e regulamentações farmacêuticas, bem como a rastreabilidade dos medicamentos utilizados.
-
 
 # Desenvolvimento
 

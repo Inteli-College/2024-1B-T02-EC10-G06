@@ -1,3 +1,11 @@
+---
+
+title: Análise Financeira
+
+sidebar_position: 5
+
+---
+
 ## Análise Financeira
 
 Esta análise transcende a esfera numérica para questionar como o investimento em inovação pode simultaneamente otimizar a gestão de recursos e elevar a qualidade do cuidado ao paciente, buscando um equilíbrio entre o imperativo econômico e a missão humanitária da medicina. Não apenas um objetivo financeiro; mas um passo fundamental na jornada contínua de inovação e melhoria no cuidado à saúde, almejando harmonizar a eficácia operacional com a sustentabilidade econômica e o comprometimento com o bem-estar do paciente.

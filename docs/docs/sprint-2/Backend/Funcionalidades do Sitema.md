@@ -1,6 +1,5 @@
 # Funcionalidades do Sitema
 
-
 # Descrição das Rotas
 
 ## Pyxis
@@ -12,6 +11,7 @@
 - **Descrição:** Retorna todos os Pyxis cadastrados no sistema.
 - **Resposta de Sucesso (200):** JSON Array
   - Esquema:
+
     ```json
     {
       "type": "array",
@@ -40,6 +40,7 @@
 - **Descrição:** Cria um novo Pyxis no sistema.
 - **Corpo da Requisição:** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -56,8 +57,10 @@
       "required": ["descrition", "medicines"]
     }
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -85,6 +88,7 @@
   - `pyxi_id`: ID do Pyxis
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -112,6 +116,7 @@
   - `pyxi_id`: ID do Pyxis
 - **Corpo da Requisição:** JSON
   - Esquema:
+  
     ```json
       {
       "type": "object",
@@ -125,8 +130,10 @@
     }
 
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
       {
       "type": "object",
@@ -150,6 +157,7 @@
   - `pyxi_id`: ID do Pyxis
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -177,6 +185,7 @@
 - **Descrição:** Retorna todos os Medicines cadastrados no sistema.
 - **Resposta de Sucesso (200):** JSON Array
   - Esquema:
+
     ```json
     {
     "type": "object",
@@ -206,6 +215,7 @@
 - **Descrição:** Cria um novo Medicine no sistema.
 - **Corpo da Requisição:** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -223,8 +233,10 @@
     }
 
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -255,6 +267,7 @@
   - `medicine_id`: ID do Medicine
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -285,6 +298,7 @@
   - `medicine_id`: ID do Medicine
 - **Corpo da Requisição:** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -302,8 +316,10 @@
     }
 
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "type": "object",
@@ -334,6 +350,7 @@
   - `medicine_id`: ID do Medicine
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/MedicinesDelete"
@@ -349,6 +366,7 @@
 - **Descrição:** Retorna todos os Tickets cadastrados no sistema.
 - **Resposta de Sucesso (200):** JSON Array
   - Esquema:
+
     ```json
     {
       "type": "array",
@@ -365,13 +383,16 @@
 - **Descrição:** Cria um novo Ticket no sistema.
 - **Corpo da Requisição:** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketCreate"
     }
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketCreateResponse"
@@ -387,6 +408,7 @@
   - `ticket_id`: ID do Ticket
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketBase"
@@ -402,13 +424,16 @@
   - `ticket_id`: ID do Ticket
 - **Corpo da Requisição:** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketCreate"
     }
     ```
+
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketResponse"
@@ -424,9 +449,9 @@
   - `ticket_id`: ID do Ticket
 - **Resposta de Sucesso (200):** JSON
   - Esquema:
+
     ```json
     {
       "$ref": "#/components/schemas/TicketResponse"
     }
     ```
-
