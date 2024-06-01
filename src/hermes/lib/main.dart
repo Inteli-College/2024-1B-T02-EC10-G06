@@ -3,6 +3,7 @@ import 'package:hermes/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hermes/services/notifi.dart';
 import 'package:hermes/qr_code.dart';
+import 'package:hermes/pyxis_pedido.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -91,7 +92,8 @@ class MinhaPrimeiraTela extends StatelessWidget {
                       onPressed: () async {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const QRCodePage()),
+                          //MaterialPageRoute(builder: (context) => const QRCodePage()),
+                          MaterialPageRoute(builder: (context) => PyxisPedidoPage(qrCode: '1')),
                         );
                       },
                     ),
