@@ -132,51 +132,58 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Map<String, int> _prepareTicketData(List<Ticket> tickets) {
-    Map<String, int> data = {};
+  Widget _buildTicketGraph(List<Ticket> tickets) {
+    final Map<DateTime, Map<String, int>> ticketCounts = {};
 
     for (var ticket in tickets) {
-      String date = ticket.created_at.toLocal().toString().split(' ')[0]; // Get the date part
-      if (data.containsKey(date)) {
-        data[date] = data[date]! + 1;
-      } else {
-        data[date] = 1;
+      final date = DateTime(ticket.created_at.year, ticket.created_at.month, ticket.created_at.day);
+      if (!ticketCounts.containsKey(date)) {
+        ticketCounts[date] = {'Open': 0, 'Closed': 0};
       }
+      ticketCounts[date]![ticket.status] = ticketCounts[date]![ticket.status]! + 1;
     }
 
-    return data;
-  }
+    final List<FlSpot> openSpots = [];
+    final List<FlSpot> closedSpots = [];
 
-  Widget _buildTicketGraph(List<Ticket> tickets) {
-    Map<String, int> ticketData = _prepareTicketData(tickets);
-    List<FlSpot> spots = [];
+    int dayCounter = 0;
+    final sortedDates = ticketCounts.keys.toList()..sort();
 
-    int index = 0;
-    for (var entry in ticketData.entries) {
-      spots.add(FlSpot(index.toDouble(), entry.value.toDouble()));
-      index++;
+    for (var date in sortedDates) {
+      openSpots.add(FlSpot(dayCounter.toDouble(), ticketCounts[date]!['Open']!.toDouble()));
+      closedSpots.add(FlSpot(dayCounter.toDouble(), ticketCounts[date]!['Closed']!.toDouble()));
+      dayCounter++;
     }
 
     return SizedBox(
+      width: double.infinity,
       height: 200,
-      width: 400,
       child: LineChart(
-        LineChartData(
-          gridData: const FlGridData(show: false),
-          titlesData: const FlTitlesData(show: false),
-          borderData: FlBorderData(show: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: spots,
-              isCurved: true,
-              color: Colors.blue,
-              barWidth: 4,
-              isStrokeCapRound: true,
-              dotData: const FlDotData(show: false),
-            ),
-          ],
-        ),
+      LineChartData(
+        gridData: FlGridData(show: true),
+        minX: 0,
+        maxX: dayCounter.toDouble(),
+        minY: 0,
+        lineBarsData: [
+          LineChartBarData(
+            spots: openSpots,
+            isCurved: true,
+            color: Colors.green,
+            barWidth: 3,
+            isStrokeCapRound: true,
+            dotData: FlDotData(show: false),
+          ),
+          LineChartBarData(
+            spots: closedSpots,
+            isCurved: true,
+            color: Colors.red,
+            barWidth: 3,
+            isStrokeCapRound: true,
+            dotData: FlDotData(show: false),
+          ),
+        ],
       ),
+    ),
     );
   }
 
@@ -349,6 +356,7 @@ class TicketCard extends StatelessWidget {
               if (isExpanded) ...[
                 Text('Conteúdo: ${ticket.body.join(', ')}'),
                 Text('Data de Criação: ${ticket.created_at}'),
+                if (ticket.status == 'Closed') Text('Data de Conclusão: ${ticket.fixed_at}'),
                 Text('Remetente: ${ticket.owner_id}'),
                 Text('Destinatário: ${ticket.sender_id.join(', ')}'),
               ],
