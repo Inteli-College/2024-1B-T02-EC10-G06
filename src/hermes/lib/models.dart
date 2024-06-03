@@ -3,29 +3,32 @@ class Ticket {
   final String descrition;
   final List<String> body;
   final DateTime created_at;
+  final DateTime fixed_at;
   final String status;
-  final String sender;
-  final String receiver;
+  final String owner_id;
+  final List<String> sender_id;
 
   Ticket({
     required this.idPyxis,
     required this.descrition,
     required this.body,
     required this.created_at,
+    required this.fixed_at,
     required this.status,
-    required this.sender,
-    required this.receiver,
+    required this.owner_id,
+    required this.sender_id,
   });
 
   factory Ticket.fromJson(Map<String, dynamic> json) {
     return Ticket(
-      idPyxis: json['idPyxis'],
+      idPyxis:    json['idPyxis'],
       descrition: json['descrition'],
-      body: List<String>.from(json['body']),
+      body:       List<String>.from(json['body']),
       created_at: DateTime.parse(json['created_at']),
-      status: json['status'],
-      sender: json['sender'],
-      receiver: json['receiver'],
+      fixed_at:   DateTime.parse(json['fixed_at']),
+      status:     json['status'],
+      owner_id:   json['owner_id'],
+      sender_id:  List<String>.from(json['sender_id']),
     );
   }
 }
