@@ -295,12 +295,16 @@ class AdmUser(HttpUser):
         if len(rawData) > 0:
             for medicine in rawData:
                 self.medicine_istance.add_medicine(medicine['id'])
-        #print(f'DEBUG: numeros de id {len(self.medicine_istance.medicines_id)}/{len(self.medicine_istance.medicines)}')
+        
         
 
-    # @task
-    # def get_pyxis(self):
-    #     self.client.get("/pyxis/")
+    @task
+    def get_pyxis(self):
+        response = self.client.get("pyxis/")
+        rawData = response.json()
+        if len(rawData) > 0:
+            for pyxi in rawData:
+                self.pyxi_istance.add_pyxi(pyxi['id'])
 
     @task
     def create_medicine(self):
@@ -335,12 +339,22 @@ class AdmUser(HttpUser):
     # def delete_medicine(self):
     #     self.client.delete(f"/medicines/{medicine_istance.get_random_id()}")
 
-    # @task
-    # def update_pyxi(self):
-    #     self.client.put(f"/pyxis/{pyxi_istance.get_random_id()}", json={
-    #         "descrition": "str",
-    #         "medicines": []
-    #     })
+    @task
+    def update_pyxi(self):
+        id = pyxi_istance.get_random_id()
+        response = self.client.get(f"pyxis/{id}")
+        medicines = []
+        rawData = {}
+        if id != None:
+            for _ in range(10):
+                response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+                rawData = response.json()
+                medicines.append(rawData)
+            rawData = response.json()
+        pyxi = rawData
+        pyxi['medicines'] = medicines
+        
+        self.client.put(f"pyxis/{id}", json=pyxi)
 
     # @task
     # def delete_pyxi(self):

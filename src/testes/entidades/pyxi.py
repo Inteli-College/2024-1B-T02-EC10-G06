@@ -14,8 +14,11 @@ class Pyxi():
 
     def get_random_id(self) -> str:
         end = len(self.pyxis_id) -1
-        sort = random.randint(0, end)
-        return self.pyxis_id[sort]
+        if end > 0:
+            sort = random.randint(0, end)
+            id = self.pyxis_id[sort]
+            return id
+        return None
     
     def get_random_pyxi(self) -> dict | None:
         end = len(self.pyxis) -1

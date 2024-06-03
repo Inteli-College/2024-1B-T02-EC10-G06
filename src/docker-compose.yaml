@@ -82,20 +82,20 @@ services:
   #     - zookeeper
   #   restart: on-failure
 
-  # redis:
-  #   container_name: redis_server
-  #   image: redislabs/redisearch
-  #   restart: always
-  #   ports:
-  #     - "6379:6379"
-  #   volumes:
-  #     - /path/to/local/dаta:/root/redis
-  #     - /path/to/local/redis.conf:/usr/local/etc/redis/redis.conf
-  #   environment:
-  #     - REDIS_PASSWORD=password
-  #     - REDIS_PORT=6379
-  #     - REDIS_DATABASES=16
-  #     - USERNAME=user
+  redis:
+    container_name: redis_server
+    image: redislabs/redisearch
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /path/to/local/dаta:/root/redis
+      - /path/to/local/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+      - USERNAME=user
 
   backend:
     build:

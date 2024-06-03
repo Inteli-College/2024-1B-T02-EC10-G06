@@ -16,4 +16,4 @@ COPY ./backend/ .
 ENV PYTHONPATH "${PYTHONPATH}:/code/"
 
 # 
-CMD ["python3", "app.py", "--port", "5001"]
+CMD ["python3", "app.py", "--port", "5001", "--workers=5"]
