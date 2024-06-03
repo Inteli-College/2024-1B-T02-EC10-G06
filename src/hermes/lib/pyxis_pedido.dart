@@ -53,11 +53,11 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('Pyxis Pedido'),
+      title: const Text('Pyxis Pedido'),
     ),
     body: Center(
       child: _isLoading
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -70,25 +70,25 @@ Widget build(BuildContext context) {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Pyxis ID:',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
 
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         widget.qrCode,
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
 
-                      Text(
+                      const Text(
                         'Tipo de Pedido:',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       DropdownButton<String>(
                         value: _selectedPedidoType,
-                        hint: Text('Selecione o tipo de pedido'),
+                        hint: const Text('Selecione o tipo de pedido'),
                         onChanged: (String? newValue) {
                           setState(() {
                             _selectedPedidoType = newValue;
@@ -102,21 +102,21 @@ Widget build(BuildContext context) {
                         }).toList(),
                       ),
 
-                      SizedBox(height: 16),
-                      Text(
+                      const SizedBox(height: 16),
+                      const Text(
                         'Descrição:',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       TextField(
                         controller: _descriptionController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Digite a descrição do pedido',
                         ),
                       ),
 
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Expanded( // Adicionado Expanded para o botão ocupar o espaço disponível
                         child: Align(
                           alignment: Alignment.bottomCenter,
@@ -128,7 +128,7 @@ Widget build(BuildContext context) {
 
 
                               },
-                              child: Text('Próximo'),
+                              child: const Text('Próximo'),
                             ),
                           ),
                         ),

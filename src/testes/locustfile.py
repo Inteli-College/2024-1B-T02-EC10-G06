@@ -301,7 +301,7 @@ class AdmUser(HttpUser):
 
     @task
     def create_medicine(self):
-        medicine = self.medicine_istance.get_random_medicine() # Adicionar o Pegar a resposta da operação para salvar o ID
+        medicine = self.medicine_istance.get_random_to_create() # Adicionar o Pegar a resposta da operação para salvar o ID
         if medicine == None:
             return
         response = self.client.post("medicines/", json=medicine)
@@ -329,10 +329,7 @@ class AdmUser(HttpUser):
 
     @task
     def update_medicine(self):
-        self.client.put(f"medicines/{medicine_istance.get_random_id()}", json={
-            "descrition": "Teste de medicamento",
-            "name": "Dipirona"
-        })
+        self.client.put(f"medicines/{medicine_istance.get_random_id()}", json=medicine_istance.get_random_medicine())
 
     # @task
     # def delete_medicine(self):
@@ -359,3 +356,5 @@ class AdmUser(HttpUser):
     # def delete_pyxi(self):
     #     self.client.delete(f"pyxis/{pyxi_istance.get_random_id()}")
 
+
+# Henry Ford | Steve Jobs sobre perguntar o que o usuário quer.

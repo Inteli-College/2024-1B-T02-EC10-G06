@@ -39,7 +39,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PyxiUpdate"
+                "$ref": "#/components/schemas/PyxiCreate"
               }
             }
           },
@@ -695,7 +695,8 @@
             "title": "Descrition"
           },
           "medicines": {
-            "type": "object",
+            "items": {},
+            "type": "array",
             "title": "Medicines"
           }
         },
@@ -714,7 +715,8 @@
             "title": "Descrition"
           },
           "medicines": {
-            "type": "object",
+            "items": {},
+            "type": "array",
             "title": "Medicines"
           }
         },
@@ -745,6 +747,19 @@
       },
       "PyxiUpdate": {
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "descrition": {
+            "type": "string",
+            "title": "Descrition"
+          },
+          "medicines": {
+            "items": {},
+            "type": "array",
+            "title": "Medicines"
+          },
           "status": {
             "type": "string",
             "title": "Status"
@@ -752,6 +767,9 @@
         },
         "type": "object",
         "required": [
+          "id",
+          "descrition",
+          "medicines",
           "status"
         ],
         "title": "PyxiUpdate"

@@ -4,6 +4,7 @@ import random
 class Medicine():
     def __init__(self, medicines):
         self.medicines = medicines
+        self.to_create = medicines
         self.medicines_id = []
 
     def add_medicine(self, id):
@@ -18,11 +19,19 @@ class Medicine():
         sort = random.randint(0, end)
         return self.medicines_id[sort]
     
+    def get_random_to_create(self) -> dict | None:
+        end = len(self.medicines) -1
+        if end > 0:
+            sort = random.randint(0, end)
+            medicine = self.to_create[sort]
+            self.to_create.remove(medicine)
+            return medicine
+        return None
+    
     def get_random_medicine(self) -> dict | None:
         end = len(self.medicines) -1
         if end > 0:
             sort = random.randint(0, end)
             medicine = self.medicines[sort]
-            self.medicines.remove(medicine)
             return medicine
         return None
