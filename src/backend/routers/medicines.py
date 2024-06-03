@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from models.medicines import MedicinesBase, MedicinesCreate, MedicinesDelete
 from controller.medicines import medicines_created, all_medicines, one_medicine, delete_response, update_response
-from utils.redis import redis_interface
+#from utils.redis import redis_interface
 
 from pymongo import MongoClient
 from dotenv import load_dotenv
