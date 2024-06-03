@@ -37,29 +37,32 @@ class _DashboardPageState extends State<DashboardPage> {
         {
           "idPyxis": "1",
           "descrition": "Sample ticket 1",
-          "body": ["Body content 1"],
-          "created_at": "2024-05-15T10:00:00Z",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
           "status": "Open",
-          "sender": "John Doe",
-          "receiver": "Jane Doe"
+          "owner_id": "1",
+          "sender_id": ["1", "2"]
         },
         {
           "idPyxis": "2",
           "descrition": "Sample ticket 2",
-          "body": ["Body content 2"],
-          "created_at": "2024-05-14T12:00:00Z",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
           "status": "Closed",
-          "sender": "yoda",
-          "receiver": "luke"
+          "owner_id": "2",
+          "sender_id": ["2", "3"]
         },
         {
           "idPyxis": "3",
           "descrition": "Sample ticket 3",
-          "body": ["Body content 3"],
-          "created_at": "2024-05-13T14:00:00Z",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
           "status": "Open",
-          "sender": "JJJameson",
-          "receiver": "Peter Parker"
+          "owner_id": "3",
+          "sender_id": ["3", "1"]
         }
       ]
       ''';
@@ -346,8 +349,8 @@ class TicketCard extends StatelessWidget {
               if (isExpanded) ...[
                 Text('Conteúdo: ${ticket.body.join(', ')}'),
                 Text('Data de Criação: ${ticket.created_at}'),
-                Text('Remetente: ${ticket.sender}'),
-                Text('Destinatário: ${ticket.receiver}'),
+                Text('Remetente: ${ticket.owner_id}'),
+                Text('Destinatário: ${ticket.sender_id.join(', ')}'),
               ],
             ],
           ),

@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hermes/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hermes/services/notifi.dart';
+import 'package:hermes/services/notification.dart';
 import 'package:hermes/qr_code.dart';
 import 'package:hermes/pyxis_pedido.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
-  NotificationService().initNotification();
+  NotificationService.init();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    NotificationService.allowed();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

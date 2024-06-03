@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:hermes/services/notifi.dart';
+import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import 'package:hermes/receiver.dart';
 
@@ -42,10 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(response.body);
         print('Login successful: $data');
-        NotificationService().showNotification(
-          title: 'Login Successful',
-          body: 'Welcome back, ${data['username']}!',
-        );
+        NotificationService.showNotification('Login Sucessful!', 'Welcome back, ${_usernameController.text}!');
         Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
       } else {
         // Handle login error
