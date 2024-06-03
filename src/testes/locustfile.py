@@ -290,54 +290,53 @@ class AdmUser(HttpUser):
 
     @task
     def get_medicines(self):
-        response = self.client.get("medicines/")
-        rawData = response.json()
-        if len(rawData) > 0:
-            for medicine in rawData:
-                self.medicine_istance.add_medicine(medicine['id'])
+        self.client.get("medicines/")
         
         
 
     @task
     def get_pyxis(self):
-        response = self.client.get("pyxis/")
-        rawData = response.json()
-        if len(rawData) > 0:
-            for pyxi in rawData:
-                self.pyxi_istance.add_pyxi(pyxi['id'])
+        self.client.get("pyxis/")
+                
 
     @task
     def create_medicine(self):
-        medicine = self.medicine_istance.get_random_medicine()
+        medicine = self.medicine_istance.get_random_medicine() # Adicionar o Pegar a resposta da operação para salvar o ID
         if medicine == None:
             return
-        self.client.post("medicines/", json=medicine)
+        response = self.client.post("medicines/", json=medicine)
+        rawData = response.json()
+        self.medicine_istance.add_medicine(id=rawData["id"])
 
     @task
     def create_pyxis(self):
-        pyxi = self.pyxi_istance.get_random_pyxi()
+        pyxi = self.pyxi_istance.get_random_pyxi() # Adicionar o Pegar a resposta da operação para salvar o ID
         if pyxi == None:
             return
-        self.client.post("pyxis/", json=pyxi)
+        response = self.client.post("pyxis/", json=pyxi)
+        rawData = response.json()
+        self.pyxi_istance.add_pyxi(id=rawData["id"])
+        
+        
 
-    # @task
-    # def get_medicine(self):
-    #     self.client.get(f"/medicines/{medicine_istance.get_random_id()}")
+    @task
+    def get_medicine(self):
+        self.client.get(f"medicines/{medicine_istance.get_random_id()}")
 
-    # @task
-    # def get_specific_pyxi(self):
-    #     self.client.get(f"/pyxis/{pyxi_istance.get_random_id()}")
+    @task
+    def get_specific_pyxi(self):
+        self.client.get(f"pyxis/{pyxi_istance.get_random_id()}")
 
-    # @task
-    # def update_medicine(self):
-    #     self.client.put(f"/medicines/{medicine_istance.get_random_id()}", json={
-    #         "descrition": "str",
-    #         "name": "Será?"
-    #     })
+    @task
+    def update_medicine(self):
+        self.client.put(f"medicines/{medicine_istance.get_random_id()}", json={
+            "descrition": "Teste de medicamento",
+            "name": "Dipirona"
+        })
 
     # @task
     # def delete_medicine(self):
-    #     self.client.delete(f"/medicines/{medicine_istance.get_random_id()}")
+    #     self.client.delete(f"medicines/{medicine_istance.get_random_id()}")
 
     @task
     def update_pyxi(self):
@@ -358,5 +357,5 @@ class AdmUser(HttpUser):
 
     # @task
     # def delete_pyxi(self):
-    #     self.client.delete(f"/pyxis/{pyxi_istance.get_random_id()}")
+    #     self.client.delete(f"pyxis/{pyxi_istance.get_random_id()}")
 

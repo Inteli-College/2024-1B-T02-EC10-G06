@@ -130,12 +130,11 @@ services:
   #   ports:
   #     - "8001:8001"
     
-  # gateway:
-  #   build: ./gateway
-  #   ports:
-  #     - "8000:80"
-  #   depends_on:
-  #     - auth
-  #     - logging
-  #     - backend
-  #   restart: on-failure
+  gateway:
+    build: ./gateway
+    ports:
+      - "8000:80"
+    depends_on:
+
+      - backend
+    restart: on-failure
