@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 class TicketBase(BaseModel): 
+    id: str
     idPyxis: str
     descrition: str
     body: list

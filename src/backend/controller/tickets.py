@@ -15,9 +15,11 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "status": "on progress",
             }
 
-    val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
-    producer.flush()
-    ticket["update"] = str(val)
+    # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
+    # producer.flush()
+    ticket_id = db.insert_one(ticket).inserted_id
+    ticket['id'] = str(ticket_id)
+    ticket["update"] = f"Created"
     return ticket
     
 
