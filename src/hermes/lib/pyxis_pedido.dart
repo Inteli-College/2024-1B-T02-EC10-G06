@@ -1,8 +1,8 @@
-// main.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'med_selecao.dart';
+import 'erro.dart';
 
 class Task {
   final String id;
@@ -42,9 +42,10 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
     _consultarPyxis();
   }
 
-  Future<void> _consultarPyxis() async {
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
-    if (response.statusCode == 200) {
+Future<void> _consultarPyxis() async {
+  final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
+  if (response.statusCode == 200) {
+    if (response.body.isNotEmpty) {
       setState(() {
         _rawJson = response.body;
         final Map<String, dynamic> data = json.decode(response.body);
@@ -52,9 +53,18 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
         _isLoading = false;
       });
     } else {
-      throw Exception('Failed to load task');
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+      ));
     }
+  } else {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
+    ));
   }
+}
+
+
 
   void _onNextPressed() {
     final Map<String, dynamic> jsonToSend = {

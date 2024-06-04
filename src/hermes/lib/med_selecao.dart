@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'sucesso.dart';
 
 class MedSelecaoPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -64,10 +65,13 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     );
 
     if (response.statusCode == 201) {
-      // Successfully created the ticket
+      //Successfully created the ticket
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Ticket criado com sucesso!')),
       );
+      Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SucessoPage(),
+    ));
     } else {
       // Failed to create the ticket
       ScaffoldMessenger.of(context).showSnackBar(
