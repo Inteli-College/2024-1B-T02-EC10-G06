@@ -2,7 +2,7 @@ from bson.objectid import ObjectId
 from pymongo.collection import Collection
 
 
-def medicines_created(producer, raw_medicine):
+async def medicines_created(producer, raw_medicine):
     medicine = {
             "descrition": raw_medicine.descrition,
             "name": raw_medicine.name
@@ -12,7 +12,7 @@ def medicines_created(producer, raw_medicine):
     return medicine
     
 
-def all_medicines(db:Collection):
+async def all_medicines(db:Collection):
     medicines = []
     for document in db.find():
         #print(document)
@@ -21,11 +21,10 @@ def all_medicines(db:Collection):
             "descrition": document["descrition"],
             "name": document["name"]
         })
-    #print("Toma ae os medicines: ", medicines)
     return medicines
     
 
-def one_medicine(db:Collection, medicine_id):
+async def one_medicine(db:Collection, medicine_id):
     raw_medicines = db.find_one( {"_id": ObjectId(medicine_id)} )
     if raw_medicines is None :
         return None
@@ -36,16 +35,36 @@ def one_medicine(db:Collection, medicine_id):
     }
     return medicines
 
-def delete_response(db:Collection, medicine_id):
+async def delete_response(db:Collection, medicine_id):
+
     db.delete_one({"_id": ObjectId(medicine_id)})
     return {
         "id":medicine_id,
         "status":"Deletado com sucesso"
     }
 
+async def check_medicines_pyxis(medicine_id, db):
+    collection = db["Pyxis"]
+    raw_pyxis = collection.find_one({"medicines.id": medicine_id})
+    
+    if raw_pyxis:
+        # Operação de atualização para remover o medicamento
+        update = {"$pull": {"medicines": {"id": medicine_id}}}
+        
+        # Executa a atualização
+        result = collection.update_one({"_id": raw_pyxis["_id"]}, update)
+        
+        if result.modified_count > 0:
+            print("Medicamento removido com sucesso.")
+        else:
+            print("Nenhum documento atualizado. Verifique se o ID do medicamento está correto.")
+    
+    print("Pyxis: ", raw_pyxis)
+    return True
+    
 
 
-def update_response(db:Collection, medicine_id, medicine_update):
+async def update_response(db:Collection, medicine_id, medicine_update):
     db.update_one(
         {"_id": ObjectId(medicine_id)},
         {'$set':{

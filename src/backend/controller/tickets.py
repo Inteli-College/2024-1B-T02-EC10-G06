@@ -21,7 +21,7 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
     ticket_id = db.insert_one(ticket).inserted_id
     ticket['id'] = str(ticket_id)
     
-    return {"backend":"Created"}
+    return {"msg":"Created"}
     
 
 def all_tickets(db:Collection):

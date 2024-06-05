@@ -20,7 +20,7 @@ class Medicine():
         return self.medicines_id[sort]
     
     def get_random_to_create(self) -> dict | None:
-        end = len(self.medicines) -1
+        end = len(self.to_create) -1
         if end > 0:
             sort = random.randint(0, end)
             medicine = self.to_create[sort]
