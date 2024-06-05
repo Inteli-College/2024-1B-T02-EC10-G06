@@ -12,7 +12,7 @@ class Tickts(BaseModel):
     created_at: datetime.datetime
     fixed_at: datetime.datetime
     owner_id: str
-    sender_id: str | None
+    operator_id: str | None
 
 class TicktsCreate(Tickts):
     permission: str
