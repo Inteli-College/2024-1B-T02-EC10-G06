@@ -13,7 +13,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] ?? '',
-      description: json['description'] ?? '',
+      description: json['descrition'] ?? '', // Certifique-se de que o campo esteja correto
     );
   }
 }
@@ -42,38 +42,32 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
     _consultarPyxis();
   }
 
-Future<void> _consultarPyxis() async {
-  final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
-  if (response.statusCode == 200) {
-    if (response.body.isNotEmpty) {
-      setState(() {
-        _rawJson = response.body;
-        final Map<String, dynamic> data = json.decode(response.body);
-        _tasks = [Task.fromJson(data)];
-        _isLoading = false;
-      });
+  Future<void> _consultarPyxis() async {
+    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
+    if (response.statusCode == 200) {
+      if (response.body.isNotEmpty) {
+        setState(() {
+          _rawJson = utf8.decode(response.bodyBytes); // Decodifica a resposta como UTF-8
+          final Map<String, dynamic> data = json.decode(_rawJson);
+          _tasks = [Task.fromJson(data)];
+          _isLoading = false;
+        });
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+        ));
+      }
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+        builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
       ));
     }
-  } else {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
-    ));
   }
-}
-
-
 
   void _onNextPressed() {
     final Map<String, dynamic> jsonToSend = {
       'idPyxis': widget.qrCode,
-      //'status': 'Open',
-      'description': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
-      //'created_at': DateTime.now().toIso8601String(),
-      //'sender_id': '1',
-      //'permission': ['1','2']
+      'descrition': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
     };
     print(jsonToSend);
     Navigator.push(
@@ -106,12 +100,12 @@ Future<void> _consultarPyxis() async {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Pyxis ID:',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          'Pyxis',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          widget.qrCode,
+                          _tasks.isNotEmpty ? _tasks[0].description : 'Sem descrição',
                           style: const TextStyle(fontSize: 18),
                         ),
                         const Text(

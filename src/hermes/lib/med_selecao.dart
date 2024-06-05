@@ -45,40 +45,47 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     });
   }
 
-  Future<void> _onConfirmSelection() async {
-    final selectedMedicines = _selectedMedicines.entries
-        .where((entry) => entry.value)
-        .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key)['name'])
-        .toList();
+Future<void> _onConfirmSelection() async {
+  final selectedMedicines = _selectedMedicines.entries
+      .where((entry) => entry.value)
+      .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key)['name'])
+      .toList();
 
-    final updatedData = {
-      ...widget.data,
-      'body': selectedMedicines,
-    };
+  final updatedData = {
+    ...widget.data,
+    'body': selectedMedicines,
+  };
 
-    print(updatedData);
-    final response = await http.post(Uri.parse('http://172.17.0.1:5001/tickets/'),
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(updatedData),
+  // Converte o mapa para uma string JSON formatada com identação
+  String jsonString = JsonEncoder.withIndent('  ').convert(updatedData);
+
+  // Imprime a string JSON no terminal
+  print(jsonString);
+
+  final response = await http.post(
+    Uri.parse('http://172.17.0.1:5001/tickets/'),
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(updatedData),
+  );
+
+  if (response.statusCode == 200) {
+    // Sucesso ao criar o ticket
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Ticket criado com sucesso!')),
     );
-
-    if (response.statusCode == 201) {
-      //Successfully created the ticket
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ticket criado com sucesso!')),
-      );
-      Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => SucessoPage(),
     ));
-    } else {
-      // Failed to create the ticket
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Falha ao criar o ticket')),
-      );
-    }
+  } else {
+    // Falha ao criar o ticket
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Falha ao criar o ticket')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
