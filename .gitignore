@@ -86,3 +86,5 @@ postgres-data/
 **/xcuserdata/
 
 **/build/
+
+src/bridge/

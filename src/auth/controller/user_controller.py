@@ -26,7 +26,8 @@ def getUser(username):
 
 def addUserToQueue(user):
     user.password = get_password_hash(user.password)
-    producer.produce("user", user.json())
-    producer.flush()
+    database = client.get_database("Hermes")
+    users = database.get_collection("User")
+    users.insert_one(user)
     return {"message": "User creation is being processed"}
 
