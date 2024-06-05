@@ -13,7 +13,7 @@ def create_user(user: UserWithPermission):
     return addUserToQueue(user)
 
 
-@router.get("/login/")
+@router.post("/login/")
 def login(user: User):
     userDb = getUser(user.username)
     if not user:
@@ -23,7 +23,7 @@ def login(user: User):
         return {"token": token}
     raise HTTPException(status_code=400, detail="Invalid password")
 
-@router.get("/getPermission/")
+@router.post("/getPermission/")
 def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
     if permission is None:
         raise HTTPException(status_code=400, detail="Permission not provided")
