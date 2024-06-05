@@ -30,7 +30,7 @@ def addUserToQueue(user:UserWithPermission):
     user.password = get_password_hash(user.password)
     database = client.get_database("Hermes")
     users = database.get_collection("User")
-    userJson = bson.BSON({"username":user.username,"password":user.password})
+    userJson = {"username":user.username,"password":user.password,"permission":user.permission}
     users.insert_one(userJson)
     return {"message": "User creation is being processed"}
 
