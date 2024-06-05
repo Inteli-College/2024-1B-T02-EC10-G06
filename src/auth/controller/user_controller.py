@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from middleware.auth import get_password_hash
+from models.user import *
 
 load_dotenv()
 
@@ -24,10 +25,11 @@ def getUser(username):
     user = user[0]
     return user
 
-def addUserToQueue(user):
+def addUserToQueue(user:UserWithPermission):
     user.password = get_password_hash(user.password)
     database = client.get_database("Hermes")
     users = database.get_collection("User")
-    users.insert_one(user)
+    userJson = {"username":user.username,"password":user.password}
+    users.insert_one(userJson)
     return {"message": "User creation is being processed"}
 
