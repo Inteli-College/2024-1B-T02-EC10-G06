@@ -7,7 +7,7 @@ from datetime import timedelta
 router = APIRouter()
 
 
-@router.get("/createUser/")
+@router.post("/createUser/")
 def create_user(user: UserWithPermission):
     
     return addUserToQueue(user)
