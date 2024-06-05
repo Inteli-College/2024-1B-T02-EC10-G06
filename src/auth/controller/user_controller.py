@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 from middleware.auth import get_password_hash
 from models.user import *
+import bson
 
 load_dotenv()
 
@@ -29,7 +30,7 @@ def addUserToQueue(user:UserWithPermission):
     user.password = get_password_hash(user.password)
     database = client.get_database("Hermes")
     users = database.get_collection("User")
-    userJson = {"username":user.username,"password":user.password}
+    userJson = bson.BSON({"username":user.username,"password":user.password})
     users.insert_one(userJson)
     return {"message": "User creation is being processed"}
 
