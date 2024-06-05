@@ -12,7 +12,7 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "descrition": raw_ticket.descrition,
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
-            "status": "on progress",
+            "status": "open",
             "owner_id":raw_ticket.owner_id
             }
 
@@ -20,8 +20,8 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
     # producer.flush()
     ticket_id = db.insert_one(ticket).inserted_id
     ticket['id'] = str(ticket_id)
-    ticket["update"] = f"Created"
-    return ticket
+    
+    return {"backend":"Created"}
     
 
 def all_tickets(db:Collection):
