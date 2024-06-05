@@ -13,6 +13,7 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
             "status": "on progress",
+            "owner_id":raw_ticket.owner_id
             }
 
     # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )

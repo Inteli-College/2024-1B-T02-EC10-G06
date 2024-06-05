@@ -247,6 +247,7 @@ class AdmUser(HttpUser):
         self.ticket_istance = ticket_istance
         self.medicine_istance = medicine_istance
         self.pyxi_istance = pyxi_istance
+        
 
 
     # @task

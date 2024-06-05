@@ -14,10 +14,12 @@ class TicketBase(BaseModel):
 class TicketCreate(BaseModel): 
     idPyxis: str
     descrition: str
+    owner_id: str
     body: list
 
 class TicketCreateResponse(TicketBase): 
     update: str
+    
 
 
 class TicketResponse(BaseModel): 
