@@ -124,8 +124,8 @@ class MinhaPrimeiraTela extends StatelessWidget {
                       onPressed: () async {
                         Navigator.push(
                           context,
-                          //MaterialPageRoute(builder: (context) => const QRCodePage()),
-                          MaterialPageRoute(builder: (context) => PyxisPedidoPage(qrCode: '665f829c0ff12c8077ab5282')),
+                          MaterialPageRoute(builder: (context) => const QRCodePage()),
+                          //MaterialPageRoute(builder: (context) => PyxisPedidoPage(qrCode: '665f829c0ff12c8077ab5282')),
                         );
                       },
                     ),

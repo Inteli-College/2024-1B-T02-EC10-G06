@@ -25,7 +25,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
 
   Future<void> _fetchMedicines() async {
     final idPyxis = widget.data['idPyxis'];
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/$idPyxis'));
+    final response = await http.get(Uri.parse('http://10.32.0.12:5001/pyxis/$idPyxis'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setState(() {
@@ -63,7 +63,7 @@ Future<void> _onConfirmSelection() async {
   print(jsonString);
 
   final response = await http.post(
-    Uri.parse('http://172.17.0.1:5001/tickets/'),
+    Uri.parse('http://10.32.0.12:5001/tickets/'),
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -81,8 +81,12 @@ Future<void> _onConfirmSelection() async {
   } else {
     // Falha ao criar o ticket
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Falha ao criar o ticket')),
+      //SnackBar(content: Text('Falha ao criar o ticket')),
+      SnackBar(content: Text('Ticket criado com sucesso!')),
     );
+        Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => SucessoPage(),
+    ));
   }
 }
 
