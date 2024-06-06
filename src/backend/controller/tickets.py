@@ -12,6 +12,8 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "descrition": raw_ticket.descrition,
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
+            "fixed_at":"none",
+            "operator_id":"none",
             "status": "open",
             "owner_id":raw_ticket.owner_id
             }
