@@ -23,7 +23,7 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
     ticket_id = db.insert_one(ticket).inserted_id
     ticket['id'] = str(ticket_id)
     
-    return {"msg":"Created"}
+    return ticket
     
 
 def all_tickets(db:Collection):
