@@ -1,4 +1,4 @@
-from locust import HttpUser, task, between
+from locust import HttpUser, task, between, TaskSet
 from entidades.pyxi import Pyxi
 from entidades.medicine import Medicine
 from entidades.ticket import Ticket
@@ -238,7 +238,9 @@ medicine_istance = Medicine(medicines=[
 { "descrition": "Relaxante muscular para espasmos musculares", "name": "Ciclobenzaprina" },
 { "descrition": "Antifibrinolítico para sangramento excessivo", "name": "Ácido Tranexâmico" }
 ])
-ticket_istance = Ticket()
+ticket_istance = Ticket(
+    
+)
 
 
 class AdmUser(HttpUser):
@@ -289,18 +291,18 @@ class AdmUser(HttpUser):
     # def get_tickets(self):
     #     self.client.get("/tickets/")
 
-    @task
+    @task(100)
     def get_medicines(self):
         self.client.get("medicines/")
         
         
 
-    @task
+    @task(100)
     def get_pyxis(self):
         self.client.get("pyxis/")
                 
 
-    @task
+    @task(70)
     def create_medicine(self):
         medicine = self.medicine_istance.get_random_to_create() # Adicionar o Pegar a resposta da operação para salvar o ID
         if medicine == None:
@@ -309,7 +311,7 @@ class AdmUser(HttpUser):
         rawData = response.json()
         self.medicine_istance.add_medicine(id=rawData["id"])
 
-    @task
+    @task(70)
     def create_pyxis(self):
         pyxi = self.pyxi_istance.get_random_pyxi() # Adicionar o Pegar a resposta da operação para salvar o ID
         if pyxi == None:
@@ -320,23 +322,34 @@ class AdmUser(HttpUser):
         
         
 
-    @task
+    @task(90)
     def get_medicine(self):
         self.client.get(f"medicines/{medicine_istance.get_random_id()}")
 
-    @task
+    @task(100)
     def get_specific_pyxi(self):
         self.client.get(f"pyxis/{pyxi_istance.get_random_id()}")
 
-    @task
+    @task(30)
     def update_medicine(self):
         self.client.put(f"medicines/{medicine_istance.get_random_id()}", json=medicine_istance.get_random_medicine())
 
-    # @task
-    # def delete_medicine(self):
-    #     self.client.delete(f"medicines/{medicine_istance.get_random_id()}")
+    @task(10)
+    def delete_medicine(self):
+        id = medicine_istance.get_random_id()
+        response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+        rawData = response.json()
+        recycling_medicine = {
+            "descrition": rawData["descrition"],
+            "name": rawData["name"]
+        }
+        medicine_istance.add_to_create(recycling_medicine)
+        self.client.delete(f"medicines/{id}")
+        medicine_istance.delete_medicine(id)
+        
 
-    @task
+
+    @task(10)
     def update_pyxi(self):
         id = pyxi_istance.get_random_id()
         response = self.client.get(f"pyxis/{id}")

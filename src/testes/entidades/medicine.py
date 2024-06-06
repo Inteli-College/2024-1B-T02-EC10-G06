@@ -11,6 +11,9 @@ class Medicine():
         if len(self.medicines_id) < len(self.medicines):
             self.medicines_id.append(id) # Lista de IDs dos medicines_id
 
+    def add_to_create(self, medicine):
+        self.to_create.append(medicine)
+
     def delete_medicine(self, id):
         self.medicines_id.remove(id) # Lista de IDs dos medicines_id
 

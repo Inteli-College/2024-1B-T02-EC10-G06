@@ -59,7 +59,7 @@ async def check_medicines_pyxis(medicine_id, db):
         else:
             print("Nenhum documento atualizado. Verifique se o ID do medicamento está correto.")
     
-    print("Pyxis: ", raw_pyxis)
+    #print("Pyxis: ", raw_pyxis)
     return True
     
 
