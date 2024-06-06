@@ -369,6 +369,3 @@ class AdmUser(HttpUser):
     # @task
     # def delete_pyxi(self):
     #     self.client.delete(f"pyxis/{pyxi_istance.get_random_id()}")
-
-
-# Henry Ford | Steve Jobs sobre perguntar o que o usuário quer.

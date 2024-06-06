@@ -27,7 +27,7 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", response_model=TicketResponse)
 def create_ticket(ticket: TicketCreate):
     ticket = ticket_created(producer,collection, ticket) # Producer change Collection
     return ticket
