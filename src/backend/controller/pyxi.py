@@ -27,6 +27,8 @@ def all_pyxis(db:Collection):
     
 
 def one_pyxi(db:Collection, pyxi_id):
+    if not ObjectId.is_valid(pyxi_id): # Verifica se o id é válido
+        return None
     raw_pyxis = db.find_one( {"_id": ObjectId(pyxi_id)} )
     if raw_pyxis is None :
         return None

@@ -9,10 +9,10 @@ class TicketBase(BaseModel):
     descrition: str
     body: list
     created_at: datetime
-    fixed_at: datetime | None
+    fixed_at: str # Trocar por um datetime 
     status: str
     owner_id: str
-    operator_id: str
+    operator_id: str 
     
 
 class TicketCreate(BaseModel): 
@@ -27,4 +27,4 @@ class TicketCreate(BaseModel):
 
 
 class TicketResponse(BaseModel): 
-    msg: dict
+    msg: str

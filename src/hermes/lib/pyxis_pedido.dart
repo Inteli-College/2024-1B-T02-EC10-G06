@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'med_selecao.dart';
 import 'erro.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class Task {
   final String id;
@@ -43,7 +45,8 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   }
 
   Future<void> _consultarPyxis() async {
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
+    print('${dotenv.env['API_URL']}');
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         setState(() {
