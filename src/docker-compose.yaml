@@ -1,12 +1,12 @@
 version: '2'
 services:
-  bridge:
-    image: rabbitmq:latest
-    volumes:
-      - $PWD/bridge:/var/lib/rabbitmq 
-    ports:
-      - "5672:5672"
-    container_name: bridge
+  # bridge:
+  #   image: rabbitmq:latest
+  #   volumes:
+  #     - $PWD/bridge:/var/lib/rabbitmq 
+  #   ports:
+  #     - "5672:5672"
+  #   container_name: bridge
 
   # redis:
   #   container_name: redis_server
@@ -28,6 +28,7 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     container_name: backend
+    restart: on-failure
     ports:
       - "5001:5001"
 
@@ -48,13 +49,13 @@ services:
   #   ports:
   #     - "8003:8003"
 
-  auth:
-    build:
-      context: .
-      dockerfile: auth/Dockerfile
-    container_name: auth
-    ports:
-      - "8001:8001"
+  # auth:
+  #   build:
+  #     context: .
+  #     dockerfile: auth/Dockerfile
+  #   container_name: auth
+  #   ports:
+  #     - "8001:8001"
     
   gateway:
     build: ./gateway
