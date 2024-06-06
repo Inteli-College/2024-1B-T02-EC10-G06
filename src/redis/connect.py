@@ -8,7 +8,7 @@ from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 from redis.commands.search.query import Query
 
 
-class redis_interface():
+class Redis_interface():
     def __init__(self, urls_host="localhost") -> None:
         self.engnie = redis.Redis(
         host=urls_host, 
@@ -17,21 +17,22 @@ class redis_interface():
         decode_responses=True,
         )
 
-        self.index = {}
+        # Reponsável por amarzenar o indexador
+        self.index = None
     
     def index_create(self, tag_name, schema):
-        if  tag_name in self.index:
-            self.index[tag_name] = self.engnie.ft(f"idx:{tag_name}")
+        if  self.index == None:
+            self.index = self.engnie.ft(f"idx:{tag_name}")
             print("Gerou o indexador: ",tag_name)
 
             # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez.
-            self.index[tag_name].create_index(
+            self.index.create_index(
                 schema,
                 definition=IndexDefinition(prefix=[f"{tag_name}:"], index_type=IndexType.JSON),
                 )
         print("Index já criado")
     
-    def set_value(self,value, key):
+    def set_value(self,key,value):
         self.engnie.json().set(f"{key}", Path.root_path(), value)
 
     def set_values(self, tag_name, values):
@@ -39,9 +40,9 @@ class redis_interface():
             self.engnie.json().set(f"{tag_name}:{bid}", Path.root_path(), value)
     
     def get_value(self, tag_name, query="*") -> dict:
-        if tag_name not in self.index:
-            return {"Erro":f"{tag_name} indexador não encontrado."}
-        res = self.index[tag_name].search(Query(f"{query}"))
+        if self.index == None:
+            raise {"Erro":f"{tag_name} indexador não encontrado."}
+        res = self.index.search(Query(f"{query}"))
         return res
 
 
@@ -61,77 +62,16 @@ remedios = [
     "model": "Dipirona 30 unidades",
     "description": "Não há mais nem um",
     "urgencia":"media"
-    },
-    {
-        "brand": "Velorim",
-        "model": "Dipirona 30 unidades",
-        "description": "Não há mais nem um",
-         "urgencia":"alta"
-    },
-    {
-        "brand": "Velorim",
-        "model": "Dipirona 30 unidades",
-        "description": "Não há mais nem um",
-         "urgencia":"media"
     }
 ]
 
-bicycles = [
-    {
-        "brand": "Bicyk",
-        "model": "Hillcraft",
-        "price": 1200,
-        "description": (
-            "Kids want to ride with as little weight as possible."
-            " Especially on an incline! They may be at the age "
-            'when a 27.5" wheel bike is just too clumsy coming '
-            'off a 24" bike. The Hillcraft 26 is just the solution'
-            " they need!"
-        ),
-        "condition": "used",
-    },
-    {
-        "brand": "Nord",
-        "model": "Chook air 5",
-        "price": 815,
-        "description": (
-            "The Chook Air 5  gives kids aged six years and older "
-            "a durable and uberlight mountain bike for their first"
-            " experience on tracks and easy cruising through forests"
-            " and fields. The lower  top tube makes it easy to mount"
-            " and dismount in any situation, giving your kids greater"
-            " safety on the trails."
-        ),
-        "condition": "used",
-    },
-    {
-        "brand": "Eva",
-        "model": "Eva 291",
-        "price": 3400,
-        "description": (
-            "The sister company to Nord, Eva launched in 2005 as the"
-            " first and only women-dedicated bicycle brand. Designed"
-            " by women for women, allEva bikes are optimized for the"
-            " feminine physique using analytics from a body metrics"
-            " database. If you like 29ers, try the Eva 291. It's a "
-            "brand new bike for 2022.. This full-suspension, "
-            "cross-country ride has been designed for velocity. The"
-            " 291 has 100mm of front and rear travel, a superlight "
-            "aluminum frame and fast-rolling 29-inch wheels. Yippee!"
-        ),
-        "condition": "used",
-    },
-]
-
-schema = (
-    TextField("$.brand", as_name="brand"),
-    TextField("$.model", as_name="model"),
-    TextField("$.description", as_name="description"),
-    NumericField("$.price", as_name="price"),
-    TagField("$.condition", as_name="condition"),
-)
-
-
+# schema redis 
+schema = {
+    "brand": TextField(),
+    "model": TextField(),
+    "description": TextField(),
+    "urgencia": TextField(),
+}
 
 
 # # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez

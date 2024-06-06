@@ -35,8 +35,11 @@ def all_tickets(db:Collection):
             "idPyxis": str(document["idPyxis"]),
             "descrition": document["descrition"],
             "body": document["body"],
+            "fixed_at": document["fixed_at"],
             "created_at": document["created_at"],
             "status": document["status"],
+            "owner_id": document["owner_id"],
+            "operator_id": document["operator_id"]
         })
    # print("Toma ae os tickets: ", tickets)
     return tickets

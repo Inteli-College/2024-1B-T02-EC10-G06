@@ -9,7 +9,7 @@ class TicketBase(BaseModel):
     descrition: str
     body: list
     created_at: datetime
-    fixed_at: datetime
+    fixed_at: datetime | None
     status: str
     owner_id: str
     operator_id: str
