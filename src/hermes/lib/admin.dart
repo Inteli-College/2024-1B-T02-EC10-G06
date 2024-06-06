@@ -42,10 +42,10 @@ class _DashboardPageState extends State<DashboardPage> {
           "descrition": "Sample ticket 1",
           "body": ["Item 1", "Item 2"],
           "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "",
+          "fixed_at": "2022-01-01T00:00:00Z",
           "status": "open",
           "owner_id": "1",
-          "operator_id": ["1", "2"]
+          "operator_id": "2"
         },
         {
           "idPyxis": "2",
@@ -55,17 +55,17 @@ class _DashboardPageState extends State<DashboardPage> {
           "fixed_at": "2022-01-01T00:00:00Z",
           "status": "closed",
           "owner_id": "2",
-          "operator_id": ["2", "3"]
+          "operator_id": "3"
         },
         {
           "idPyxis": "3",
           "descrition": "Sample ticket 3",
           "body": ["Item 1", "Item 2"],
           "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "",
+          "fixed_at": "2022-01-01T00:00:00Z",
           "status": "open",
           "owner_id": "3",
-          "operator_id": ["3", "1"]
+          "operator_id": "1"
         }
       ]
       ''';
@@ -149,6 +149,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Text('Ticket Status'),
           SizedBox(
             height: 200,
+            width: 200,
             child: BarChart(
               BarChartData(
                 barGroups: [
@@ -186,6 +187,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Text('Status by Owner'),
           SizedBox(
             height: 200,
+            width: 200,
             child: BarChart(
               BarChartData(
                 barGroups: [
@@ -224,6 +226,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Text('Number of Senders per Ticket'),
           SizedBox(
             height: 200,
+            width: 200,
             child: BarChart(
               BarChartData(
                 barGroups: [
@@ -259,12 +262,13 @@ class _DashboardPageState extends State<DashboardPage> {
           Text('Proportion of Tickets by Status'),
           SizedBox(
             height: 200,
+            width: 200,
             child: PieChart(
               PieChartData(
                 sections: [
                   PieChartSectionData(
                     value: openTickets.toDouble(),
-                    color: Colors.blue,
+                    color: Colors.redAccent,
                     title: 'open',
                   ),
                   PieChartSectionData(
@@ -403,13 +407,13 @@ class _DashboardPageState extends State<DashboardPage> {
               const SizedBox(height: 20),
               const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 250, // Altura fixa para a rolagem horizontal
+                height: 300,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
                     _buildStatusBarChart(_tickets),
                     _buildStatusByOwnerChart(_tickets),
-                    _buildSenderCountChart(_tickets),
+                    //_buildSenderCountChart(_tickets),
                     _buildStatusPieChart(_tickets),
                   ],
                 ),

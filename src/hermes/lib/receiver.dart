@@ -23,7 +23,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('${dotenv.env["APII_URL"]}/tickets'));
+    final response = await http.get(Uri.parse('{dotenv.env["APII_URL"]}/tickets'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -278,17 +278,17 @@ class _TicketCardState extends State<TicketCard> {
                   child: const Text('Encerrar Ticket'),
                 ),
               ) : Container(),
-                            const SizedBox(height: 16),
-              widget.isExpanded ? Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: _confirmOperate,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow,
-                  ),
-                  child: const Text('Operar Ticket'),
-                ),
-              ) : Container(),
+              // const SizedBox(height: 16),
+              // widget.isExpanded ? Align(
+              //   alignment: Alignment.centerRight,
+              //   child: ElevatedButton(
+              //     onPressed: _confirmOperate,
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.yellow,
+              //     ),
+              //     child: const Text('Operar Ticket'),
+              //   ),
+              // ) : Container(),
             ],
           ),
         ),
