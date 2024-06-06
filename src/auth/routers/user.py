@@ -35,7 +35,7 @@ def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionReq
     else:
         raise HTTPException(status_code=401, detail="Invalid permission")
     
-@router.get("getPermission")
+@router.get("/getPermission")
 def validate_permession(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
     if token is None:
         raise HTTPException(status_code=400, detail="token not provided")
@@ -46,4 +46,7 @@ def validate_permession(token: str = Depends(oauth2_scheme),permission: Permissi
         return e
     
     return {"permission":tokenPermission}
+
+
+
     
