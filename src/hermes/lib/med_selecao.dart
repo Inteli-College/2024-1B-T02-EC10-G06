@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'sucesso.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MedSelecaoPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -24,13 +25,20 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
   }
 
   Future<void> _fetchMedicines() async {
+    print('${dotenv.env['API_URL']}');
     final idPyxis = widget.data['idPyxis'];
-    final response = await http.get(Uri.parse('http://10.32.0.12:5001/pyxis/$idPyxis'));
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/pyxis/$idPyxis'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setState(() {
-        _medicines = List<Map<String, dynamic>>.from(data['medicines']);
-        _medicines.sort((a, b) => a['name'].compareTo(b['name']));
+        _medicines = List<Map<String, dynamic>>.from(data['medicines'])
+            .where((medicine) => medicine.containsKey('id') && medicine.containsKey('name'))
+            .toList();
+        _medicines.sort((a, b) {
+          final nameA = a['name'] ?? '';
+          final nameB = b['name'] ?? '';
+          return nameA.compareTo(nameB);
+        });
         _selectedMedicines = {for (var med in _medicines) med['id']: false};
         _isLoading = false;
       });
@@ -45,51 +53,48 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     });
   }
 
-Future<void> _onConfirmSelection() async {
-  final selectedMedicines = _selectedMedicines.entries
-      .where((entry) => entry.value)
-      .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key)['name'])
-      .toList();
+  Future<void> _onConfirmSelection() async {
+    final selectedMedicines = _selectedMedicines.entries
+        .where((entry) => entry.value)
+        .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key))
+        .toList();
 
-  final updatedData = {
-    ...widget.data,
-    'body': selectedMedicines,
-  };
+    final ticketData = {
+      'idPyxis': widget.data['idPyxis'],
+      'owner_id': '3', // Definido fixo conforme solicitado
+      'descrition': widget.data['descrition'],
+      'body': selectedMedicines,
+    };
 
-  // Converte o mapa para uma string JSON formatada com identação
-  String jsonString = JsonEncoder.withIndent('  ').convert(updatedData);
+    // Converte o mapa para uma string JSON formatada com indentação
+    String jsonString = JsonEncoder.withIndent('  ').convert(ticketData);
 
-  // Imprime a string JSON no terminal
-  print(jsonString);
+    // Imprime a string JSON no terminal
+    print(jsonString);
 
-  final response = await http.post(
-    Uri.parse('http://10.32.0.12:5001/tickets/'),
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(updatedData),
-  );
-
-  if (response.statusCode == 200) {
-    // Sucesso ao criar o ticket
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Ticket criado com sucesso!')),
+    final response = await http.post(
+      Uri.parse('${dotenv.env['API_URL']}/tickets/'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(ticketData),
     );
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => SucessoPage(),
-    ));
-  } else {
-    // Falha ao criar o ticket
-    ScaffoldMessenger.of(context).showSnackBar(
-      //SnackBar(content: Text('Falha ao criar o ticket')),
-      SnackBar(content: Text('Ticket criado com sucesso!')),
-    );
-        Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => SucessoPage(),
-    ));
+
+    if (response.statusCode == 200) {
+      // Sucesso ao criar o ticket
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ticket criado com sucesso!')),
+      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SucessoPage(),
+      ));
+    } else {
+      // Falha ao criar o ticket
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Falha ao criar o ticket')),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

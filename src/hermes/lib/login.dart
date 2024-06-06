@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import "package:hermes/functions.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
+      print('${dotenv.env['API_URL']}/login/');
       final response = await http.post(
         Uri.parse('${dotenv.env['API_URL']}/login/'),
         body: jsonEncode({
@@ -36,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
         }),
         headers: {'Content-Type': 'application/json'},
       );
-
       setState(() {
         _isLoading = false;
       });
@@ -46,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
         saveToken(token);
         final data = jsonDecode(response.body);
         print('Login successful: $token');
-
         var permissionResponse = await http.get(
           Uri.parse('${dotenv.env['API_URL']}/getPermission/'),
           headers: {
