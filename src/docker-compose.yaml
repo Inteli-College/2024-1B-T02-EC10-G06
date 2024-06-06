@@ -49,13 +49,13 @@ services:
   #   ports:
   #     - "8003:8003"
 
-  # auth:
-  #   build:
-  #     context: .
-  #     dockerfile: auth/Dockerfile
-  #   container_name: auth
-  #   ports:
-  #     - "8001:8001"
+  auth:
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+    container_name: auth
+    ports:
+      - "8001:8001"
     
   gateway:
     build: ./gateway
