@@ -12,13 +12,18 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
             "descrition": raw_ticket.descrition,
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
-            "status": "on progress",
+            "fixed_at":"none",
+            "operator_id":"none",
+            "status": "open",
+            "owner_id":raw_ticket.owner_id
             }
 
-    val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
-    producer.flush()
-    ticket["update"] = str(val)
-    return ticket
+    # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
+    # producer.flush()
+    ticket_id = db.insert_one(ticket).inserted_id
+    ticket['id'] = str(ticket_id)
+    
+    return {"msg":"Created"}
     
 
 def all_tickets(db:Collection):

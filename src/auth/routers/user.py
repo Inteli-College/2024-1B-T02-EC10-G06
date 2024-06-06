@@ -7,13 +7,13 @@ from datetime import timedelta
 router = APIRouter()
 
 
-@router.get("/createUser/")
+@router.post("/createUser/")
 def create_user(user: UserWithPermission):
     
     return addUserToQueue(user)
 
 
-@router.get("/login/")
+@router.post("/login/")
 def login(user: User):
     userDb = getUser(user.username)
     if not user:
@@ -23,7 +23,7 @@ def login(user: User):
         return {"token": token}
     raise HTTPException(status_code=400, detail="Invalid password")
 
-@router.get("/getPermission/")
+@router.post("/validatePermission/")
 def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
     if permission is None:
         raise HTTPException(status_code=400, detail="Permission not provided")
@@ -34,4 +34,19 @@ def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionReq
         return {"message": "Token is valid"}
     else:
         raise HTTPException(status_code=401, detail="Invalid permission")
+    
+@router.get("/getPermission")
+def validate_permession(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
+    if token is None:
+        raise HTTPException(status_code=400, detail="token not provided")
+    
+    try:
+        user,tokenPermission = validate_token(token)
+    except Exception as e:
+        return e
+    
+    return {"permission":tokenPermission}
+
+
+
     

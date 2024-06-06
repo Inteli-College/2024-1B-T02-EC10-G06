@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hermes/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hermes/receiver.dart';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/qr_code.dart';
 import 'package:hermes/pyxis_pedido.dart';
@@ -100,13 +101,31 @@ class MinhaPrimeiraTela extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     ElevatedButton.icon(
+                      icon: const Icon(Icons.message),
+                      label: const Text('Receiver_View'),
+                      onPressed: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ReceiverPage()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ElevatedButton.icon(
                       icon: const Icon(Icons.camera_alt),
                       label: const Text('Scan QR Code'),
                       onPressed: () async {
                         Navigator.push(
                           context,
                           //MaterialPageRoute(builder: (context) => const QRCodePage()),
-                          MaterialPageRoute(builder: (context) => PyxisPedidoPage(qrCode: '1')),
+                          MaterialPageRoute(builder: (context) => PyxisPedidoPage(qrCode: '665f829c0ff12c8077ab5282')),
                         );
                       },
                     ),

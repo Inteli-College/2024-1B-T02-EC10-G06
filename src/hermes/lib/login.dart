@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hermes/qr_code.dart';
+import 'package:hermes/receiver.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
-import 'package:hermes/receiver.dart';
+import "package:hermes/functions.dart";
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/login'),
+        Uri.parse('${dotenv.env['API_URL']}/login/'),
         body: jsonEncode({
           'username': _usernameController.text,
           'password': _passwordController.text,
@@ -40,25 +42,54 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        var token = await getToken(response);
+        saveToken(token);
         final data = jsonDecode(response.body);
-        print('Login successful: $data');
-        NotificationService.showNotification('Login Sucessful!', 'Welcome back, ${_usernameController.text}!');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
+        print('Login successful: $token');
+
+        var permissionResponse = await http.get(
+          Uri.parse('${dotenv.env['API_URL']}/getPermission/'),
+          headers: {
+            'Authorization': "Bearer $token",
+            'Content-Type': 'application/json',
+          },
+        );
+        var permissionData = jsonDecode(permissionResponse.body);
+        print('Permission: $permissionData');
+        int permission = permissionData['permission'];
+        NotificationService.showNotification(
+            'Login Sucessful!', 'Welcome back, ${_usernameController.text}!');
+        Widget page;
+        if (permission == 2) {
+          page = const DashboardPage();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => page));
+        }
+        if (permission == 0) {
+          page = const QRCodePage();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => page));
+        }
+        if (permission == 1) {
+          page = const ReceiverPage();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => page));
+        }
       } else {
         // Handle login error
         setState(() {
           _errorMessage = 'Invalid username or password';
         });
       }
-    
     } on Exception catch (e) {
-        print('Failed to login: $e');
-        setState(() {
-          _isLoading = false;
-          _errorMessage = 'Failed to login';
-          // APAGAR DEPOIS
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
-        });
+      print('Failed to login: $e');
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Failed to login';
+        // APAGAR DEPOIS
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const DashboardPage()));
+      });
     }
   }
 
@@ -82,10 +113,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text(
                     'Gerenciamento de medicamentos com qualidade dos deuses',
                     style: TextStyle(
-                      fontSize: 20.0, // Ajuste o tamanho da fonte conforme necessário
+                      fontSize:
+                          20.0, // Ajuste o tamanho da fonte conforme necessário
                       fontWeight: FontWeight.w400, // Fonte mais leve
                     ),
-                    textAlign: TextAlign.center, // Centraliza o texto dentro do Text widget
+                    textAlign: TextAlign
+                        .center, // Centraliza o texto dentro do Text widget
                   ),
                 ),
               ),

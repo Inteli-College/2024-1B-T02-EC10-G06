@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models.ticket import TicketBase, TicketCreate, TicketCreateResponse, TicketResponse
+from models.ticket import TicketBase, TicketCreate, TicketResponse
 from controller.tickets import ticket_created , all_tickets, one_ticket, delete_response, update_response
 
 
@@ -27,7 +27,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=TicketCreateResponse)
+@router.post("/")
 def create_ticket(ticket: TicketCreate):
     ticket = ticket_created(producer,collection, ticket) # Producer change Collection
     return ticket

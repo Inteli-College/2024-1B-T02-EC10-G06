@@ -1,21 +1,28 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'med_selecao.dart';
+import 'erro.dart';
 
 class Task {
   final String id;
   final String description;
+
   Task({required this.id, required this.description});
+
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] ?? '',
-      description: json['description'] ?? '',
+      description: json['descrition'] ?? '', // Certifique-se de que o campo esteja correto
     );
   }
 }
+
 class PyxisPedidoPage extends StatefulWidget {
   final String qrCode;
+
   const PyxisPedidoPage({Key? key, required this.qrCode}) : super(key: key);
+
   @override
   _PyxisPedidoPageState createState() => _PyxisPedidoPageState();
 }
@@ -28,7 +35,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   final List<String> _pedidoTypes = ['Medicamento', 'Utilitário', 'Ambos'];
   String? _selectedPedidoType;
   final TextEditingController _descriptionController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -38,107 +45,121 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   Future<void> _consultarPyxis() async {
     final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
-      setState(() {
-        _rawJson = response.body;
-        final Map<String, dynamic> data = json.decode(response.body);
-        _tasks = [Task.fromJson(data)];
-        _isLoading = false;
-      });
+      if (response.body.isNotEmpty) {
+        setState(() {
+          _rawJson = utf8.decode(response.bodyBytes); // Decodifica a resposta como UTF-8
+          final Map<String, dynamic> data = json.decode(_rawJson);
+          _tasks = [Task.fromJson(data)];
+          _isLoading = false;
+        });
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+        ));
+      }
     } else {
-      throw Exception('Failed to load task');
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
+      ));
     }
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Pyxis Pedido'),
-    ),
-    body: Center(
-      child: _isLoading
-          ? CircularProgressIndicator()
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0), // Personalizando o arredondamento dos cantos
-                  color: Colors.grey[200], // Cor de fundo do container
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Pyxis ID:',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
+  void _onNextPressed() {
+    final Map<String, dynamic> jsonToSend = {
+      'idPyxis': widget.qrCode,
+      'descrition': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
+    };
+    print(jsonToSend);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MedSelecaoPage(data: jsonToSend),
+      ),
+    );
+  }
 
-                      SizedBox(height: 8),
-                      Text(
-                        widget.qrCode,
-                        style: TextStyle(fontSize: 18),
-                      ),
-
-                      Text(
-                        'Tipo de Pedido:',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      DropdownButton<String>(
-                        value: _selectedPedidoType,
-                        hint: Text('Selecione o tipo de pedido'),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedPedidoType = newValue;
-                          });
-                        },
-                        items: _pedidoTypes.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-
-                      SizedBox(height: 16),
-                      Text(
-                        'Descrição:',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TextField(
-                        controller: _descriptionController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Digite a descrição do pedido',
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Pyxis Pedido'),
+      ),
+      body: Center(
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.grey[200],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Pyxis',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                      ),
-
-                      SizedBox(height: 16),
-                      Expanded( // Adicionado Expanded para o botão ocupar o espaço disponível
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Ação do botão "Próximo"
-
-
-                              },
-                              child: Text('Próximo'),
+                        const SizedBox(height: 8),
+                        Text(
+                          _tasks.isNotEmpty ? _tasks[0].description : 'Sem descrição',
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        const Text(
+                          'Tipo de Pedido:',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        DropdownButton<String>(
+                          value: _selectedPedidoType,
+                          hint: const Text('Selecione o tipo de pedido'),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedPedidoType = newValue;
+                            });
+                          },
+                          items: _pedidoTypes.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Descrição:',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Digite a descrição do pedido',
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: _onNextPressed,
+                                child: const Text('Próximo'),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-    ),
-  );
-}
+      ),
+    );
+  }
 }

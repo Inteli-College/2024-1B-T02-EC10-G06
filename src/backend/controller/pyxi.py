@@ -16,13 +16,13 @@ def pyxi_created(producer, raw_pyxi):
 def all_pyxis(db:Collection):
     pyxis = []
     for document in db.find():
-        #print(document)
+        
         pyxis.append({
             "id":str(document["_id"]),
             "descrition": document["descrition"],
             "medicines": document["medicines"]
         })
-    #print("Toma ae os Pyxis: ", pyxis)
+    
     return pyxis
     
 

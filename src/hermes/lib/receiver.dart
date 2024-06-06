@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hermes/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,13 +23,13 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
+    final response = await http.get(Uri.parse('{dotenv.env["APII_URL"]}/tickets'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'Open').toList();
+        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
       });
     } else {
       const String mockData = '''
@@ -36,29 +37,32 @@ class _ReceiverPageState extends State<ReceiverPage> {
         {
           "idPyxis": "1",
           "descrition": "Sample ticket 1",
-          "body": ["Body content 1"],
-          "created_at": "2024-05-15T10:00:00Z",
-          "status": "Open",
-          "sender": "John Doe",
-          "receiver": "Jane Doe"
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "open",
+          "owner_id": "1",
+          "operator_id": "2"
         },
         {
           "idPyxis": "2",
           "descrition": "Sample ticket 2",
-          "body": ["Body content 2"],
-          "created_at": "2024-05-14T12:00:00Z",
-          "status": "Closed",
-          "sender": "yoda",
-          "receiver": "luke"
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "closed",
+          "owner_id": "2",
+          "operator_id": "3"
         },
         {
           "idPyxis": "3",
           "descrition": "Sample ticket 3",
-          "body": ["Body content 3"],
-          "created_at": "2024-05-13T14:00:00Z",
-          "status": "Open",
-          "sender": "JJJameson",
-          "receiver": "Peter Parker"
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "open",
+          "owner_id": "3",
+          "operator_id": "1"
         }
       ]
       ''';
@@ -66,7 +70,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
       final List<dynamic> data = jsonDecode(mockData);
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'Open').toList();
+        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
       });
     }
   }
@@ -168,7 +172,7 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _closeTicket() async {
     final response = await http.put(
-      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/Closed'),
+      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/closed'),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -180,6 +184,56 @@ class _TicketCardState extends State<TicketCard> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Erro ao encerrar ticket!'),
+        ),
+      );
+    }
+    widget.onCardTapped(widget.ticket.idPyxis);
+  }
+
+    Future<void> _confirmOperate() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Operar Ticket'),
+          content: const Text('Deseja operar o ticket?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _closeTicket();
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow,
+              ),
+              child: const Text('Operar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _operateTicket() async {
+    final response = await http.put(
+      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/on progress'),
+    );
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ticket encaminhado com sucesso!'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao encaminhar o ticket.'),
         ),
       );
     }
@@ -219,11 +273,22 @@ class _TicketCardState extends State<TicketCard> {
                 child: ElevatedButton(
                   onPressed: _confirmClose,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.red,
                   ),
                   child: const Text('Encerrar Ticket'),
                 ),
               ) : Container(),
+              // const SizedBox(height: 16),
+              // widget.isExpanded ? Align(
+              //   alignment: Alignment.centerRight,
+              //   child: ElevatedButton(
+              //     onPressed: _confirmOperate,
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Colors.yellow,
+              //     ),
+              //     child: const Text('Operar Ticket'),
+              //   ),
+              // ) : Container(),
             ],
           ),
         ),
