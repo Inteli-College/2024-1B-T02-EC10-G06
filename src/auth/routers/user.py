@@ -23,7 +23,7 @@ def login(user: User):
         return {"token": token}
     raise HTTPException(status_code=400, detail="Invalid password")
 
-@router.post("/validatePermession/")
+@router.post("/validatePermission/")
 def get_permission(token: str = Depends(oauth2_scheme),permission: PermissionRequest = None):
     if permission is None:
         raise HTTPException(status_code=400, detail="Permission not provided")
