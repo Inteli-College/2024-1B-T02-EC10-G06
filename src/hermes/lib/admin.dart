@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
       [
         {
           "idPyxis": "1",
-          "descrition": "Sample ticket 1",
+          "description": "Sample ticket 1",
           "body": ["Item 1", "Item 2"],
           "created_at": "2022-01-01T00:00:00Z",
           "fixed_at": "2022-01-01T00:00:00Z",
@@ -49,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
         },
         {
           "idPyxis": "2",
-          "descrition": "Sample ticket 2",
+          "description": "Sample ticket 2",
           "body": ["Item 1", "Item 2"],
           "created_at": "2022-01-01T00:00:00Z",
           "fixed_at": "2022-01-01T00:00:00Z",
@@ -59,7 +59,7 @@ class _DashboardPageState extends State<DashboardPage> {
         },
         {
           "idPyxis": "3",
-          "descrition": "Sample ticket 3",
+          "description": "Sample ticket 3",
           "body": ["Item 1", "Item 2"],
           "created_at": "2022-01-01T00:00:00Z",
           "fixed_at": "2022-01-01T00:00:00Z",
@@ -92,29 +92,29 @@ class _DashboardPageState extends State<DashboardPage> {
       [
         {
           "id": "1",
-          "descrition": "Sample pyxi 1",
+          "description": "Sample pyxi 1",
           "medicine": {
             "id": "1",
             "name": "Medicine 1",
-            "descrition": "Sample medicine 1"
+            "description": "Sample medicine 1"
           }
         },
         {
           "id": "2",
-          "descrition": "Sample pyxi 2",
+          "description": "Sample pyxi 2",
           "medicine": {
             "id": "2",
             "name": "Medicine 2",
-            "descrition": "Sample medicine 2"
+            "description": "Sample medicine 2"
           }
         },
         {
           "id": "3",
-          "descrition": "Sample pyxi 3",
+          "description": "Sample pyxi 3",
           "medicine": {
             "id": "3",
             "name": "Medicine 3",
-            "descrition": "Sample medicine 3"
+            "description": "Sample medicine 3"
           }
         }
       ]
@@ -317,7 +317,7 @@ class _DashboardPageState extends State<DashboardPage> {
         return DataRow(cells: [
           DataCell(Text(pyxi.id)),
           DataCell(Text(pyxi.medicine.name)),
-          DataCell(Text(pyxi.descrition)),
+          DataCell(Text(pyxi.description)),
         ]);
       }).toList(),
     );
@@ -334,7 +334,7 @@ class _DashboardPageState extends State<DashboardPage> {
         return DataRow(cells: [
           DataCell(Text(pyxi.medicine.id)),
           DataCell(Text(pyxi.medicine.name)),
-          DataCell(Text(pyxi.medicine.descrition)),
+          DataCell(Text(pyxi.medicine.description)),
         ]);
       }).toList(),
     );
@@ -458,10 +458,10 @@ class TicketCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(ticket.descrition, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(ticket.description, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               Text('ID Pyxis: ${ticket.idPyxis}'),
-              Text('Descrição: ${ticket.descrition}'),
+              Text('Descrição: ${ticket.description}'),
               Text('Status: ${ticket.status}'),
               if (isExpanded) ...[
                 Text('Conteúdo: ${ticket.body.join(', ')}'),

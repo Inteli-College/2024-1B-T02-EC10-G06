@@ -6,7 +6,7 @@ import 'dart:convert';
 class Ticket {
   final String id;
   final String idPyxis;
-  final String descrition;
+  final String description;
   final List<Medication> body;
   final DateTime createdAt;
   final String status;
@@ -15,7 +15,7 @@ class Ticket {
   Ticket({
     required this.id,
     required this.idPyxis,
-    required this.descrition,
+    required this.description,
     required this.body,
     required this.createdAt,
     required this.status,
@@ -26,7 +26,7 @@ class Ticket {
     return Ticket(
       id: json['id'],
       idPyxis: json['idPyxis'],
-      descrition: json['descrition'],
+      description: json['description'],
       body: (json['body'] as List<dynamic>)
           .map((item) => Medication.fromJson(item))
           .toList(),
@@ -40,19 +40,19 @@ class Ticket {
 class Medication {
   final String id;
   final String name;
-  final String descrition;
+  final String description;
 
   Medication({
     required this.id,
     required this.name,
-    required this.descrition,
+    required this.description,
   });
 
   factory Medication.fromJson(Map<String, dynamic> json) {
     return Medication(
       id: json['id'],
       name: json['name'],
-      descrition: json['descrition'],
+      description: json['description'],
     );
   }
 }
@@ -140,14 +140,14 @@ class TicketCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              ticket.descrition,
+              ticket.description,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
               ),
             ),
             const SizedBox(height: 8),
-            ...ticket.body.map((medication) => Text('${medication.name}: ${medication.descrition}')),
+            ...ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
             const SizedBox(height: 8),
             Text(
               'Status: ${ticket.status}',

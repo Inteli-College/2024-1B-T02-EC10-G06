@@ -9,7 +9,7 @@ from utils.kafka import ProducerController
 def ticket_created(producer:ProducerController, db, raw_ticket):
     ticket = {
             "idPyxis": raw_ticket.idPyxis,
-            "descrition": raw_ticket.descrition,
+            "description": raw_ticket.description,
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
             "fixed_at":'None',
@@ -33,7 +33,7 @@ def all_tickets(db:Collection):
         tickets.append({
             "id":str(document["_id"]),
             "idPyxis": str(document["idPyxis"]),
-            "descrition": document["descrition"],
+            "description": document["description"],
             "body": document["body"],
             "fixed_at": document["fixed_at"],
             "created_at": document["created_at"],
@@ -52,7 +52,7 @@ def one_ticket(db:Collection, ticket_id):
     tickets = {
             "id":str(raw_tickets["_id"]),
             "idPyxis": str(raw_tickets["idPyxis"]),
-            "descrition": raw_tickets["descrition"],
+            "description": raw_tickets["description"],
             "body": raw_tickets["body"],
             "created_at": raw_tickets["created_at"],
             "status": raw_tickets["status"],
@@ -75,7 +75,7 @@ def update_response(db:Collection, ticket_id, ticket_update):
         {"_id": ObjectId(ticket_id)},
         {'$set':{
             "idPyxis": ticket_update.idPyxis,
-            "descrition": ticket_update.descrition,
+            "description": ticket_update.description,
             "body": ticket_update.body
             }
         }
@@ -84,7 +84,7 @@ def update_response(db:Collection, ticket_id, ticket_update):
         "msg": {
             "id":ticket_id,
             "idPyxis": ticket_update.idPyxis,
-            "descrition": ticket_update.descrition,
+            "description": ticket_update.description,
             "body": ticket_update.body,
             "status":"Atualizado com sucesso"
         }

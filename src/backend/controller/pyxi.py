@@ -5,7 +5,7 @@ from pymongo.collection import Collection
 
 def pyxi_created(producer, raw_pyxi):
     pyxi = {
-            "descrition": raw_pyxi.descrition,
+            "description": raw_pyxi.description,
             "medicines": raw_pyxi.medicines
             }
     post_id = producer.insert_one(pyxi).inserted_id
@@ -19,7 +19,7 @@ def all_pyxis(db:Collection):
         
         pyxis.append({
             "id":str(document["_id"]),
-            "descrition": document["descrition"],
+            "description": document["description"],
             "medicines": document["medicines"]
         })
     
@@ -34,7 +34,7 @@ def one_pyxi(db:Collection, pyxi_id):
         return None
     pyxis = {
         "id":str(raw_pyxis["_id"]),
-        "descrition": raw_pyxis["descrition"],
+        "description": raw_pyxis["description"],
         "medicines": raw_pyxis["medicines"]
     }
     return pyxis
@@ -52,14 +52,14 @@ def update_response(db:Collection, pyxi_id, pyxi_update):
     db.update_one(
         {"_id": ObjectId(pyxi_id)},
         {'$set':{
-            "descrition": pyxi_update.descrition,
+            "description": pyxi_update.description,
             "medicines": pyxi_update.medicines
             }
         }
         )
     return {
         "id":str(pyxi_id),
-        "descrition": pyxi_update.descrition,
+        "description": pyxi_update.description,
         "medicines": pyxi_update.medicines,
         "status":"Atualizado com sucesso",
     }

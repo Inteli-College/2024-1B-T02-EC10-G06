@@ -21,14 +21,14 @@
         "id": {
           "type": "string"
         },
-        "descrition": {
+        "description": {
           "type": "string"
         },
         "medicines": {
           "type": "object"
         }
       },
-      "required": ["id", "descrition", "medicines"]
+      "required": ["id", "description", "medicines"]
     }
     }
     ```
@@ -45,16 +45,16 @@
     {
       "type": "object",
       "properties": {
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         },
         "medicines": {
           "type": "object",
           "title": "Medicines"
         }
       },
-      "required": ["descrition", "medicines"]
+      "required": ["description", "medicines"]
     }
     ```
 
@@ -68,14 +68,14 @@
         "id": {
           "type": "string"
         },
-        "descrition": {
+        "description": {
           "type": "string"
         },
         "medicines": {
           "type": "object"
         }
       },
-      "required": ["id", "descrition", "medicines"]
+      "required": ["id", "description", "medicines"]
     }
     ```
 
@@ -96,14 +96,14 @@
         "id": {
           "type": "string"
         },
-        "descrition": {
+        "description": {
           "type": "string"
         },
         "medicines": {
           "type": "object"
         }
       },
-      "required": ["id", "descrition", "medicines"]
+      "required": ["id", "description", "medicines"]
     }
     ```
 
@@ -198,12 +198,12 @@
         "type": "string",
         "title": "Name"
       },
-      "descrition": {
+      "description": {
         "type": "string",
-        "title": "Descrition"
+        "title": "description"
       }
     },
-    "required": ["id", "name", "descrition"]
+    "required": ["id", "name", "description"]
   }
 
     ```
@@ -224,12 +224,12 @@
           "type": "string",
           "title": "Name"
         },
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         }
       },
-      "required": ["name", "descrition"]
+      "required": ["name", "description"]
     }
 
     ```
@@ -249,12 +249,12 @@
           "type": "string",
           "title": "Name"
         },
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         }
       },
-      "required": ["id", "name", "descrition"]
+      "required": ["id", "name", "description"]
     }
     ```
 
@@ -280,12 +280,12 @@
           "type": "string",
           "title": "Name"
         },
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         }
       },
-      "required": ["id", "name", "descrition"]
+      "required": ["id", "name", "description"]
     }
     ```
 
@@ -307,12 +307,12 @@
           "type": "string",
           "title": "Name"
         },
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         }
       },
-      "required": ["name", "descrition"]
+      "required": ["name", "description"]
     }
 
     ```
@@ -332,12 +332,12 @@
           "type": "string",
           "title": "Name"
         },
-        "descrition": {
+        "description": {
           "type": "string",
-          "title": "Descrition"
+          "title": "description"
         }
       },
-      "required": ["id", "name", "descrition"]
+      "required": ["id", "name", "description"]
     }
     ```
 

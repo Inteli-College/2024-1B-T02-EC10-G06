@@ -1,6 +1,6 @@
 class Ticket {
   final String idPyxis;
-  final String descrition;
+  final String description;
   final List<String> body;
   final DateTime created_at;
   final DateTime fixed_at;
@@ -10,7 +10,7 @@ class Ticket {
 
   Ticket({
     required this.idPyxis,
-    required this.descrition,
+    required this.description,
     required this.body,
     required this.created_at,
     required this.fixed_at,
@@ -22,7 +22,7 @@ class Ticket {
   factory Ticket.fromJson(Map<String, dynamic> json) {
     return Ticket(
       idPyxis:      json['idPyxis'],
-      descrition:   json['descrition'],
+      description:   json['description'],
       body:         List<String>.from(json['body']),
       created_at:   DateTime.parse(json['created_at']),
       fixed_at:     DateTime.parse(json['fixed_at']),
@@ -36,38 +36,38 @@ class Ticket {
 class Medicine {
   final String id;
   final String name;
-  final String descrition;
+  final String description;
 
   Medicine({
     required this.id,
     required this.name,
-    required this.descrition,
+    required this.description,
   });
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
       id: json['id'],
       name: json['name'],
-      descrition: json['descrition'],
+      description: json['description'],
     );
   }
 }
 
 class Pyxi {
   final String id;
-  final String descrition;
+  final String description;
   final Medicine medicine;
 
   Pyxi({
     required this.id,
-    required this.descrition,
+    required this.description,
     required this.medicine,
   });
 
   factory Pyxi.fromJson(Map<String, dynamic> json) {
     return Pyxi(
       id: json['id'],
-      descrition: json['descrition'],
+      description: json['description'],
       medicine: Medicine.fromJson(json['medicine']),
     );
   }

@@ -635,24 +635,24 @@
             "type": "string",
             "title": "Name"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           }
         },
         "type": "object",
         "required": [
           "id",
           "name",
-          "descrition"
+          "description"
         ],
         "title": "MedicinesBase"
       },
       "MedicinesCreate": {
         "properties": {
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "name": {
             "type": "string",
@@ -661,7 +661,7 @@
         },
         "type": "object",
         "required": [
-          "descrition",
+          "description",
           "name"
         ],
         "title": "MedicinesCreate"
@@ -690,9 +690,9 @@
             "type": "string",
             "title": "Id"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "medicines": {
             "items": {},
@@ -703,16 +703,16 @@
         "type": "object",
         "required": [
           "id",
-          "descrition",
+          "description",
           "medicines"
         ],
         "title": "PyxiBase"
       },
       "PyxiCreate": {
         "properties": {
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "medicines": {
             "items": {},
@@ -722,7 +722,7 @@
         },
         "type": "object",
         "required": [
-          "descrition",
+          "description",
           "medicines"
         ],
         "title": "PyxiCreate"
@@ -751,9 +751,9 @@
             "type": "string",
             "title": "Id"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "medicines": {
             "items": {},
@@ -768,7 +768,7 @@
         "type": "object",
         "required": [
           "id",
-          "descrition",
+          "description",
           "medicines",
           "status"
         ],
@@ -780,9 +780,9 @@
             "type": "string",
             "title": "Idpyxis"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "body": {
             "items": {},
@@ -802,7 +802,7 @@
         "type": "object",
         "required": [
           "idPyxis",
-          "descrition",
+          "description",
           "body",
           "created_at",
           "status"
@@ -815,9 +815,9 @@
             "type": "string",
             "title": "Idpyxis"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "body": {
             "items": {},
@@ -828,7 +828,7 @@
         "type": "object",
         "required": [
           "idPyxis",
-          "descrition",
+          "description",
           "body"
         ],
         "title": "TicketCreate"
@@ -839,9 +839,9 @@
             "type": "string",
             "title": "Idpyxis"
           },
-          "descrition": {
+          "description": {
             "type": "string",
-            "title": "Descrition"
+            "title": "description"
           },
           "body": {
             "items": {},
@@ -865,7 +865,7 @@
         "type": "object",
         "required": [
           "idPyxis",
-          "descrition",
+          "description",
           "body",
           "created_at",
           "status",

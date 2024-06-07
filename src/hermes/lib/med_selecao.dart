@@ -62,7 +62,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     final ticketData = {
       'idPyxis': widget.data['idPyxis'],
       'owner_id': '3', // Definido fixo conforme solicitado
-      'descrition': widget.data['descrition'],
+      'description': widget.data['description'],
       'body': selectedMedicines,
     };
 
@@ -118,7 +118,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
                       ..._medicines.map((medicine) {
                         return CheckboxListTile(
                           title: Text(medicine['name']),
-                          subtitle: Text(medicine['descrition']),
+                          subtitle: Text(medicine['description']),
                           value: _selectedMedicines[medicine['id']],
                           onChanged: (bool? value) {
                             _onMedicineSelected(medicine['id'], value);

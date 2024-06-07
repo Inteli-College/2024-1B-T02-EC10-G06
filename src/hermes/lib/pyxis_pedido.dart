@@ -15,7 +15,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] ?? '',
-      description: json['descrition'] ?? '', // Certifique-se de que o campo esteja correto
+      description: json['description'] ?? '', // Certifique-se de que o campo esteja correto
     );
   }
 }
@@ -70,7 +70,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   void _onNextPressed() {
     final Map<String, dynamic> jsonToSend = {
       'idPyxis': widget.qrCode,
-      'descrition': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
+      'description': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
     };
     print(jsonToSend);
     Navigator.push(

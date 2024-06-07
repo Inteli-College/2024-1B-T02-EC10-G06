@@ -5,238 +5,238 @@ from entidades.ticket import Ticket
 
 pyxi_istance = Pyxi(pyxis=[
     {
-        "descrition": "Emergência",
+        "description": "Emergência",
         "medicines": []
     },
     {
-        "descrition": "UTI (Unidade de Terapia Intensiva)",
+        "description": "UTI (Unidade de Terapia Intensiva)",
         "medicines": []
     },
     {
-        "descrition": "Centro Cirúrgico",
+        "description": "Centro Cirúrgico",
         "medicines": []
     },
     {
-        "descrition": "Pediatria",
+        "description": "Pediatria",
         "medicines": []
     },
     {
-        "descrition": "Maternidade",
+        "description": "Maternidade",
         "medicines": []
     },
     {
-        "descrition": "Oncologia",
+        "description": "Oncologia",
         "medicines": []
     },
     {
-        "descrition": "Cardiologia",
+        "description": "Cardiologia",
         "medicines": []
     },
     {
-        "descrition": "Neurologia",
+        "description": "Neurologia",
         "medicines": []
     },
     {
-        "descrition": "Ortopedia",
+        "description": "Ortopedia",
         "medicines": []
     },
     {
-        "descrition": "Nefrologia",
+        "description": "Nefrologia",
         "medicines": []
     },
     {
-        "descrition": "Hematologia",
+        "description": "Hematologia",
         "medicines": []
     },
     {
-        "descrition": "Reumatologia",
+        "description": "Reumatologia",
         "medicines": []
     },
     {
-        "descrition": "Infectologia",
+        "description": "Infectologia",
         "medicines": []
     },
     {
-        "descrition": "Imunologia",
+        "description": "Imunologia",
         "medicines": []
     },
     {
-        "descrition": "Pneumologia",
+        "description": "Pneumologia",
         "medicines": []
     },
     {
-        "descrition": "Anestesiologia",
+        "description": "Anestesiologia",
         "medicines": []
     },
     {
-        "descrition": "Hepatologia",
+        "description": "Hepatologia",
         "medicines": []
     },
     {
-        "descrition": "Nutrição Clínica",
+        "description": "Nutrição Clínica",
         "medicines": []
     },
     {
-        "descrition": "Endoscopia",
+        "description": "Endoscopia",
         "medicines": []
     },
     {
-        "descrition": "Osteopatia",
+        "description": "Osteopatia",
         "medicines": []
     },
     {
-        "descrition": "Fonoaudiologia",
+        "description": "Fonoaudiologia",
         "medicines": []
     },
     {
-        "descrition": "Paliativos",
+        "description": "Paliativos",
         "medicines": []
     },
     {
-        "descrition": "Transplantes",
+        "description": "Transplantes",
         "medicines": []
     },
     {
-        "descrition": "Genética Médica",
+        "description": "Genética Médica",
         "medicines": []
     },
     {
-        "descrition": "Alergologia",
+        "description": "Alergologia",
         "medicines": []
     },
     {
-        "descrition": "Cuidados Intermediários",
+        "description": "Cuidados Intermediários",
         "medicines": []
     },
     {
-        "descrition": "Serviço Social",
+        "description": "Serviço Social",
         "medicines": []
     },
     {
-        "descrition": "Psicologia",
+        "description": "Psicologia",
         "medicines": []
     },
     {
-        "descrition": "Banco de Sangue",
+        "description": "Banco de Sangue",
         "medicines": []
     },
     {
-        "descrition": "Fisiatria",
+        "description": "Fisiatria",
         "medicines": []
     },
     {
-        "descrition": "Hospital-Dia",
+        "description": "Hospital-Dia",
         "medicines": []
     },
     {
-        "descrition": "Dermatologia",
+        "description": "Dermatologia",
         "medicines": []
     },
     {
-        "descrition": "Oftalmologia",
+        "description": "Oftalmologia",
         "medicines": []
     },
     {
-        "descrition": "Otorrinolaringologia",
+        "description": "Otorrinolaringologia",
         "medicines": []
     },
     {
-        "descrition": "Urologia",
+        "description": "Urologia",
         "medicines": []
     },
     {
-        "descrition": "Endocrinologia",
+        "description": "Endocrinologia",
         "medicines": []
     },
     {
-        "descrition": "Audiometria",
+        "description": "Audiometria",
         "medicines": []
     },
     {
-        "descrition": "Quiropraxia",
+        "description": "Quiropraxia",
         "medicines": []
     },
     {
-        "descrition": "Angiologia",
+        "description": "Angiologia",
         "medicines": []
     },
     {
-        "descrition": "Proctologia",
+        "description": "Proctologia",
         "medicines": []
     },
     {
-        "descrition": "Andrologia",
+        "description": "Andrologia",
         "medicines": []
     },
     {
-        "descrition": "Bariátrica",
+        "description": "Bariátrica",
         "medicines": []
     },
     {
-        "descrition": "Nutrologia",
+        "description": "Nutrologia",
         "medicines": []
     },
     {
-        "descrition": "Homeopatia",
+        "description": "Homeopatia",
         "medicines": []
     },
     {
-        "descrition": "Ergometria",
+        "description": "Ergometria",
         "medicines": []
     }
 ]
 )
 medicine_istance = Medicine(medicines=[
-{ "descrition": "Analgésico para alívio da dor", "name": "Paracetamol" },
-{ "descrition": "Antibiótico para infecções bacterianas", "name": "Amoxicilina" },
-{ "descrition": "Anti-inflamatório não esteroidal", "name": "Ibuprofeno" },
-{ "descrition": "Antidepressivo para tratamento da depressão", "name": "Fluoxetina" },
-{ "descrition": "Antipirético para redução da febre", "name": "Dipirona" },
-{ "descrition": "Anti-histamínico para alergias", "name": "Loratadina" },
-{ "descrition": "Broncodilatador para asma", "name": "Salbutamol" },
-{ "descrition": "Anticonvulsivante para epilepsia", "name": "Carbamazepina" },
-{ "descrition": "Anticoagulante para prevenção de tromboses", "name": "Varfarina" },
-{ "descrition": "Anti-hipertensivo para controle da pressão arterial", "name": "Losartana" },
-{ "descrition": "Antidiabético para controle da glicemia", "name": "Metformina" },
-{ "descrition": "Antiviral para tratamento da gripe", "name": "Oseltamivir" },
-{ "descrition": "Antifúngico para infecções fúngicas", "name": "Fluconazol" },
-{ "descrition": "Antiácido para alívio de azia e refluxo", "name": "Omeprazol" },
-{ "descrition": "Antipsicótico para esquizofrenia", "name": "Risperidona" },
-{ "descrition": "Corticosteroide para inflamações", "name": "Prednisona" },
-{ "descrition": "Antimalárico para prevenção e tratamento da malária", "name": "Cloroquina" },
-{ "descrition": "Antiparasitário para infecções por vermes", "name": "Albendazol" },
-{ "descrition": "Diurético para redução de edema", "name": "Furosemida" },
-{ "descrition": "Anticolinérgico para doenças respiratórias", "name": "Ipratrópio" },
-{ "descrition": "Ansiolítico para ansiedade", "name": "Diazepam" },
-{ "descrition": "Antiepiléptico para crises epilépticas", "name": "Fenitoína" },
-{ "descrition": "Estatinas para controle de colesterol", "name": "Atorvastatina" },
-{ "descrition": "Supressor de apetite para obesidade", "name": "Sibutramina" },
-{ "descrition": "Hormônio para hipotireoidismo", "name": "Levotiroxina" },
-{ "descrition": "Inibidor de bomba de prótons para úlcera", "name": "Esomeprazol" },
-{ "descrition": "Anticoncepcional para prevenção de gravidez", "name": "Etinilestradiol" },
-{ "descrition": "Estimulante para TDAH", "name": "Metilfenidato" },
-{ "descrition": "Antiemético para náuseas e vômitos", "name": "Ondansetrona" },
-{ "descrition": "Beta-bloqueador para controle de arritmias", "name": "Propranolol" },
-{ "descrition": "Inibidor da ECA para hipertensão", "name": "Enalapril" },
-{ "descrition": "Suplemento de vitamina D", "name": "Colecalciferol" },
-{ "descrition": "Inibidor da COX-2 para inflamação", "name": "Celecoxib" },
-{ "descrition": "Imunossupressor para transplantes", "name": "Ciclosporina" },
-{ "descrition": "Antipsicótico para transtorno bipolar", "name": "Quetiapina" },
-{ "descrition": "Antidiarreico para controle de diarreia", "name": "Loperamida" },
-{ "descrition": "Expectorante para tosse produtiva", "name": "Guaifenesina" },
-{ "descrition": "Descongestionante nasal", "name": "Pseudoefedrina" },
-{ "descrition": "Antiprotozoário para infecções por protozoários", "name": "Metronidazol" },
-{ "descrition": "Antitussígeno para tosse seca", "name": "Dextrometorfano" },
-{ "descrition": "Estimulante respiratório para apneia", "name": "Cafeína" },
-{ "descrition": "Antiglaucomatoso para redução da pressão ocular", "name": "Timolol" },
-{ "descrition": "Antiviral para herpes", "name": "Aciclovir" },
-{ "descrition": "Antagonista do receptor de angiotensina II para hipertensão", "name": "Valsartana" },
-{ "descrition": "Estabilizador de humor para transtorno bipolar", "name": "Lítio" },
-{ "descrition": "Progestágeno para distúrbios menstruais", "name": "Medroxiprogesterona" },
-{ "descrition": "Anticonvulsivante para prevenção de enxaqueca", "name": "Topiramato" },
-{ "descrition": "Anestésico local", "name": "Lidocaína" },
-{ "descrition": "Relaxante muscular para espasmos musculares", "name": "Ciclobenzaprina" },
-{ "descrition": "Antifibrinolítico para sangramento excessivo", "name": "Ácido Tranexâmico" }
+{ "description": "Analgésico para alívio da dor", "name": "Paracetamol" },
+{ "description": "Antibiótico para infecções bacterianas", "name": "Amoxicilina" },
+{ "description": "Anti-inflamatório não esteroidal", "name": "Ibuprofeno" },
+{ "description": "Antidepressivo para tratamento da depressão", "name": "Fluoxetina" },
+{ "description": "Antipirético para redução da febre", "name": "Dipirona" },
+{ "description": "Anti-histamínico para alergias", "name": "Loratadina" },
+{ "description": "Broncodilatador para asma", "name": "Salbutamol" },
+{ "description": "Anticonvulsivante para epilepsia", "name": "Carbamazepina" },
+{ "description": "Anticoagulante para prevenção de tromboses", "name": "Varfarina" },
+{ "description": "Anti-hipertensivo para controle da pressão arterial", "name": "Losartana" },
+{ "description": "Antidiabético para controle da glicemia", "name": "Metformina" },
+{ "description": "Antiviral para tratamento da gripe", "name": "Oseltamivir" },
+{ "description": "Antifúngico para infecções fúngicas", "name": "Fluconazol" },
+{ "description": "Antiácido para alívio de azia e refluxo", "name": "Omeprazol" },
+{ "description": "Antipsicótico para esquizofrenia", "name": "Risperidona" },
+{ "description": "Corticosteroide para inflamações", "name": "Prednisona" },
+{ "description": "Antimalárico para prevenção e tratamento da malária", "name": "Cloroquina" },
+{ "description": "Antiparasitário para infecções por vermes", "name": "Albendazol" },
+{ "description": "Diurético para redução de edema", "name": "Furosemida" },
+{ "description": "Anticolinérgico para doenças respiratórias", "name": "Ipratrópio" },
+{ "description": "Ansiolítico para ansiedade", "name": "Diazepam" },
+{ "description": "Antiepiléptico para crises epilépticas", "name": "Fenitoína" },
+{ "description": "Estatinas para controle de colesterol", "name": "Atorvastatina" },
+{ "description": "Supressor de apetite para obesidade", "name": "Sibutramina" },
+{ "description": "Hormônio para hipotireoidismo", "name": "Levotiroxina" },
+{ "description": "Inibidor de bomba de prótons para úlcera", "name": "Esomeprazol" },
+{ "description": "Anticoncepcional para prevenção de gravidez", "name": "Etinilestradiol" },
+{ "description": "Estimulante para TDAH", "name": "Metilfenidato" },
+{ "description": "Antiemético para náuseas e vômitos", "name": "Ondansetrona" },
+{ "description": "Beta-bloqueador para controle de arritmias", "name": "Propranolol" },
+{ "description": "Inibidor da ECA para hipertensão", "name": "Enalapril" },
+{ "description": "Suplemento de vitamina D", "name": "Colecalciferol" },
+{ "description": "Inibidor da COX-2 para inflamação", "name": "Celecoxib" },
+{ "description": "Imunossupressor para transplantes", "name": "Ciclosporina" },
+{ "description": "Antipsicótico para transtorno bipolar", "name": "Quetiapina" },
+{ "description": "Antidiarreico para controle de diarreia", "name": "Loperamida" },
+{ "description": "Expectorante para tosse produtiva", "name": "Guaifenesina" },
+{ "description": "Descongestionante nasal", "name": "Pseudoefedrina" },
+{ "description": "Antiprotozoário para infecções por protozoários", "name": "Metronidazol" },
+{ "description": "Antitussígeno para tosse seca", "name": "Dextrometorfano" },
+{ "description": "Estimulante respiratório para apneia", "name": "Cafeína" },
+{ "description": "Antiglaucomatoso para redução da pressão ocular", "name": "Timolol" },
+{ "description": "Antiviral para herpes", "name": "Aciclovir" },
+{ "description": "Antagonista do receptor de angiotensina II para hipertensão", "name": "Valsartana" },
+{ "description": "Estabilizador de humor para transtorno bipolar", "name": "Lítio" },
+{ "description": "Progestágeno para distúrbios menstruais", "name": "Medroxiprogesterona" },
+{ "description": "Anticonvulsivante para prevenção de enxaqueca", "name": "Topiramato" },
+{ "description": "Anestésico local", "name": "Lidocaína" },
+{ "description": "Relaxante muscular para espasmos musculares", "name": "Ciclobenzaprina" },
+{ "description": "Antifibrinolítico para sangramento excessivo", "name": "Ácido Tranexâmico" }
 ])
 ticket_istance = Ticket(
     
@@ -260,7 +260,7 @@ class AdmUser(HttpUser):
     # def update_ticket(self):
     #     self.client.put(f"/tickets/{ticket_istance.get_random_id()}", json={
     #         "idPyxis": "str",
-    #         "descrition": "Teste para ver se da fila foi para o banco de dados",
+    #         "description": "Teste para ver se da fila foi para o banco de dados",
     #         "body": []
     #     })
 
@@ -272,17 +272,17 @@ class AdmUser(HttpUser):
     # def create_ticket(self):
     #     self.client.post("/tickets/", json={
     #         "idPyxis": f"{pyxi_istance.get_random_id()}",
-    #         "descrition": "Teste para ver se da fila foi para o banco de dados",
+    #         "description": "Teste para ver se da fila foi para o banco de dados",
     #         "body": [
     #             {
     #                 "id": "6640fd1acdf84fa31ebf3ede",
     #                 "name": "oi",
-    #                 "descrition": "Vamos ver se foi mesmo"
+    #                 "description": "Vamos ver se foi mesmo"
     #             },
     #             {
     #                 "id": "6640fd21cdf84fa31ebf3ee0",
     #                 "name": "oi",
-    #                 "descrition": "Vamos ver se foi mesmo"
+    #                 "description": "Vamos ver se foi mesmo"
     #             }
     #         ]
     #     })
@@ -330,9 +330,9 @@ class AdmUser(HttpUser):
     def get_specific_pyxi(self):
         self.client.get(f"pyxis/{pyxi_istance.get_random_id()}")
 
-    @task(30)
-    def update_medicine(self):
-        self.client.put(f"medicines/{medicine_istance.get_random_id()}", json=medicine_istance.get_random_medicine())
+    # @task(30)
+    # def update_medicine(self):
+    #     self.client.put(f"medicines/{medicine_istance.get_random_id()}", json=medicine_istance.get_random_medicine())
 
     @task(10)
     def delete_medicine(self):
@@ -340,7 +340,7 @@ class AdmUser(HttpUser):
         response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
         rawData = response.json()
         recycling_medicine = {
-            "descrition": rawData["descrition"],
+            "description": rawData["description"],
             "name": rawData["name"]
         }
         medicine_istance.add_to_create(recycling_medicine)
@@ -352,16 +352,15 @@ class AdmUser(HttpUser):
     @task(10)
     def update_pyxi(self):
         id = pyxi_istance.get_random_id()
-        response = self.client.get(f"pyxis/{id}")
+        pyxi_response = self.client.get(f"pyxis/{id}")
         medicines = []
         rawData = {}
         if id != None:
             for _ in range(10):
-                response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
-                rawData = response.json()
+                medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+                rawData = medicine_response.json()
                 medicines.append(rawData)
-            rawData = response.json()
-        pyxi = rawData
+        pyxi = pyxi_response.json()
         pyxi['medicines'] = medicines
         
         self.client.put(f"pyxis/{id}", json=pyxi)

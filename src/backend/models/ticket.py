@@ -6,7 +6,7 @@ from datetime import datetime
 class TicketBase(BaseModel): 
     id: str
     idPyxis: str
-    descrition: str
+    description: str
     body: list
     created_at: datetime
     fixed_at: str # Trocar por um datetime 
@@ -17,7 +17,7 @@ class TicketBase(BaseModel):
 
 class TicketCreate(BaseModel): 
     idPyxis: str
-    descrition: str
+    description: str
     owner_id: str
     body: list
 

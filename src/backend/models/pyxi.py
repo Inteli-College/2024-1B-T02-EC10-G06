@@ -4,14 +4,14 @@ from pydantic import BaseModel
 
 class PyxiBase(BaseModel):
     id: str
-    descrition: str
+    description: str
     medicines: list
 
 
 
 
 class PyxiCreate(BaseModel):
-    descrition: str
+    description: str
     medicines: list
 
 class PyxiUpdate(PyxiBase):

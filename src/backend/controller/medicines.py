@@ -4,7 +4,7 @@ from pymongo.collection import Collection
 
 async def medicines_created(producer, raw_medicine):
     medicine = {
-            "descrition": raw_medicine.descrition,
+            "description": raw_medicine.description,
             "name": raw_medicine.name
             }
     post_id = producer.insert_one(medicine).inserted_id
@@ -18,7 +18,7 @@ async def all_medicines(db:Collection):
         #print(document)
         medicines.append({
             "id":str(document["_id"]),
-            "descrition": document["descrition"],
+            "description": document["description"],
             "name": document["name"]
         })
     return medicines
@@ -30,7 +30,7 @@ async def one_medicine(db:Collection, medicine_id):
         return None
     medicines = {
         "id":str(raw_medicines["_id"]),
-        "descrition": raw_medicines["descrition"],
+        "description": raw_medicines["description"],
         "name": raw_medicines["name"]
     }
     return medicines
@@ -68,13 +68,13 @@ async def update_response(db:Collection, medicine_id, medicine_update):
     db.update_one(
         {"_id": ObjectId(medicine_id)},
         {'$set':{
-            "descrition": medicine_update.descrition,
+            "description": medicine_update.description,
             "name": medicine_update.name
             }
         }
         )
     return {
             "id":str(ObjectId(medicine_id)),
-            "descrition": medicine_update.descrition,
+            "description": medicine_update.description,
             "name": medicine_update.name
             }

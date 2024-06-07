@@ -3,12 +3,11 @@ import time
 import redis.commands.search.aggregation as aggregations
 import redis.commands.search.reducers as reducers
 from redis.commands.json.path import Path
-from redis.commands.search.field import NumericField, TagField, TextField
 from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 from redis.commands.search.query import Query
 
 
-class Redis_interface():
+class RedisInterface():
     def __init__(self, urls_host="localhost") -> None:
         self.engnie = redis.Redis(
         host=urls_host, 
@@ -56,22 +55,22 @@ class Redis_interface():
 
 
 
-remedios = [
-    {
-    "brand": "Velorim",
-    "model": "Dipirona 30 unidades",
-    "description": "Não há mais nem um",
-    "urgencia":"media"
-    }
-]
+# remedios = [
+#     {
+#     "brand": "Velorim",
+#     "model": "Dipirona 30 unidades",
+#     "description": "Não há mais nem um",
+#     "urgencia":"media"
+#     }
+# ]
 
-# schema redis 
-schema = {
-    "brand": TextField(),
-    "model": TextField(),
-    "description": TextField(),
-    "urgencia": TextField(),
-}
+# # schema redis 
+# schema = {
+#     "brand": TextField(),
+#     "model": TextField(),
+#     "description": TextField(),
+#     "urgencia": TextField(),
+# }
 
 
 # # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez

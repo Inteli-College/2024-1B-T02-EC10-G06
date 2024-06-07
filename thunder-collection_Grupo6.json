@@ -67,7 +67,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            \n          ]\n}",
+                "raw": "{\n    \"idPyxis\": \"str\",\n    \"description\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            \n          ]\n}",
                 "form": []
             }
         },
@@ -108,7 +108,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"idPyxis\": \"str\",\n    \"descrition\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            {\n              \"id\": \"6640fd1acdf84fa31ebf3ede\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            },\n            {\n              \"id\": \"6640fd21cdf84fa31ebf3ee0\",\n              \"name\": \"oi\",\n              \"descrition\": \"Vamos ver se foi mesmo\"\n            }\n          ]\n}",
+                "raw": "{\n    \"idPyxis\": \"str\",\n    \"description\": \"Teste para ver se da fila foi para o banco de dados\",\n    \"body\": [\n            {\n              \"id\": \"6640fd1acdf84fa31ebf3ede\",\n              \"name\": \"oi\",\n              \"description\": \"Vamos ver se foi mesmo\"\n            },\n            {\n              \"id\": \"6640fd21cdf84fa31ebf3ee0\",\n              \"name\": \"oi\",\n              \"description\": \"Vamos ver se foi mesmo\"\n            }\n          ]\n}",
                 "form": []
             }
         },
@@ -161,7 +161,7 @@
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"descrition\": \"str\",\n    \"name\": \"str\"\n}",
+                "raw": "{\n    \"description\": \"str\",\n    \"name\": \"str\"\n}",
                 "form": []
             }
         },
@@ -178,7 +178,7 @@
             "headers": [],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"descrition\": \"str\",\n    \"medicines\": [\n        \n      ]\n}",
+                "raw": "{\n    \"description\": \"str\",\n    \"medicines\": [\n        \n      ]\n}",
                 "form": []
             }
         },
@@ -240,7 +240,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"descrition\": \"str\",\n    \"name\": \"Será?\"\n}",
+                "raw": "{\n    \"description\": \"str\",\n    \"name\": \"Será?\"\n}",
                 "form": []
             }
         },
@@ -283,7 +283,7 @@
             ],
             "body": {
                 "type": "json",
-                "raw": "{\n    \"descrition\": \"str\",\n    \"medicines\": [\n      \n      ]\n}",
+                "raw": "{\n    \"description\": \"str\",\n    \"medicines\": [\n      \n      ]\n}",
                 "form": []
             }
         },
