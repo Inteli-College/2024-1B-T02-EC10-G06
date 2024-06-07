@@ -24,23 +24,64 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/tickets'));
+    // final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/tickets'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+    // if (response.statusCode == 200) {
+    //   final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+    //   setState(() {
+    //     _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+    //     _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
+    //     _isLoading = false;
+    //   });
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Failed to fetch tickets')),
+    //   );
+      setState(() {
+        _isLoading = false;
+      });
+    //}
+
+    const String mockData = '''
+      [
+        {
+          "idPyxis": "1",
+          "descrition": "Sample ticket 1",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "open",
+          "owner_id": "1",
+          "operator_id": "2"
+        },
+        {
+          "idPyxis": "2",
+          "descrition": "Sample ticket 2",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "closed",
+          "owner_id": "2",
+          "operator_id": "3"
+        },
+        {
+          "idPyxis": "3",
+          "descrition": "Sample ticket 3",
+          "body": ["Item 1", "Item 2"],
+          "created_at": "2022-01-01T00:00:00Z",
+          "fixed_at": "2022-01-01T00:00:00Z",
+          "status": "open",
+          "owner_id": "3",
+          "operator_id": "1"
+        }
+      ]
+      ''';
+
+      final List<dynamic> data = jsonDecode(mockData);
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
-        _isLoading = false;
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to fetch tickets')),
-      );
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   void _handleCardTapped(String ticketId) {
@@ -78,8 +119,8 @@ class _ReceiverPageState extends State<ReceiverPage> {
               itemBuilder: (context, index) {
                 return TicketCard(
                   ticket: _openTickets[index],
-                  isExpanded: _openTickets[index].idPyxis == _clickedTicketId,
-                  onCardTapped: _handleCardTapped,
+                  //isExpanded: _openTickets[index].idPyxis == _clickedTicketId,
+                  //onCardTapped: _handleCardTapped,
             );
               },
             ),
@@ -88,25 +129,20 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 }
 
-class TicketCard extends StatefulWidget {
+class TicketCard extends StatelessWidget {
   final Ticket ticket;
-  final bool isExpanded;
-  final Function(String) onCardTapped;
+  //final bool isExpanded;
+  //final Function(String) onCardTapped;
 
   const TicketCard({super.key,
     required this.ticket,
-    required this.isExpanded,
-    required this.onCardTapped,
+    //required this.isExpanded,
+    //required this.onCardTapped,
   });
 
-   @override
-  _TicketCardState createState() => _TicketCardState();
-}
-
-class _TicketCardState extends State<TicketCard> {
-  void _toggleFunc() {
-    widget.onCardTapped(widget.ticket.idPyxis);
-  }
+  // void _toggleFunc() {
+  //   onCardTapped(ticket.idPyxis);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +153,7 @@ class _TicketCardState extends State<TicketCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.ticket.idPyxis,
+              ticket.idPyxis,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -125,17 +161,17 @@ class _TicketCardState extends State<TicketCard> {
             ),
             const SizedBox(height: 8),
             Text(
-              widget.ticket.description,
+              ticket.description,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
               ),
             ),
             const SizedBox(height: 8),
-            ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
+            ...ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
             const SizedBox(height: 8),
             Text(
-              'Status: ${widget.ticket.status}',
+              'Status: ${ticket.status}',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
@@ -143,7 +179,7 @@ class _TicketCardState extends State<TicketCard> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Created At: ${widget.ticket.created_at}',
+              'Created At: ${ticket.created_at}',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
