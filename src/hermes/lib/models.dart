@@ -1,7 +1,7 @@
 class Ticket {
   final String idPyxis;
   final String description;
-  final List<String> body;
+  final List<Medicine> body;
   final DateTime created_at;
   final DateTime fixed_at;
   final String status;
@@ -23,7 +23,7 @@ class Ticket {
     return Ticket(
       idPyxis:      json['idPyxis'],
       description:   json['description'],
-      body:         List<String>.from(json['body']),
+      body:         List<Medicine>.from(json['body']),
       created_at:   DateTime.parse(json['created_at']),
       fixed_at:     DateTime.parse(json['fixed_at']),
       status:       json['status'],

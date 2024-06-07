@@ -2,60 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-class Ticket {
-  final String id;
-  final String idPyxis;
-  final String description;
-  final List<Medication> body;
-  final DateTime createdAt;
-  final String status;
-  final String ownerId;
-
-  Ticket({
-    required this.id,
-    required this.idPyxis,
-    required this.description,
-    required this.body,
-    required this.createdAt,
-    required this.status,
-    required this.ownerId,
-  });
-
-  factory Ticket.fromJson(Map<String, dynamic> json) {
-    return Ticket(
-      id: json['id'],
-      idPyxis: json['idPyxis'],
-      description: json['description'],
-      body: (json['body'] as List<dynamic>)
-          .map((item) => Medication.fromJson(item))
-          .toList(),
-      createdAt: DateTime.parse(json['created_at']),
-      status: json['status'],
-      ownerId: json['owner_id'],
-    );
-  }
-}
-
-class Medication {
-  final String id;
-  final String name;
-  final String description;
-
-  Medication({
-    required this.id,
-    required this.name,
-    required this.description,
-  });
-
-  factory Medication.fromJson(Map<String, dynamic> json) {
-    return Medication(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-    );
-  }
-}
+import 'package:hermes/models.dart';
 
 class ReceiverPage extends StatefulWidget {
   const ReceiverPage({super.key});
@@ -66,6 +13,8 @@ class ReceiverPage extends StatefulWidget {
 
 class _ReceiverPageState extends State<ReceiverPage> {
   List<Ticket> _tickets = [];
+  List<Ticket> _openTickets = [];
+  String? _clickedTicketId;
   bool _isLoading = true;
 
   @override
@@ -81,10 +30,10 @@ class _ReceiverPageState extends State<ReceiverPage> {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
         _isLoading = false;
       });
     } else {
-      // Handle error
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to fetch tickets')),
       );
@@ -92,6 +41,16 @@ class _ReceiverPageState extends State<ReceiverPage> {
         _isLoading = false;
       });
     }
+  }
+
+  void _handleCardTapped(String ticketId) {
+    setState(() {
+      if (_clickedTicketId == ticketId) {
+        _clickedTicketId = null;
+      } else {
+        _clickedTicketId = ticketId;
+      }
+    });
   }
 
   @override
@@ -108,20 +67,46 @@ class _ReceiverPageState extends State<ReceiverPage> {
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: _tickets.length,
+          : GestureDetector(
+            onTap: () {
+              setState(() {
+                _clickedTicketId = null;
+              });
+            },
+            child: ListView.builder(
+              itemCount: _openTickets.length,
               itemBuilder: (context, index) {
-                return TicketCard(ticket: _tickets[index]);
+                return TicketCard(
+                  ticket: _openTickets[index],
+                  isExpanded: _openTickets[index].idPyxis == _clickedTicketId,
+                  onCardTapped: _handleCardTapped,
+            );
               },
             ),
+          ),
     );
   }
 }
 
-class TicketCard extends StatelessWidget {
+class TicketCard extends StatefulWidget {
   final Ticket ticket;
+  final bool isExpanded;
+  final Function(String) onCardTapped;
 
-  const TicketCard({super.key, required this.ticket});
+  const TicketCard({super.key,
+    required this.ticket,
+    required this.isExpanded,
+    required this.onCardTapped,
+  });
+
+   @override
+  _TicketCardState createState() => _TicketCardState();
+}
+
+class _TicketCardState extends State<TicketCard> {
+  void _toggleFunc() {
+    widget.onCardTapped(widget.ticket.idPyxis);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +117,7 @@ class TicketCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ticket.idPyxis,
+              widget.ticket.idPyxis,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -140,17 +125,17 @@ class TicketCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              ticket.description,
+              widget.ticket.description,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
               ),
             ),
             const SizedBox(height: 8),
-            ...ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
+            ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
             const SizedBox(height: 8),
             Text(
-              'Status: ${ticket.status}',
+              'Status: ${widget.ticket.status}',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
@@ -158,7 +143,7 @@ class TicketCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Created At: ${ticket.createdAt}',
+              'Created At: ${widget.ticket.created_at}',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[700],
