@@ -7,8 +7,6 @@ import 'dart:convert';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import "package:hermes/functions.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -87,9 +85,6 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to login';
-        // APAGAR DEPOIS
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()));
       });
     }
   }
