@@ -2,6 +2,8 @@ from locust import HttpUser, task, between, TaskSet
 from entidades.pyxi import Pyxi
 from entidades.medicine import Medicine
 from entidades.ticket import Ticket
+import random
+
 
 pyxi_istance = Pyxi(pyxis=[
     {
@@ -324,7 +326,9 @@ class AdmUser(HttpUser):
 
     @task(90)
     def get_medicine(self):
-        self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+        end = len(medicine_istance.medicines_id) -1
+        sort = random.randint(1, end)
+        self.client.get(f"medicines/{medicine_istance.get_random_id(interator=0,index=sort)}")
 
     @task(100)
     def get_specific_pyxi(self):
@@ -336,28 +340,34 @@ class AdmUser(HttpUser):
 
     @task(10)
     def delete_medicine(self):
+        end = len(medicine_istance.medicines_id) -1
+        sort = random.randint(1, end)
         id = medicine_istance.get_random_id()
-        response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
-        rawData = response.json()
-        recycling_medicine = {
-            "description": rawData["description"],
-            "name": rawData["name"]
-        }
-        medicine_istance.add_to_create(recycling_medicine)
-        self.client.delete(f"medicines/{id}")
-        medicine_istance.delete_medicine(id)
+        medicine_id = medicine_istance.get_random_id(interator=0,index=sort)
+        if medicine_id != None:
+            response = self.client.get(f"medicines/{medicine_id}")
+            rawData = response.json()
+            recycling_medicine = {
+                "description": rawData["description"],
+                "name": rawData["name"]
+            }
+            medicine_istance.add_to_create(recycling_medicine)
+            self.client.delete(f"medicines/{id}")
+            medicine_istance.delete_medicine(id)
+        
         
 
 
     @task(10)
     def update_pyxi(self):
+        sort = random.randint(1, 10)
         id = pyxi_istance.get_random_id()
         pyxi_response = self.client.get(f"pyxis/{id}")
         medicines = []
         rawData = {}
         if id != None:
-            for _ in range(10):
-                medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+            for interador in range(10):
+                medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id(interador, sort)}")
                 rawData = medicine_response.json()
                 medicines.append(rawData)
         pyxi = pyxi_response.json()

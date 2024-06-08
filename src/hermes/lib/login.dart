@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import "package:hermes/functions.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -44,9 +44,9 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        var token = await getToken(response);
+        var token = getToken(response);
         saveToken(token);
-        final data = jsonDecode(response.body);
+        // final data = jsonDecode(response.body);
         print('Login successful: $token');
         var permissionResponse = await http.get(
           Uri.parse('${dotenv.env['API_URL']}/getPermission/'),

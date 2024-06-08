@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hermes/receiver.dart';
 import 'package:hermes/services/notification.dart';
 import 'package:hermes/qr_code.dart';
-import 'package:hermes/pyxis_pedido.dart';
+
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");

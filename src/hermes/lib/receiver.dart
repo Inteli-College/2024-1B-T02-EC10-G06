@@ -107,7 +107,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: _tickets.length,
               itemBuilder: (context, index) {

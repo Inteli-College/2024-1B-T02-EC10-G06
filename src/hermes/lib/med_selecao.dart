@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class MedSelecaoPage extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const MedSelecaoPage({Key? key, required this.data}) : super(key: key);
+  const MedSelecaoPage({super.key, required this.data});
 
   @override
   _MedSelecaoPageState createState() => _MedSelecaoPageState();
@@ -67,7 +67,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     };
 
     // Converte o mapa para uma string JSON formatada com indentação
-    String jsonString = JsonEncoder.withIndent('  ').convert(ticketData);
+    String jsonString = const JsonEncoder.withIndent('  ').convert(ticketData);
 
     // Imprime a string JSON no terminal
     print(jsonString);
@@ -83,7 +83,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     if (response.statusCode == 200) {
       // Sucesso ao criar o ticket
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ticket criado com sucesso!')),
+        const SnackBar(content: Text('Ticket criado com sucesso!')),
       );
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SucessoPage(),
@@ -91,7 +91,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     } else {
       // Falha ao criar o ticket
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Falha ao criar o ticket')),
+        const SnackBar(content: Text('Falha ao criar o ticket')),
       );
     }
   }
@@ -100,21 +100,21 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleção de Medicamentos'),
+        title: const Text('Seleção de Medicamentos'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ListView(
                     children: [
-                      Text(
+                      const Text(
                         'Selecione os Medicamentos:',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       ..._medicines.map((medicine) {
                         return CheckboxListTile(
                           title: Text(medicine['name']),
@@ -124,8 +124,8 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
                             _onMedicineSelected(medicine['id'], value);
                           },
                         );
-                      }).toList(),
-                      SizedBox(height: 60), // Padding to prevent overlap with the button
+                      }),
+                      const SizedBox(height: 60), // Padding to prevent overlap with the button
                     ],
                   ),
                 ),
@@ -135,7 +135,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
                   right: 16,
                   child: ElevatedButton(
                     onPressed: _onConfirmSelection,
-                    child: Text('Confirmar Seleção'),
+                    child: const Text('Confirmar Seleção'),
                   ),
                 ),
               ],

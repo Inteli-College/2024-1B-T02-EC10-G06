@@ -17,11 +17,10 @@ class Medicine():
     def delete_medicine(self, id):
         self.medicines_id.remove(id) # Lista de IDs dos medicines_id
 
-    def get_random_id(self) -> str:
+    def get_random_id(self, interator=0,index=0) -> str:
         end = len(self.medicines_id) -1
-        if end > 0:
-            sort = random.randint(0, end)
-            return self.medicines_id[sort]
+        if end > 0 and interator+index < end:
+            return self.medicines_id[interator+index]
         return None
     
     def get_random_to_create(self) -> dict | None:
