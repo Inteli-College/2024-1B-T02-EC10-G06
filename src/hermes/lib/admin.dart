@@ -214,42 +214,42 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildSenderCountChart(List<Ticket> tickets) {
-    final senderCounts = tickets.map((ticket) => ticket.operator_id.length).toList();
-    final count2Senders = senderCounts.where((count) => count == 2).length;
-    final count3Senders = senderCounts.where((count) => count == 3).length;
+  // Widget _buildSenderCountChart(List<Ticket> tickets) {
+  //   final senderCounts = tickets.map((ticket) => ticket.operator_id.length).toList();
+  //   final count2Senders = senderCounts.where((count) => count == 2).length;
+  //   final count3Senders = senderCounts.where((count) => count == 3).length;
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Text('Number of Senders per Ticket'),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: BarChart(
-              BarChartData(
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(toY: count2Senders.toDouble(), color: Colors.orange),
-                    ],
-                  ),
-                  BarChartGroupData(
-                    x: 1,
-                    barRods: [
-                      BarChartRodData(toY: count3Senders.toDouble(), color: Colors.red),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: const EdgeInsets.all(16.0),
+  //     child: Column(
+  //       children: [
+  //         Text('Number of Senders per Ticket'),
+  //         SizedBox(
+  //           height: 200,
+  //           width: 200,
+  //           child: BarChart(
+  //             BarChartData(
+  //               barGroups: [
+  //                 BarChartGroupData(
+  //                   x: 0,
+  //                   barRods: [
+  //                     BarChartRodData(toY: count2Senders.toDouble(), color: Colors.orange),
+  //                   ],
+  //                 ),
+  //                 BarChartGroupData(
+  //                   x: 1,
+  //                   barRods: [
+  //                     BarChartRodData(toY: count3Senders.toDouble(), color: Colors.red),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildStatusPieChart(List<Ticket> tickets) {
     final openTickets = tickets.where((ticket) => ticket.status == 'open').length;
@@ -466,9 +466,9 @@ class TicketCard extends StatelessWidget {
               if (isExpanded) ...[
                 Text('Conteúdo: ${ticket.body.join(', ')}'),
                 Text('Data de Criação: ${ticket.created_at}'),
-                if (ticket.status == 'closed') Text('Data de Conclusão: ${ticket.fixed_at}'),
+                //if (ticket.status == 'closed') Text('Data de Conclusão: ${ticket.fixed_at}'),
                 Text('Remetente: ${ticket.owner_id}'),
-                Text('Operador: ${ticket.operator_id}'),
+                //Text('Operador: ${ticket.operator_id}'),
               ],
             ],
           ),
