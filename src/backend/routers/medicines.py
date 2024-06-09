@@ -49,10 +49,10 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=MedicinesBase)
+@router.post("/", response_model=MedicinesBase, status_code=201)
 async def create_medicines(medicines: MedicinesCreate):
     medicines = await medicines_created(collection, medicines) # Producer change collection
-    return medicines
+    return medicines 
 
 
 @router.get("/", response_model=list[MedicinesBase])

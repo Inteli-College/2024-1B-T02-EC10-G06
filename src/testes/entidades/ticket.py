@@ -70,6 +70,8 @@ class Ticket():
 
     def get_random_id(self) -> str:
         end = len(self.tickets_id) -1
+        if end <= 0:
+            return None
         sort = random.randint(0, end)
         return self.tickets_id[sort]
     

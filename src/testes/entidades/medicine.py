@@ -15,7 +15,8 @@ class Medicine():
         self.to_create.append(medicine)
 
     def delete_medicine(self, id):
-        self.medicines_id.remove(id) # Lista de IDs dos medicines_id
+        if id in self.medicines_id:
+            self.medicines_id.remove(id) # Lista de IDs dos medicines_id
 
     def get_random_id(self, interator=0,index=0) -> str:
         end = len(self.medicines_id) -1

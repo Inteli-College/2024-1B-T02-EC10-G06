@@ -8,8 +8,7 @@ class Pyxi():
     def add_pyxi(self, id):
         if len(self.pyxis) > 0:
             self.pyxis_id.append(id)
-        print(f' Pyxis vazio: {self.pyxis_id}')
-
+        
     def delete_pyxi(self, id):
         if id in self.pyxis_id:
             self.pyxis_id.remove(id) # Lista de IDs dos pyxis_id
