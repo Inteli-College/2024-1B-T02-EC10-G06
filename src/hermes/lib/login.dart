@@ -30,9 +30,9 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      print('${dotenv.env['API_URL']}/login/');
+      print('${dotenv.env['API_URL']}/auth/login/');
       final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/login/'),
+        Uri.parse('${dotenv.env['API_URL']}/auth/login/'),
         body: jsonEncode({
           'username': _usernameController.text,
           'password': _passwordController.text,
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         // final data = jsonDecode(response.body);
         print('Login successful: $token');
         var permissionResponse = await http.get(
-          Uri.parse('${dotenv.env['API_URL']}/getPermission/'),
+          Uri.parse('${dotenv.env['API_URL']}/auth/getPermission/'),
           headers: {
             'Authorization': "Bearer $token",
             'Content-Type': 'application/json',

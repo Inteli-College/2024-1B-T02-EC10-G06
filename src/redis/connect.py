@@ -8,7 +8,7 @@ from redis.commands.search.query import Query
 
 
 class RedisInterface():
-    def __init__(self, urls_host="localhost") -> None:
+    def __init__(self, urls_host="localhost"):
         self.engnie = redis.Redis(
         host=urls_host, 
         port=6379, 

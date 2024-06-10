@@ -27,7 +27,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
   Future<void> _fetchMedicines() async {
     print('${dotenv.env['API_URL']}');
     final idPyxis = widget.data['idPyxis'];
-    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/pyxis/$idPyxis'));
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/api/pyxis/$idPyxis'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setState(() {
@@ -73,7 +73,7 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     print(jsonString);
 
     final response = await http.post(
-      Uri.parse('${dotenv.env['API_URL']}/tickets/'),
+      Uri.parse('${dotenv.env['API_URL']}/api/tickets/'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },

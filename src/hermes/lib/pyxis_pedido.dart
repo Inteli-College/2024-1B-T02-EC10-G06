@@ -46,7 +46,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
 
   Future<void> _consultarPyxis() async {
     print('${dotenv.env['API_URL']}');
-    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/pyxis/${widget.qrCode}'));
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/api/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         setState(() {

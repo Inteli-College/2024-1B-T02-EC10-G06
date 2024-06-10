@@ -1,5 +1,5 @@
 from redis.commands.search.field import  TextField
-from redis.connect import RedisInterface
+from connect import RedisInterface
 
 if __name__ == "__main__":
     # Inicialização
@@ -8,19 +8,26 @@ if __name__ == "__main__":
     # Estrutura de dados
     data = [
         {
-            "id": "6662e57702b193d94a4e2651",
-            "descrition": "Anticolinérgico para doenças respiratórias",
-            "medicines": [
-                {
-                    "id": "66623faaca00d05b910da0b3",
-                    "name": "Ipratrópio",
-                    "descrition": "Anticolinérgico para doenças respiratórias"
-                },
-                {
-                    "detail": "medicines not found"
-                }
-            ]
-        },
+  "id": "666707c155e2dad91f1d9fa2",
+  "description": "Quiropraxia",
+  "medicines": [
+    {
+      "id": "666707c255e2dad91f1d9fce",
+      "name": "Diazepam",
+      "description": "Ansiolítico para ansiedade"
+    },
+    {
+      "id": "666707c255e2dad91f1d9fd3",
+      "name": "Furosemida",
+      "description": "Diurético para redução de edema"
+    },
+    {
+      "id": "666707c255e2dad91f1d9fd4",
+      "name": "Metronidazol",
+      "description": "Antiprotozoário para infecções por protozoários"
+    }
+  ]
+},
         {
             "id": "66623fa9ca00d05b910da09d",
             "descrition": "Antipsicótico para transtorno bipolar",
@@ -51,12 +58,13 @@ if __name__ == "__main__":
     )
 
     # Criar o índice
-    redis_interface.index_create("medicines", schema)
+    redis_interface.index_create("pyxis", schema)
 
     # Indexar dados
-    redis_interface.set_values("medicines", data)
+    redis_interface.set_values("pyxis", data)
 
     # Fazer uma busca
-    results = redis_interface.get_value("medicines", "Ipratrópio")
+    results = redis_interface.get_value("id", "666707c155e2dad91f1d9fa2")
     for doc in results.docs:
         print(doc)
+

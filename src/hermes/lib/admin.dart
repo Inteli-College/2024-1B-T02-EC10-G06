@@ -146,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Ticket Status'),
+          const Text('Ticket Status'),
           SizedBox(
             height: 200,
             width: 200,
@@ -184,7 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Status by Owner'),
+          const Text('Status by Owner'),
           SizedBox(
             height: 200,
             width: 200,
@@ -259,7 +259,7 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Proportion of Tickets by Status'),
+          const Text('Proportion of Tickets by Status'),
           SizedBox(
             height: 200,
             width: 200,
@@ -420,13 +420,13 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               const SizedBox(height: 20),
               const Text('Tabela de Pyxis', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingPyxis ? CircularProgressIndicator() : _buildPyxisTable(_pyxis),
+              _isLoadingPyxis ? const CircularProgressIndicator() : _buildPyxisTable(_pyxis),
               const SizedBox(height: 20),
               const Text('Tabela de Medicamentos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingPyxis ? CircularProgressIndicator() : _buildMedicineTable(_pyxis),
+              _isLoadingPyxis ? const CircularProgressIndicator() : _buildMedicineTable(_pyxis),
               const SizedBox(height: 20),
               const Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingTickets ? CircularProgressIndicator() : _buildRecentTickets(_tickets),
+              _isLoadingTickets ? const CircularProgressIndicator() : _buildRecentTickets(_tickets),
             ],
           ),
         ),
