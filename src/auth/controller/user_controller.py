@@ -1,10 +1,9 @@
-from controller.producer import ProducerController
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from middleware.auth import get_password_hash
 from models.user import *
-import bson
+
 
 load_dotenv()
 
@@ -14,7 +13,6 @@ server = os.getenv("KAFKA_BROKER")
 client_id = "python-producer"
 apikey = os.getenv("KAFKA_APIKEY")
 password = os.getenv("KAFKA_PASSWORD")
-producer = ProducerController(server,client_id,apikey,password)
 
 def getUser(username):
     database = client.get_database("Hermes")
