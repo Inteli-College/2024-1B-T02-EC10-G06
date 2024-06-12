@@ -1,6 +1,21 @@
 from bson.objectid import ObjectId
 import datetime
+import json
 from pymongo.collection import Collection
+from utils.redis import RedisInterface
+from redis.commands.search.field import  TextField
+
+redis_interface = RedisInterface(urls_host="redis_server")
+schema = (
+    TextField("$.id", as_name="id"),
+    TextField("$.descrition", as_name="descrition"),
+    TextField("$.medicines[*].id", as_name="medicines_id"),
+    TextField("$.medicines[*].name", as_name="medicines_name"),
+    TextField("$.medicines[*].descrition", as_name="medicines_descrition"),
+    TextField("$.medicines[*].detail", as_name="medicines_detail")
+)
+
+redis_interface.index_create("pyxis", schema)
 
 
 def pyxi_created(producer, raw_pyxi):
@@ -10,6 +25,8 @@ def pyxi_created(producer, raw_pyxi):
             }
     post_id = producer.insert_one(pyxi).inserted_id
     pyxi["id"] = str(post_id)
+    data = pyxi
+    redis_interface.set_value(f"{str(post_id)}", data)
     return pyxi
     
 
@@ -27,8 +44,15 @@ def all_pyxis(db:Collection):
     
 
 def one_pyxi(db:Collection, pyxi_id):
-    if not ObjectId.is_valid(pyxi_id): # Verifica se o id é válido
+    results = redis_interface.get_value(query=pyxi_id)
+    if results.docs.__len__() > 0:
+        json_str = results.docs[0].json
+        json_obj = json.loads(json_str)
+        return json_obj
+
+    if not ObjectId.is_valid(pyxi_id):
         return None
+    
     raw_pyxis = db.find_one( {"_id": ObjectId(pyxi_id)} )
     if raw_pyxis is None :
         return None
@@ -57,9 +81,14 @@ def update_response(db:Collection, pyxi_id, pyxi_update):
             }
         }
         )
-    return {
+    
+    pyxi = {
         "id":str(pyxi_id),
         "description": pyxi_update.description,
         "medicines": pyxi_update.medicines,
-        "status":"Atualizado com sucesso",
     }
+
+    data = pyxi
+    redis_interface.set_value(f"{str(pyxi_id)}", data)
+    pyxi["status"] = "Atualizado com sucesso"
+    return pyxi
