@@ -30,7 +30,6 @@ A tela de criação de tickets foi pensada para as personas farmacêuticas. Nela
 
 ![img](./img/ticket%20confirmed.png)
 
-
 ## Recebimento e Encerramento de Tickets
 
 A tela de recebimento e encerramento de tickets foi pensada para as personas técnicas. Nela, o usuário já logado no sistema do Hospital Sírio Libanês receberá um ticket. Após o técnico concluir a solicitação, ele poderá encerrar o ticket.
