@@ -8,29 +8,32 @@ from redis.commands.search.field import  TextField
 redis_interface = RedisInterface(urls_host="redis_server")
 schema = (
     TextField("$.id", as_name="id"),
-    TextField("$.descrition", as_name="descrition"),
+    TextField("$.description", as_name="description"),
     TextField("$.medicines[*].id", as_name="medicines_id"),
     TextField("$.medicines[*].name", as_name="medicines_name"),
-    TextField("$.medicines[*].descrition", as_name="medicines_descrition"),
-    TextField("$.medicines[*].detail", as_name="medicines_detail")
+    TextField("$.medicines[*].description", as_name="medicines_description"),
 )
 
 redis_interface.index_create("pyxis", schema)
 
 
-def pyxi_created(producer, raw_pyxi):
+async def pyxi_created(db:Collection, raw_pyxi):
     pyxi = {
             "description": raw_pyxi.description,
-            "medicines": raw_pyxi.medicines
+            "medicines": raw_pyxi.medicines 
             }
-    post_id = producer.insert_one(pyxi).inserted_id
-    pyxi["id"] = str(post_id)
-    data = pyxi
-    redis_interface.set_value(f"{str(post_id)}", data)
-    return pyxi
+    post_id = db.insert_one(pyxi).inserted_id
+    response = {
+        "id":str(post_id),
+        "description": raw_pyxi.description,
+        "medicines": raw_pyxi.medicines
+    }
+    
+    redis_interface.set_value(response["id"], response)
+    return response
     
 
-def all_pyxis(db:Collection):
+async def all_pyxis(db:Collection):
     pyxis = []
     for document in db.find():
         
@@ -43,7 +46,7 @@ def all_pyxis(db:Collection):
     return pyxis
     
 
-def one_pyxi(db:Collection, pyxi_id):
+async def one_pyxi(db:Collection, pyxi_id):
     results = redis_interface.get_value(query=pyxi_id)
     if results.docs.__len__() > 0:
         json_str = results.docs[0].json
@@ -63,7 +66,7 @@ def one_pyxi(db:Collection, pyxi_id):
     }
     return pyxis
 
-def delete_response(db:Collection, pyxi_id):
+async def delete_response(db:Collection, pyxi_id):
     db.delete_one({"_id": ObjectId(pyxi_id)})
     return {
         "id":pyxi_id,
@@ -72,7 +75,7 @@ def delete_response(db:Collection, pyxi_id):
 
 
 
-def update_response(db:Collection, pyxi_id, pyxi_update):
+async def update_response(db:Collection, pyxi_id, pyxi_update):
     db.update_one(
         {"_id": ObjectId(pyxi_id)},
         {'$set':{

@@ -318,8 +318,9 @@ class AdmUser(HttpUser):
         if pyxi == None:
             return
         response = self.client.post("pyxis/", json=pyxi)
-        rawData = response.json()
-        self.pyxi_istance.add_pyxi(id=rawData["id"])
+        if response.status_code == 200:
+            rawData = response.json()
+            self.pyxi_istance.add_pyxi(id=rawData["id"])
         
         
 
