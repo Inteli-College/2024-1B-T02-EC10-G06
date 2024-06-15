@@ -13,7 +13,7 @@ class ReceiverPage extends StatefulWidget {
 
 class _ReceiverPageState extends State<ReceiverPage> {
   List<Ticket> _tickets = [];
-  List<Ticket> _openTickets = [];
+  List<Ticket> _opTickets = [];
   String? _clickedTicketId;
   bool _isLoading = true;
 
@@ -30,7 +30,11 @@ class _ReceiverPageState extends State<ReceiverPage> {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
+        
+        _opTickets = _tickets.where((ticket) => 
+        ticket.status == 'open' || ticket.operator_id == '5')
+        .toList();
+
         _isLoading = false;
       });
     } else {
@@ -74,11 +78,11 @@ class _ReceiverPageState extends State<ReceiverPage> {
           });
         },
         child: ListView.builder(
-          itemCount: _openTickets.length,
+          itemCount: _opTickets.length,
           itemBuilder: (context, index) {
             return TicketCard(
-              ticket: _openTickets[index],
-              isExpanded: _openTickets[index].id == _clickedTicketId,
+              ticket: _opTickets[index],
+              isExpanded: _opTickets[index].id == _clickedTicketId,
               onCardTapped: _handleCardTapped,
             );
           },
@@ -244,18 +248,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.isExpanded ? Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: _confirmClose,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text('Encerrar Ticket'),
-                ),
-              ) : Container(),
-              const SizedBox(height: 16),
-              widget.isExpanded ? Align(
+              widget.isExpanded && widget.ticket.operator_id != '5' ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
@@ -263,6 +256,16 @@ class _TicketCardState extends State<TicketCard> {
                     backgroundColor: Colors.yellow,
                   ),
                   child: const Text('Operar Ticket'),
+                ),
+              ) : Container(),
+              widget.isExpanded && widget.ticket.operator_id == '5' ? Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: _confirmClose,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Encerrar Ticket'),
                 ),
               ) : Container(),
             ],

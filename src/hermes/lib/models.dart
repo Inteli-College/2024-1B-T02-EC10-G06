@@ -4,10 +4,10 @@ class Ticket {
   final String description;
   final List<Medication> body;
   final DateTime created_at;
-  //final DateTime? fixed_at;
+  final String fixed_at;
   final String status;
   final String owner_id;
-  //final String operator_id;
+  final String operator_id;
 
   Ticket({
     required this.id,
@@ -15,27 +15,25 @@ class Ticket {
     required this.description,
     required this.body,
     required this.created_at,
-    //required this.fixed_at,
+    required this.fixed_at,
     required this.status,
     required this.owner_id,
-    //required this.operator_id,
+    required this.operator_id,
   });
 
   factory Ticket.fromJson(Map<String, dynamic> json) {
     return Ticket(
-      id: json['id'],
-      idPyxis: json['idPyxis'],
-      description: json['description'],
-      body: (json['body'] as List<dynamic>)
-          .map((item) => Medication.fromJson(item))
-          .toList(),
-      created_at: DateTime.parse(json['created_at']),
-      // fixed_at: json['fixed_at'] != null
-      //     ? DateTime.parse(json['fixed_at'])
-      //     : null,
-      status: json['status'],
-      owner_id: json['owner_id'],
-      //operator_id: json['operator_id'] ,
+      id:           json['id'],
+      idPyxis:      json['idPyxis'],
+      description:  json['description'],
+      body:         (json['body'] as List<dynamic>)
+                    .map((item) => Medication.fromJson(item))
+                    .toList(),
+      created_at:   DateTime.parse(json['created_at']),
+      fixed_at:     json['fixed_at'],
+      status:       json['status'],
+      owner_id:     json['owner_id'],
+      operator_id:  json['operator_id'] ,
     );
   }
 }
