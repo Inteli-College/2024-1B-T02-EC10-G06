@@ -23,7 +23,7 @@ class Task {
 class PyxisPedidoPage extends StatefulWidget {
   final String qrCode;
 
-  const PyxisPedidoPage({Key? key, required this.qrCode}) : super(key: key);
+  const PyxisPedidoPage({super.key, required this.qrCode});
 
   @override
   _PyxisPedidoPageState createState() => _PyxisPedidoPageState();
@@ -46,7 +46,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
 
   Future<void> _consultarPyxis() async {
     print('${dotenv.env['API_URL']}');
-    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/pyxis/${widget.qrCode}'));
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/api/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         setState(() {
@@ -57,12 +57,12 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
         });
       } else {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+          builder: (context) => const ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
         ));
       }
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
+        builder: (context) => const ErrorPage(message: 'QR Code inválido - Tente novamente'),
       ));
     }
   }

@@ -29,9 +29,9 @@ class _QRCodePageState extends State<QRCodePage> {
       print(ticket);
       setState(() => ticket = code);
       Navigator.push(
-        context,
+        mounted as BuildContext,
         MaterialPageRoute(
-          builder: (context) => PyxisPedidoPage(qrCode: ticket),
+          builder: (mounted) => PyxisPedidoPage(qrCode: ticket),
         ),
       );
     } else {

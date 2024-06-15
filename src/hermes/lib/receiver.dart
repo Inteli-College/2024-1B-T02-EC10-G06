@@ -24,7 +24,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/tickets'));
+    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -70,7 +70,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
         ],
       ),
       body: _isLoading
-      ? Center(child: CircularProgressIndicator())
+      ? const Center(child: CircularProgressIndicator())
       : GestureDetector(
         onTap: () {
           setState(() {
@@ -144,7 +144,7 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _closeTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/tickets/${widget.ticket.id}/close'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/close'),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -194,7 +194,7 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _operateTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/tickets/${widget.ticket.id}/operate'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/operate'),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(

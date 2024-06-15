@@ -2,6 +2,8 @@ from locust import HttpUser, task, between, TaskSet
 from entidades.pyxi import Pyxi
 from entidades.medicine import Medicine
 from entidades.ticket import Ticket
+import random
+
 
 pyxi_istance = Pyxi(pyxis=[
     {
@@ -238,9 +240,7 @@ medicine_istance = Medicine(medicines=[
 { "description": "Relaxante muscular para espasmos musculares", "name": "Ciclobenzaprina" },
 { "description": "Antifibrinolítico para sangramento excessivo", "name": "Ácido Tranexâmico" }
 ])
-ticket_istance = Ticket(
-    
-)
+ticket_istance = Ticket()
 
 
 class AdmUser(HttpUser):
@@ -308,8 +308,9 @@ class AdmUser(HttpUser):
         if medicine == None:
             return
         response = self.client.post("medicines/", json=medicine)
-        rawData = response.json()
-        self.medicine_istance.add_medicine(id=rawData["id"])
+        if response.status_code == 200:
+            rawData = response.json()
+            self.medicine_istance.add_medicine(id=rawData["id"])
 
     @task(70)
     def create_pyxis(self):
@@ -317,14 +318,18 @@ class AdmUser(HttpUser):
         if pyxi == None:
             return
         response = self.client.post("pyxis/", json=pyxi)
-        rawData = response.json()
-        self.pyxi_istance.add_pyxi(id=rawData["id"])
+        if response.status_code == 200:
+            rawData = response.json()
+            self.pyxi_istance.add_pyxi(id=rawData["id"])
         
         
 
     @task(90)
     def get_medicine(self):
-        self.client.get(f"medicines/{medicine_istance.get_random_id()}")
+        end = len(medicine_istance.medicines_id) -1
+        if end > 0:
+            sort = random.randint(1, end)
+            self.client.get(f"medicines/{medicine_istance.get_random_id(interator=0,index=sort)}")
 
     @task(100)
     def get_specific_pyxi(self):
@@ -336,34 +341,45 @@ class AdmUser(HttpUser):
 
     @task(10)
     def delete_medicine(self):
+        end = len(medicine_istance.medicines_id) -1
+        if end <= 0:
+            return
+        sort = random.randint(1, end)
         id = medicine_istance.get_random_id()
-        response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
-        rawData = response.json()
-        recycling_medicine = {
-            "description": rawData["description"],
-            "name": rawData["name"]
-        }
-        medicine_istance.add_to_create(recycling_medicine)
-        self.client.delete(f"medicines/{id}")
-        medicine_istance.delete_medicine(id)
+        medicine_id = medicine_istance.get_random_id(interator=0,index=sort)
+        if medicine_id != None:
+            response = self.client.get(f"medicines/{medicine_id}")
+            if response.status_code == 200:
+                rawData = response.json()
+                recycling_medicine = {
+                    "description": rawData["description"],
+                    "name": rawData["name"]
+                }
+                medicine_istance.add_to_create(recycling_medicine)
+                self.client.delete(f"medicines/{id}")
+                medicine_istance.delete_medicine(id)
+        
         
 
 
     @task(10)
     def update_pyxi(self):
+        sort = random.randint(1, 10)
         id = pyxi_istance.get_random_id()
         pyxi_response = self.client.get(f"pyxis/{id}")
-        medicines = []
-        rawData = {}
-        if id != None:
-            for _ in range(10):
-                medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id()}")
-                rawData = medicine_response.json()
-                medicines.append(rawData)
-        pyxi = pyxi_response.json()
-        pyxi['medicines'] = medicines
-        
-        self.client.put(f"pyxis/{id}", json=pyxi)
+        if pyxi_response.status_code == 200:
+            medicines = []
+            rawData = {}
+            if id != None:
+                for interador in range(10):
+                    medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id(interador, sort)}")
+                    if medicine_response.status_code == 200:
+                        rawData = medicine_response.json()
+                        medicines.append(rawData)
+            pyxi = pyxi_response.json()
+            pyxi['medicines'] = medicines
+            
+            self.client.put(f"pyxis/{id}", json=pyxi)
 
     # @task
     # def delete_pyxi(self):

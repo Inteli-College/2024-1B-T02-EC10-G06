@@ -23,7 +23,7 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
     ticket_id = db.insert_one(ticket).inserted_id
     ticket['id'] = str(ticket_id)
     
-    return {"msg":"Created"}
+    return {"msg":f"{ticket['id']}"}
     
 
 def all_tickets(db:Collection):
@@ -62,10 +62,7 @@ def one_ticket(db:Collection, ticket_id):
 def delete_response(db:Collection, ticket_id):
     db.delete_one({"_id": ObjectId(ticket_id)})
     return {
-        "msg":{
-            "id":ticket_id,
-            "status":"Deletado com sucesso"
-        }
+        "msg": str(ticket_id)
     }
 
 
@@ -81,11 +78,5 @@ def update_response(db:Collection, ticket_id, ticket_update):
         }
         )
     return { 
-        "msg": {
-            "id":ticket_id,
-            "idPyxis": ticket_update.idPyxis,
-            "description": ticket_update.description,
-            "body": ticket_update.body,
-            "status":"Atualizado com sucesso"
-        }
+        "msg": str(ticket_id)
     }

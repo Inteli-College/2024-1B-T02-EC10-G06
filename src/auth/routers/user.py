@@ -45,7 +45,7 @@ def validate_permession(token: str = Depends(oauth2_scheme),permission: Permissi
     except Exception as e:
         return e
     
-    return {"permission":tokenPermission}
+    return {"permission":tokenPermission,"user": str(user)}
 
 
 

@@ -8,7 +8,7 @@ from redis.commands.search.query import Query
 
 
 class RedisInterface():
-    def __init__(self, urls_host="localhost") -> None:
+    def __init__(self, urls_host="localhost"):
         self.engnie = redis.Redis(
         host=urls_host, 
         port=6379, 
@@ -18,30 +18,36 @@ class RedisInterface():
 
         # Reponsável por amarzenar o indexador
         self.index = None
+        self.tag_name = None
     
     def index_create(self, tag_name, schema):
-        if  self.index == None:
-            self.index = self.engnie.ft(f"idx:{tag_name}")
-            print("Gerou o indexador: ",tag_name)
-
-            # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez.
+        self.index = self.engnie.ft(f"idx:{tag_name}")
+        
+        # Essa operação depênde da conexão com o server, ela deve ser executada apenas uma vez.
+        try:
             self.index.create_index(
                 schema,
                 definition=IndexDefinition(prefix=[f"{tag_name}:"], index_type=IndexType.JSON),
                 )
-        print("Index já criado")
+            print("Gerou o indexador: ",tag_name)
+            
+        except Exception as e:
+            print("Index já criado: ", e)
+        
+        self.tag_name = tag_name
+            
     
     def set_value(self,key,value):
-        self.engnie.json().set(f"{key}", Path.root_path(), value)
-
-    def set_values(self, tag_name, values):
-        for bid, value in enumerate(values):
-            self.engnie.json().set(f"{tag_name}:{bid}", Path.root_path(), value)
+        self.engnie.json().set(f"{self.tag_name}:{key}", Path.root_path(), value, decode_keys = True)
     
-    def get_value(self, tag_name, query="*") -> dict:
+    def set_values(self, values):
+        for _, value in enumerate(values):
+            self.engnie.json().set(f"{self.tag_name}:{value['id']}", Path.root_path(), value, decode_keys = True)
+    
+    def get_value(self, query="*") -> dict:
         if self.index == None:
-            raise {"Erro":f"{tag_name} indexador não encontrado."}
-        res = self.index.search(Query(f"{query}"))
+            raise {"Erro indexador não encontrado."}
+        res = self.index.search(Query(f"@id:{query}"))
         return res
 
 

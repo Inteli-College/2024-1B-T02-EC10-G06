@@ -8,6 +8,8 @@ import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import "package:hermes/functions.dart";
 
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -28,9 +30,9 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      print('${dotenv.env['API_URL']}/login/');
+      print('${dotenv.env['API_URL']}/auth/login/');
       final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/login/'),
+        Uri.parse('${dotenv.env['API_URL']}/auth/login/'),
         body: jsonEncode({
           'username': _usernameController.text,
           'password': _passwordController.text,
@@ -42,12 +44,12 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        var token = await getToken(response);
+        var token = getToken(response);
         saveToken(token);
-        final data = jsonDecode(response.body);
+        // final data = jsonDecode(response.body);
         print('Login successful: $token');
         var permissionResponse = await http.get(
-          Uri.parse('${dotenv.env['API_URL']}/getPermission/'),
+          Uri.parse('${dotenv.env['API_URL']}/auth/getPermission/'),
           headers: {
             'Authorization': "Bearer $token",
             'Content-Type': 'application/json',

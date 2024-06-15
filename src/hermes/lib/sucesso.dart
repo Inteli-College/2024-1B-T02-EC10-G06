@@ -3,6 +3,8 @@ import 'package:hermes/qr_code.dart';
 
 
 class SucessoPage extends StatelessWidget {
+  const SucessoPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,18 +12,18 @@ class SucessoPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.check_circle,
               color: Colors.green,
               size: 100,
             ),
-            SizedBox(height: 24),
-            Text(
+            const SizedBox(height: 24),
+            const Text(
               'Sua solicitação foi gerada com sucesso!',
               style: TextStyle(fontSize: 20),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -29,7 +31,7 @@ class SucessoPage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const QRCodePage()),
                 );
               },
-              child: Text('Confirmar'),
+              child: const Text('Confirmar'),
             ),
           ],
         ),
