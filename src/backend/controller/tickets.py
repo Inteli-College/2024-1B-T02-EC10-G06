@@ -54,8 +54,11 @@ def one_ticket(db:Collection, ticket_id):
             "idPyxis": str(raw_tickets["idPyxis"]),
             "description": raw_tickets["description"],
             "body": raw_tickets["body"],
+            "fixed_at": raw_tickets["fixed_at"],
             "created_at": raw_tickets["created_at"],
             "status": raw_tickets["status"],
+            "owner_id": raw_tickets["owner_id"],
+            "operator_id": raw_tickets["operator_id"]
     }
     return tickets
 

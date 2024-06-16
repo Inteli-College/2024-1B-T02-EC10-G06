@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -48,6 +50,7 @@ class MinhaPrimeiraTela extends StatefulWidget {
   State<MinhaPrimeiraTela> createState() => _MinhaPrimeiraTelaState();
 }
 
+
 class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
   final int _numRoles = 3;
   final PageController _pageController = PageController(initialPage: 0);
@@ -72,6 +75,24 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
         borderRadius: BorderRadius.circular(12),
       ),
     );
+  }
+
+  late Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      setState(() {
+        _currentPage = (_currentPage + 1) % _numRoles;
+        _pageController.animateToPage(_currentPage,
+            duration: const Duration(milliseconds: 400), curve: Curves.easeInOutQuad);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
   }
 
   @override
@@ -101,68 +122,69 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
                 SizedBox(
                     height: 200,
                     child: PageView(
-                      physics: const ClampingScrollPhysics(),
-                      controller: _pageController,
-                      onPageChanged: (int page) {
-                        setState(() {
-                          _currentPage = page;
-                        });
-                      },
-                      children: const [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Hermes",
-                                style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.bold)),
-                            Text(
-                              'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize:
-                                    20.0, // Ajuste o tamanho da fonte conforme necessário
-                                fontWeight: FontWeight.w400, // Fonte mais leve
+                            physics: const ClampingScrollPhysics(),
+                            controller: _pageController,
+                            onPageChanged: (int page) {
+                              setState(() {
+                                _currentPage = page;
+                                
+                              });
+                            },
+                            children: const [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Enfermeiras",
+                                      style: TextStyle(
+                                          fontSize: 28, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize:
+                                          20.0, // Ajuste o tamanho da fonte conforme necessário
+                                      fontWeight: FontWeight.w400, // Fonte mais leve
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Hermes",
-                                style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.bold)),
-                            Text(
-                              'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize:
-                                    20.0, // Ajuste o tamanho da fonte conforme necessário
-                                fontWeight: FontWeight.w400, // Fonte mais leve
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Tecnicos de enfermagem",
+                                      style: TextStyle(
+                                          fontSize: 28, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize:
+                                          20.0, // Ajuste o tamanho da fonte conforme necessário
+                                      fontWeight: FontWeight.w400, // Fonte mais leve
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Hermes",
-                                style: TextStyle(
-                                    fontSize: 28, fontWeight: FontWeight.bold)),
-                            Text(
-                              'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize:
-                                    20.0, // Ajuste o tamanho da fonte conforme necessário
-                                fontWeight: FontWeight.w400, // Fonte mais leve
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Administradores",
+                                      style: TextStyle(
+                                          fontSize: 28, fontWeight: FontWeight.bold)),
+                                  Text(
+                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize:
+                                          20.0, // Ajuste o tamanho da fonte conforme necessário
+                                      fontWeight: FontWeight.w400, // Fonte mais leve
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                ),
+                            ],
+                  )),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),

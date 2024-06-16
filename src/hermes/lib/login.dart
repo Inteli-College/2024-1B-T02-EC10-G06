@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      print('${dotenv.env['API_URL']}/auth/login/');
+      // print('${dotenv.env['API_URL']}/auth/login/');
       final response = await http.post(
         Uri.parse('${dotenv.env['API_URL']}/auth/login/'),
         body: jsonEncode({
@@ -48,8 +48,8 @@ class _LoginPageState extends State<LoginPage> {
         saveToken(token);
         // final data = jsonDecode(response.body);
         print('Login successful: $token');
-        var permissionResponse = await http.get(
-          Uri.parse('${dotenv.env['API_URL']}/auth/getPermission/'),
+        final permissionResponse = await http.get(
+          Uri.parse('${dotenv.env['API_URL']}/auth/getPermission'),
           headers: {
             'Authorization': "Bearer $token",
             'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
               TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
@@ -139,12 +139,24 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               _isLoading
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              Colors.deepPurple),
+                          fixedSize: WidgetStateProperty.all<Size>(
+                              const Size(200, 60)),
+                        ),
                       onPressed: _login,
-                      child: const Text('Login'),
+                      child: const Text('Login', 
+                      style: TextStyle(
+                            letterSpacing: 1.0,
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ),
               const SizedBox(height: 20),
               _errorMessage.isNotEmpty
