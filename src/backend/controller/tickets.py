@@ -89,3 +89,36 @@ def update_response(db:Collection, ticket_id, ticket_update):
             "status":"Atualizado com sucesso"
         }
     }
+
+
+def status_to_closed(db:Collection, raw_ticket):
+    db.update_one(
+        {"_id": ObjectId(raw_ticket["_id"])},
+        {'$set':{
+            "status": "closed",
+            "fixed_at": datetime.now()
+            }
+        }
+        )
+    return { 
+        "msg": {
+            "id":str(raw_ticket["_id"]),
+            "status":"Fechado com sucesso"
+        }
+    }
+
+def status_to_inProgress(db:Collection, ticket_id, ticket_update):  
+    db.update_one(
+        {"_id": ObjectId(ticket_id)},
+        {'$set':{
+            "status": "in_progress",
+            "operator_id": ticket_update.operator_id
+            }
+        }
+        )
+    return { 
+        "msg": {
+            "id":ticket_id,
+            "status":"Em progresso"
+        }
+    }

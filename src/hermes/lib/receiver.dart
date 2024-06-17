@@ -222,7 +222,7 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _operateTicket() async {
     final response = await http.put(
-      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/on progress'),
+      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/in_progress'),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
