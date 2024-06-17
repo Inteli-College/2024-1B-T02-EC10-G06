@@ -2,7 +2,7 @@ class Ticket {
   final String? id;
   final String idPyxis;
   final String description;
-  final List<Medication> body;
+  final List<dynamic> body;
   final DateTime created_at;
   final String fixed_at;
   final String status;
@@ -27,7 +27,7 @@ class Ticket {
       idPyxis:      json['idPyxis'],
       description:  json['description'],
       body:         (json['body'] as List<dynamic>)
-                    .map((item) => Medication.fromJson(item))
+                    .map((item) => item.toString())
                     .toList(),
       created_at:   DateTime.parse(json['created_at']),
       fixed_at:     json['fixed_at'],
