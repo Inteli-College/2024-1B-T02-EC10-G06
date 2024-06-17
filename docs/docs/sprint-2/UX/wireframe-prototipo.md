@@ -15,23 +15,30 @@ A tela de login, na versão mobile, foi pensada para as personas farmacêuticas 
 
 ![img onboarding](./img/Onboarding.png)
 
+![img login](./img/Login.png)
+
 
 ## Criação de Tickets
 
 A tela de criação de tickets foi pensada para as personas farmacêuticas. Nela, o usuário já logado no sistema do Hospital Sírio Libanês poderá abrir um ticket requisitando itens após a indentificação do pyxis via QrCode.
 
-![img](./img/Qr%207.png)
+![img](./img/Qr.png)
 
 ![img](./img/New%20call.png)
 
-![img](./img/Search%20%20-%20only%20item.png)
+![img](./img/Search%20-%20many%20items.png)
+
+![img](./img/ticket%20confirmed.png)
 
 ## Recebimento e Encerramento de Tickets
 
 A tela de recebimento e encerramento de tickets foi pensada para as personas técnicas. Nela, o usuário já logado no sistema do Hospital Sírio Libanês receberá um ticket. Após o técnico concluir a solicitação, ele poderá encerrar o ticket.
 
-![img](./img/Notifications.png)
+![img](./img/f2%20-%20Atendimento.png)
 
+![img](./img/f2%20-%20Atendimento(1).png)
+
+![img](./img/f2%20-%20Atendimento(2).png)
 
 ## Recebimento e Encerramento de Tickets
 
