@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hermes/models.dart';
+import 'package:hermes/functions.dart';
 
 class ReceiverPage extends StatefulWidget {
   const ReceiverPage({super.key});
@@ -13,34 +15,50 @@ class ReceiverPage extends StatefulWidget {
 
 class _ReceiverPageState extends State<ReceiverPage> {
   List<Ticket> _tickets = [];
-  List<Ticket> _openTickets = [];
+  List<Ticket> _opTickets = [];
   String? _clickedTicketId;
   bool _isLoading = true;
+  dynamic _credentials = {};
 
   @override
   void initState() {
     super.initState();
     _fetchTickets();
+    _initializeCredentials();
+  }
+
+  Future<void> _initializeCredentials() async {
+    try {
+      String token = await getTokenFromStorage();
+      _credentials = await postToken(token);
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to initialize credentials: $e')),
+      );
+    }
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets'));
+    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
-        _isLoading = false;
+        
+        _opTickets = _tickets.where((ticket) => 
+        ticket.status == 'open' || ticket.operator_id == _credentials['username'])
+        .toList();
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to fetch tickets')),
       );
-      setState(() {
-        _isLoading = false;
-      });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _handleCardTapped(String? ticketId) {
@@ -74,12 +92,13 @@ class _ReceiverPageState extends State<ReceiverPage> {
           });
         },
         child: ListView.builder(
-          itemCount: _openTickets.length,
+          itemCount: _opTickets.length,
           itemBuilder: (context, index) {
             return TicketCard(
-              ticket: _openTickets[index],
-              isExpanded: _openTickets[index].id == _clickedTicketId,
+              ticket: _opTickets[index],
+              isExpanded: _opTickets[index].id == _clickedTicketId,
               onCardTapped: _handleCardTapped,
+              credentials: _credentials,
             );
           },
         ),
@@ -92,11 +111,13 @@ class TicketCard extends StatefulWidget {
   final Ticket ticket;
   final bool isExpanded;
   final Function(String?) onCardTapped;
+  final dynamic credentials;
 
   const TicketCard({super.key,
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,
+    required this.credentials,
   });
 
   @override
@@ -140,7 +161,15 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _closeTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/close'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+      body: jsonEncode({
+        'idPyxis': widget.ticket.idPyxis,
+        'description': widget.ticket.description,
+        'body': widget.ticket.body,
+        'status': 'closed',
+        'owner_id': widget.ticket.owner_id,
+        'operator_id': widget.credentials['username']
+        }),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -190,7 +219,15 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _operateTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/operate'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+      body: jsonEncode({
+        'idPyxis': widget.ticket.idPyxis,
+        'description': widget.ticket.description,
+        'body': widget.ticket.body,
+        'status': 'operation',
+        'owner_id': widget.ticket.owner_id,
+        'operator_id': widget.credentials['username']
+        }),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -234,7 +271,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 8),
-              ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
+              ...widget.ticket.body.map((medication) => Text(medication)),
               const SizedBox(height: 8),
               Text(
                 'Status: ${widget.ticket.status}',
@@ -244,18 +281,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.isExpanded ? Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: _confirmClose,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text('Encerrar Ticket'),
-                ),
-              ) : Container(),
-              const SizedBox(height: 16),
-              widget.isExpanded ? Align(
+              widget.isExpanded && widget.ticket.operator_id != widget.credentials['username'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
@@ -263,6 +289,16 @@ class _TicketCardState extends State<TicketCard> {
                     backgroundColor: Colors.yellow,
                   ),
                   child: const Text('Operar Ticket'),
+                ),
+              ) : Container(),
+              widget.isExpanded && widget.ticket.operator_id == widget.credentials['username'] ? Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: _confirmClose,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Encerrar Ticket'),
                 ),
               ) : Container(),
             ],
