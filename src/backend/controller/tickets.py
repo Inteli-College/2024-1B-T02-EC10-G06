@@ -1,12 +1,17 @@
 from bson.objectid import ObjectId
 from datetime import datetime
 from pymongo.collection import Collection
-import json 
-from utils.kafka import ProducerController
+from utils.publisher import Publisher
+import json
 
 
+producer = Publisher("bridge",5672)
 
-def ticket_created(producer:ProducerController, db, raw_ticket):
+producer.exchangeDeclare("ticket")
+
+producer.queueDeclare("ticket_queue")
+
+def ticket_created(db, raw_ticket):
     ticket = {
             "idPyxis": raw_ticket.idPyxis,
             "description": raw_ticket.description,
@@ -20,10 +25,9 @@ def ticket_created(producer:ProducerController, db, raw_ticket):
 
     # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     # producer.flush()
-    ticket_id = db.insert_one(ticket).inserted_id
-    ticket['id'] = str(ticket_id)
+    producer.send(json.dumps(ticket, indent = 4, sort_keys=True, default=str), "ticket", "ticket_queue")
     
-    return {"msg":f"{ticket['id']}"}
+    return {"msg":f"ticket sent to queue: {ticket}"}
     
 
 def all_tickets(db:Collection):

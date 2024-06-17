@@ -1,9 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models.ticket import TicketBase, TicketCreate, TicketResponse
 from controller.tickets import ticket_created , all_tickets, one_ticket, delete_response, update_response
-
-
-from utils.kafka import ProducerController
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -12,12 +9,10 @@ load_dotenv()
 
 uri = os.getenv("MONGO_LOCAL_URI")
 client = MongoClient(uri)
-server = os.getenv("KAFKA_BROKER")
 client_id = "python-producer"
-apikey = os.getenv("KAFKA_APIKEY")
-password = os.getenv("KAFKA_PASSWORD")
 
-producer = ProducerController(server,client_id,apikey,password)
+
+
 tickets_db = client["Hermes"]
 collection = tickets_db["Tickets"]
 
@@ -29,7 +24,7 @@ router = APIRouter(
 
 @router.post("/")
 def create_ticket(ticket: TicketCreate):
-    ticket = ticket_created(producer,collection, ticket) # Producer change Collection
+    ticket = ticket_created(collection, ticket) # Producer change Collection
     return ticket
 
 

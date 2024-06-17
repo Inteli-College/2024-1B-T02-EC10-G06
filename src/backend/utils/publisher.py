@@ -6,7 +6,7 @@ import typing
 
 class Publisher:
 
-    def __init__(self,host:str,port:int,user:str,password:str) -> None:
+    def __init__(self,host:str,port:int,user:str = None,password:str = None) -> None:
         if user and password:
             self.connection = pika.BlockingConnection(
                         pika.ConnectionParameters(
@@ -26,10 +26,13 @@ class Publisher:
         channel.queue_declare(queue=name, durable=True)
         
     def exchangeDeclare(self,name:str,type :str = "fanout"):
-        self.channel.exchange_declare(exchange=name,
+        channel = self.connection.channel()
+        channel.exchange_declare(exchange=name,
                          exchange_type=type)
     def send(self,message:str,exchangeName:str,routingKey:str):
-        self.channel.basic_publish(exchange=exchangeName,
+        channel = self.connection.channel()
+        print(f" [x] Sent {message}")
+        channel.basic_publish(exchange=exchangeName,
                       routing_key=routingKey,
                       body=message)
     def sendLot(self,messageList: typing.Iterable):

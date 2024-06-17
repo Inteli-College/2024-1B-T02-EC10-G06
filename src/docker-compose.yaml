@@ -1,12 +1,12 @@
 version: '2'
 services:
-  # bridge:
-  #   image: rabbitmq:latest
-  #   volumes:
-  #     - $PWD/bridge:/var/lib/rabbitmq 
-  #   ports:
-  #     - "5672:5672"
-  #   container_name: bridge
+  bridge:
+    image: rabbitmq:latest
+    volumes:
+      - $PWD/bridge:/var/lib/rabbitmq 
+    ports:
+      - "5672:5672"
+    container_name: bridge
 
   redis:
     container_name: redis_server
@@ -29,6 +29,8 @@ services:
     restart: on-failure
     ports:
       - "5001:5001"
+    depends_on:
+      - bridge
 
   mongo:
     build: ./mongo
@@ -63,3 +65,10 @@ services:
       - auth
       - backend
     restart: on-failure
+  sink:
+    build: ./sink
+    depends_on:
+      - backend
+    restart: on-failure
+    environment:
+      - PYTHONUNBUFFERED=1
