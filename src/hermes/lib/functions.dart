@@ -16,13 +16,14 @@ String getToken(response) {
 }
 
 dynamic postToken(String token) async {
-  var response = await http.post(
+  var response = await http.get(
     Uri.parse('${dotenv.env['API_URL']}/auth/getPermission'),
-    body: jsonEncode({'token': token}),
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+      'Authorization': 'Bearer $token',
+    },
   );
 
-  if (response.statusCode >= 200 && response.statusCode < 300) {
+  if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
     throw Exception('Failed to get token');

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -51,17 +50,15 @@ class _ReceiverPageState extends State<ReceiverPage> {
         _opTickets = _tickets.where((ticket) => 
         ticket.status == 'open' || ticket.operator_id == '5')
         .toList();
-
-        _isLoading = false;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to fetch tickets')),
       );
-      setState(() {
-        _isLoading = false;
-      });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void _handleCardTapped(String? ticketId) {
