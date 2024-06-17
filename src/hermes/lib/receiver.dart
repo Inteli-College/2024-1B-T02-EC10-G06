@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hermes/models.dart';
+import 'package:hermes/functions.dart';
 
 class ReceiverPage extends StatefulWidget {
   const ReceiverPage({super.key});
@@ -16,11 +19,25 @@ class _ReceiverPageState extends State<ReceiverPage> {
   List<Ticket> _opTickets = [];
   String? _clickedTicketId;
   bool _isLoading = true;
+  dynamic _credentials = {};
 
   @override
   void initState() {
     super.initState();
     _fetchTickets();
+    _initializeCredentials();
+  }
+
+  Future<void> _initializeCredentials() async {
+    try {
+      String token = await getTokenFromStorage();
+      _credentials = await postToken(token);
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to initialize credentials: $e')),
+      );
+    }
   }
 
   Future<void> _fetchTickets() async {
@@ -84,6 +101,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
               ticket: _opTickets[index],
               isExpanded: _opTickets[index].id == _clickedTicketId,
               onCardTapped: _handleCardTapped,
+              credentials: _credentials,
             );
           },
         ),
@@ -96,11 +114,13 @@ class TicketCard extends StatefulWidget {
   final Ticket ticket;
   final bool isExpanded;
   final Function(String?) onCardTapped;
+  final dynamic credentials;
 
   const TicketCard({super.key,
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,
+    required this.credentials,
   });
 
   @override
@@ -144,7 +164,15 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _closeTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/close'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+      body: jsonEncode({
+        'idPyxis': widget.ticket.idPyxis,
+        'description': widget.ticket.description,
+        'body': widget.ticket.body,
+        'status': 'closed',
+        'owner_id': widget.ticket.owner_id,
+        'operator_id': widget.credentials['username']
+        }),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -194,7 +222,15 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _operateTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/operate'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+      body: jsonEncode({
+        'idPyxis': widget.ticket.idPyxis,
+        'description': widget.ticket.description,
+        'body': widget.ticket.body,
+        'status': 'operation',
+        'owner_id': widget.ticket.owner_id,
+        'operator_id': widget.credentials['username']
+        }),
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -248,7 +284,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.isExpanded && widget.ticket.operator_id != '5' ? Align(
+              widget.isExpanded && widget.ticket.operator_id != widget.credentials['username'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
@@ -258,7 +294,7 @@ class _TicketCardState extends State<TicketCard> {
                   child: const Text('Operar Ticket'),
                 ),
               ) : Container(),
-              widget.isExpanded && widget.ticket.operator_id == '5' ? Align(
+              widget.isExpanded && widget.ticket.operator_id == widget.credentials['username'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmClose,
