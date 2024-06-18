@@ -72,3 +72,5 @@ services:
     restart: on-failure
     environment:
       - PYTHONUNBUFFERED=1
+      - SECRET_KEY=TODOMEMAMA
+      - ALGORITHM="HS256"
