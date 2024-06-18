@@ -3,7 +3,7 @@ title: Desenvolvimento do Frontend
 sidebar_position: 2
 ---
 
-# Flutter
+## Flutter
 
 Flutter é um kit de ferramentas de interface do usuário (UI) de código aberto criado pelo Google. Ele permite o desenvolvimento de aplicativos nativos para diversas plataformas a partir de uma única base de código.
 
