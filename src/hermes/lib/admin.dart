@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 import 'package:hermes/models.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -26,106 +27,41 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
+    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _isLoadingTickets = false;
       });
     } else {
-      const String mockData = '''
-      [
-        {
-          "idPyxis": "1",
-          "description": "Sample ticket 1",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "1",
-          "operator_id": "2"
-        },
-        {
-          "idPyxis": "2",
-          "description": "Sample ticket 2",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "closed",
-          "owner_id": "2",
-          "operator_id": "3"
-        },
-        {
-          "idPyxis": "3",
-          "description": "Sample ticket 3",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "3",
-          "operator_id": "1"
-        }
-      ]
-      ''';
-
-      final List<dynamic> data = jsonDecode(mockData);
-      setState(() {
-        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _isLoadingTickets = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch tickets')),
+      );
     }
+
+    setState(() {
+      _isLoadingTickets = false;
+    });
   }
 
   Future<void> _fetchPyxis() async {
-    final response = await http.get(Uri.parse('https://api.hermes.com/pyxis'));
+    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/pyxis/'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       setState(() {
         _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
-        _isLoadingPyxis = false;
       });
     } else {
-      const String mockData = '''
-      [
-        {
-          "id": "1",
-          "description": "Sample pyxi 1",
-          "medicine": {
-            "id": "1",
-            "name": "Medicine 1",
-            "description": "Sample medicine 1"
-          }
-        },
-        {
-          "id": "2",
-          "description": "Sample pyxi 2",
-          "medicine": {
-            "id": "2",
-            "name": "Medicine 2",
-            "description": "Sample medicine 2"
-          }
-        },
-        {
-          "id": "3",
-          "description": "Sample pyxi 3",
-          "medicine": {
-            "id": "3",
-            "name": "Medicine 3",
-            "description": "Sample medicine 3"
-          }
-        }
-      ]
-      ''';
-
-      final List<dynamic> data = jsonDecode(mockData);
-      setState(() {
-        _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
-        _isLoadingPyxis = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch pyxis')),
+      );
     }
+
+    setState(() {
+      _isLoadingPyxis = false;
+    });
   }
 
   void _handleCardTapped(String ticketId) {
@@ -140,6 +76,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget _buildStatusBarChart(List<Ticket> tickets) {
     final openTickets = tickets.where((ticket) => ticket.status == 'open').length;
+    final operationTickets = tickets.where((ticket) => ticket.status == 'operation').length;
     final closedTickets = tickets.where((ticket) => ticket.status == 'closed').length;
 
     return Padding(
@@ -156,11 +93,17 @@ class _DashboardPageState extends State<DashboardPage> {
                   BarChartGroupData(
                     x: 0,
                     barRods: [
-                      BarChartRodData(toY: openTickets.toDouble(), color: Colors.blue),
+                      BarChartRodData(toY: openTickets.toDouble(), color: Colors.red),
                     ],
                   ),
                   BarChartGroupData(
                     x: 1,
+                    barRods: [
+                      BarChartRodData(toY: operationTickets.toDouble(), color: Colors.orange),
+                    ],
+                  ),
+                  BarChartGroupData(
+                    x: 2,
                     barRods: [
                       BarChartRodData(toY: closedTickets.toDouble(), color: Colors.green),
                     ],
@@ -175,6 +118,22 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildStatusByOwnerChart(List<Ticket> tickets) {
+    final Map<String, Map<String, int>> ticketCounts = {};
+
+    for (var ticket in tickets) {
+      final ownerId = ticket.owner_id;
+      final status = ticket.status;
+
+      if (!ticketCounts.containsKey(ownerId)) {
+        ticketCounts[ownerId] = {'open': 0, 'closed': 0};
+      }
+
+      if (status == 'open' || status == 'closed') {
+        ticketCounts[ownerId]![status] = (ticketCounts[ownerId]![status] ?? 0) + 1;
+      }
+    }
+
+    // isso em baixo é xumbisse
     final owner1OpenTickets = tickets.where((ticket) => ticket.status == 'open' && ticket.owner_id == '1').length;
     final owner1ClosedTickets = tickets.where((ticket) => ticket.status == 'closed' && ticket.owner_id == '1').length;
     final owner2OpenTickets = tickets.where((ticket) => ticket.status == 'open' && ticket.owner_id == '2').length;
@@ -399,9 +358,26 @@ class _DashboardPageState extends State<DashboardPage> {
             children: [
               Row(
                 children: [
-                  _buildInfoCard('Tickets Totais', _tickets.length, Colors.yellow),
-                  _buildInfoCard('Abertos', _tickets.where((ticket) => ticket.status == 'open').length, Colors.red),
-                  _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'closed').length, Colors.green),
+                  _buildInfoCard(
+                    'Tickets Totais',
+                    _tickets.length,
+                    Colors.orange
+                    ),
+                  _buildInfoCard(
+                    'Abertos',
+                    _tickets.where((ticket) => ticket.status == 'open').length,
+                    Colors.red
+                    ),
+                  _buildInfoCard(
+                    'Em Operação',
+                    _tickets.where((ticket) => ticket.status == 'operation').length,
+                    Colors.yellow
+                    ),
+                  _buildInfoCard(
+                    'Finalizados',
+                    _tickets.where((ticket) => ticket.status == 'closed').length,
+                   Colors.green
+                  ),
                 ],
               ),
               const SizedBox(height: 20),

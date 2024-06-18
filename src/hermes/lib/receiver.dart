@@ -166,7 +166,7 @@ class _TicketCardState extends State<TicketCard> {
       body: jsonEncode({
         'idPyxis': widget.ticket.idPyxis,
         'description': widget.ticket.description,
-        'body': widget.ticket.body,
+        'body': widget.ticket.body.map((medication) => medication.toJson()).toList(),
         'status': 'closed',
         'owner_id': widget.ticket.owner_id,
         'operator_id': widget.credentials['username']
@@ -224,22 +224,14 @@ class _TicketCardState extends State<TicketCard> {
       body: jsonEncode({
         'idPyxis': widget.ticket.idPyxis,
         'description': widget.ticket.description,
-        'body': [widget.ticket.body],
+        'body': widget.ticket.body.map((medication) => medication.toJson()).toList(),
         'status': 'operation',
         'owner_id': widget.ticket.owner_id,
         'operator_id': widget.credentials['username']
         }),
         headers: {'Content-Type': 'application/json'},
     );
-//     {
-//         "idPyxis": "widget.ticket.idPyxis",
-//         "description": "widget.ticket.description",
-//         "body": ["widget.ticket.body"],
-//         "status": "closed",
-//         "owner_id": "widget.ticket.owner_id",
-//         "operator_id": "widget.credentials['username']"
-  
-// }
+
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -282,7 +274,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 8),
-              ...widget.ticket.body.map((medication) => Text(medication)),
+              ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
               const SizedBox(height: 8),
               Text(
                 'Status: ${widget.ticket.status}',
