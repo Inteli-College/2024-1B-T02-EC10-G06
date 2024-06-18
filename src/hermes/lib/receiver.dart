@@ -48,7 +48,8 @@ class _ReceiverPageState extends State<ReceiverPage> {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         
         _opTickets = _tickets.where((ticket) => 
-        ticket.status == 'open' || ticket.operator_id == _credentials['username'])
+        (ticket.status == 'open' || ticket.operator_id == _credentials['username']) &&
+        (ticket.status != 'closed'))
         .toList();
       });
     } else {
