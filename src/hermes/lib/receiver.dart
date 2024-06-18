@@ -161,7 +161,7 @@ class _TicketCardState extends State<TicketCard> {
 
   Future<void> _closeTicket() async {
     final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
         'idPyxis': widget.ticket.idPyxis,
         'description': widget.ticket.description,
@@ -218,17 +218,27 @@ class _TicketCardState extends State<TicketCard> {
   }
 
   Future<void> _operateTicket() async {
-    final response = await http.put(
-      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}'),
+    final response = await http.put( 
+      Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
         'idPyxis': widget.ticket.idPyxis,
         'description': widget.ticket.description,
-        'body': widget.ticket.body,
+        'body': [widget.ticket.body],
         'status': 'operation',
         'owner_id': widget.ticket.owner_id,
         'operator_id': widget.credentials['username']
         }),
+        headers: {'Content-Type': 'application/json'},
     );
+//     {
+//         "idPyxis": "widget.ticket.idPyxis",
+//         "description": "widget.ticket.description",
+//         "body": ["widget.ticket.body"],
+//         "status": "closed",
+//         "owner_id": "widget.ticket.owner_id",
+//         "operator_id": "widget.credentials['username']"
+  
+// }
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
