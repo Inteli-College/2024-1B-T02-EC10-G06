@@ -20,6 +20,165 @@ Foram selecionados 10 participantes distribuídos entre os seis grupos da turma.
 Os resultados foram analisados para calcular a pontuação SUS para cada participante, variando de 45 a 100. A média das pontuações indicou uma recepção geralmente positiva do sistema, com áreas destacadas para melhoria baseadas nas pontuações mais baixas.
 Estas foram as pontuações SUS para os usuários avaliados:
 
+### Perguntas da Avaliação do Sistema:
+
+| Nº | Pergunta |
+|---|---|
+| 1 | Eu acredito que gostaria de usar esse sistema frequentemente. |
+| 2 | Eu achei o sistema desnecessariamente complexo. |
+| 3 | Eu achei o sistema fácil de usar. |
+| 4 | Eu acho que precisaria do suporte de uma pessoa técnica para poder usar esse sistema. |
+| 5 | Eu achei as várias funções neste sistema bem integradas. |
+| 6 | Eu achei que havia muita inconsistência nesse sistema. |
+| 7 | Eu imagino que a maioria das pessoas aprenderia a usar esse sistema muito rapidamente. |
+| 8 | Eu achei esse sistema muito desajeitado/incômodo de usar. |
+| 9 | Me senti muito confiante usando esse sistema. |
+| 10 | Eu precisei aprender muitas coisas antes de poder começar a usar este sistema. |
+
+### Avaliações dos Usuários
+
+### Usuário 1
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |          |        |     X    |                      |
+| 2        |                      |          |   X    |          |                      |
+| 3        |                      |   X      |        |          |                      |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |   X      |        |          |                      |
+| 6        |                      |   X      |        |          |                      |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |        |    X     |                      |
+| 9        |                      |          |        |    X     |                      |
+| 10       |                      |          |        |    X     |                      |
+
+### Usuário 2
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |          |        |          |        X             |
+| 2        |                      |          |        |          |    X                 |
+| 3        |                      |   X      |        |          |                      |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |        |     X    |                      |
+| 6        |                      |          |        |          |       X              |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 3
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |   X      |        |          |                      |
+| 3        |                      |          |        |          |       X              |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |        |     X    |                      |
+| 6        |                      |   X      |        |          |                      |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 4
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |          |        |          |        X             |
+| 2        |                      |          |        |          |        X             |
+| 3        |                      |          |        |          |        X             |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |   X      |        |          |                      |
+| 6        |                      |          |        |          |       X              |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 5
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |          |        |          |        X             |
+| 2        |                      |          |        |          |        X             |
+| 3        |                      |          |        |          |        X             |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |   X      |        |          |                      |
+| 6        |                      |          |        |          |        X             |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |          |        |    X     |                      |
+| 10       |                      |          |        |    X     |                      |
+
+### Usuário 6
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |   X      |        |          |                      |
+| 3        |                      |          |   X    |          |                      |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |   X    |          |                      |
+| 6        |                      |          |   X    |          |                      |
+| 7        |                      |          |   X    |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 7
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |   X      |        |          |                      |
+| 3        |                      |          |        |          |       X              |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |        |    X     |                      |
+| 6        |                      |          |        |          |       X              |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |        |   X      |                      |
+| 9        |                      |          |        |   X      |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 8
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |          |        |   X      |                      |
+| 3        |                      |          |        |   X      |                      |
+| 4        |                      |          |   X    |          |                      |
+| 5        |                      |          |        |   X      |                      |
+| 6        |                      |          |        |          |       X              |
+| 7        |                      |   X      |        |          |                      |
+| 8        |                      |          |        |   X      |                      |
+| 9        |                      |          |        |   X      |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 9
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |   X      |        |          |                      |
+| 3        |                      |          |        |   X      |                      |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |   X    |          |                      |
+| 6        |                      |          |   X    |          |                      |
+| 7        |                      |          |   X    |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Usuário 10
+| Question | Discordo Totalmente | Discordo | Neutro | Concordo | Concordo Totalmente |
+|----------|----------------------|----------|--------|----------|----------------------|
+| 1        |                      |   X      |        |          |                      |
+| 2        |                      |   X      |        |          |                      |
+| 3        |                      |          |        |   X      |                      |
+| 4        |                      |   X      |        |          |                      |
+| 5        |                      |          |   X    |          |                      |
+| 6        |                      |          |   X    |          |                      |
+| 7        |                      |          |   X    |          |                      |
+| 8        |                      |          |   X    |          |                      |
+| 9        |                      |   X      |        |          |                      |
+| 10       |                      |   X      |        |          |                      |
+
+### Notas dos Usuários
+
 - Usuário 1: 87.5
 - Usuário 2: 82.5
 - Usuário 3: 75.0
