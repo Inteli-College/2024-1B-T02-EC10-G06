@@ -21,9 +21,22 @@ class TicketCreate(BaseModel):
     owner_id: str
     body: list
 
+class TicketUpdateStatus(BaseModel): 
+    idPyxis: str
+    description: str
+    owner_id: str
+    body: list
+    status: str
+    operator_id: str
+
 # class TicketCreateResponse(TicketBase): 
 #     update: str
     
+
+
+class UpdateResposnse(BaseModel): 
+    id: str
+    status: str
 
 
 class TicketResponse(BaseModel): 
