@@ -28,12 +28,14 @@ class _QRCodePageState extends State<QRCodePage> {
     if (code != '-1') {
       print(ticket);
       setState(() => ticket = code);
-      Navigator.push(
-        mounted as BuildContext,
-        MaterialPageRoute(
-          builder: (mounted) => PyxisPedidoPage(qrCode: ticket),
-        ),
-      );
+      if (mounted) {
+        Navigator.push(
+          context,  // Use 'context' instead of 'mounted'
+          MaterialPageRoute(
+            builder: (context) => PyxisPedidoPage(qrCode: ticket),
+          ),
+        );
+      }
     } else {
       setState(() => ticket = 'Não validado');
     }

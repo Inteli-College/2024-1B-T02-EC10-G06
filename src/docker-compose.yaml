@@ -71,6 +71,8 @@ services:
       - auth
       - backend
     restart: on-failure
+
+    
   sink:
     build: ./sink
     depends_on:
@@ -79,3 +81,5 @@ services:
     restart: on-failure
     environment:
       - PYTHONUNBUFFERED=1
+      - SECRET_KEY=TODOMEMAMA
+      - ALGORITHM="HS256"

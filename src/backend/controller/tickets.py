@@ -26,7 +26,6 @@ def ticket_created(db, raw_ticket):
     # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     # producer.flush()
     producer.send(json.dumps(ticket, indent = 4, sort_keys=True, default=str), "ticket", "ticket_queue")
-    db.insert_one(ticket)
     return {"msg":f"ticket sent to queue: {ticket}"}
     
 
@@ -88,10 +87,11 @@ def update_response(db:Collection, ticket_id, ticket_update):
         "msg": str(ticket_id)
     }
 
-def update_status(db:Collection, ticket_id, status):
+def update_status(db:Collection, ticket_id, status, operator_id):
     db.update_one(
         {"_id": ObjectId(ticket_id)},
         {'$set':{
+            "operator_id": operator_id,
             "status": status
             }
         }

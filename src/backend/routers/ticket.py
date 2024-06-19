@@ -64,4 +64,4 @@ def update_ticket(ticket_id: str, ticket_update: TicketUpdateStatus):
     ticket = one_ticket(collection, ticket_id=ticket_id)
     if ticket is None:
         raise HTTPException(status_code=404, detail="tickets not found")
-    return update_status(db=collection, ticket_id=ticket_id, status=ticket_update.status)
+    return update_status(db=collection, ticket_id=ticket_id, status=ticket_update.status, operator_id=ticket_update.operator_id)

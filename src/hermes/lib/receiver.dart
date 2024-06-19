@@ -23,7 +23,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   @override
   void initState() {
     super.initState();
-    _fetchTickets();
+    fetchTickets();
     _initializeCredentials();
   }
 
@@ -39,7 +39,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
     }
   }
 
-  Future<void> _fetchTickets() async {
+  Future<void> fetchTickets() async {
     final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
@@ -48,7 +48,8 @@ class _ReceiverPageState extends State<ReceiverPage> {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         
         _opTickets = _tickets.where((ticket) => 
-        ticket.status == 'open' || ticket.operator_id == _credentials['username'])
+        (ticket.status == 'open' || ticket.operator_id == _credentials['user']) &&
+        (ticket.status != 'closed'))
         .toList();
       });
     } else {
@@ -79,7 +80,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _fetchTickets,
+            onPressed: fetchTickets,
           ),
         ],
       ),
@@ -99,6 +100,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
               isExpanded: _opTickets[index].id == _clickedTicketId,
               onCardTapped: _handleCardTapped,
               credentials: _credentials,
+              fetchData: fetchTickets,
             );
           },
         ),
@@ -112,12 +114,14 @@ class TicketCard extends StatefulWidget {
   final bool isExpanded;
   final Function(String?) onCardTapped;
   final dynamic credentials;
+  final void Function()? fetchData; 
 
   const TicketCard({super.key,
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,
     required this.credentials,
+    required this.fetchData,
   });
 
   @override
@@ -151,7 +155,7 @@ class _TicketCardState extends State<TicketCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('Encerrar'),
+              child: const Text('Encerrar', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
             ),
           ],
         );
@@ -163,13 +167,10 @@ class _TicketCardState extends State<TicketCard> {
     final response = await http.put(
       Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
-        'idPyxis': widget.ticket.idPyxis,
-        'description': widget.ticket.description,
-        'body': widget.ticket.body,
         'status': 'closed',
-        'owner_id': widget.ticket.owner_id,
-        'operator_id': widget.credentials['username']
+        'operator_id': widget.credentials['user'].toString(),
         }),
+        headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -177,6 +178,7 @@ class _TicketCardState extends State<TicketCard> {
           content: Text('Ticket encerrado com sucesso!'),
         ),
       );
+      widget.fetchData!();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -221,24 +223,12 @@ class _TicketCardState extends State<TicketCard> {
     final response = await http.put( 
       Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
-        'idPyxis': widget.ticket.idPyxis,
-        'description': widget.ticket.description,
-        'body': [widget.ticket.body],
         'status': 'operation',
-        'owner_id': widget.ticket.owner_id,
-        'operator_id': widget.credentials['username']
+        'operator_id': widget.credentials['user'].toString(),
         }),
         headers: {'Content-Type': 'application/json'},
     );
-//     {
-//         "idPyxis": "widget.ticket.idPyxis",
-//         "description": "widget.ticket.description",
-//         "body": ["widget.ticket.body"],
-//         "status": "closed",
-//         "owner_id": "widget.ticket.owner_id",
-//         "operator_id": "widget.credentials['username']"
-  
-// }
+
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -281,7 +271,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 8),
-              ...widget.ticket.body.map((medication) => Text(medication)),
+              ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
               const SizedBox(height: 8),
               Text(
                 'Status: ${widget.ticket.status}',
@@ -291,7 +281,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.isExpanded && widget.ticket.operator_id != widget.credentials['username'] ? Align(
+              widget.isExpanded && widget.ticket.operator_id != widget.credentials['user'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
@@ -301,14 +291,19 @@ class _TicketCardState extends State<TicketCard> {
                   child: const Text('Operar Ticket'),
                 ),
               ) : Container(),
-              widget.isExpanded && widget.ticket.operator_id == widget.credentials['username'] ? Align(
+              widget.isExpanded && widget.ticket.operator_id == widget.credentials['user'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmClose,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
-                  child: const Text('Encerrar Ticket'),
+                  child: const Text('Encerrar Ticket',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  
+                  ),
+                ),
                 ),
               ) : Container(),
             ],
