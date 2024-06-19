@@ -83,4 +83,4 @@ services:
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=TODOMEMAMA
       - ALGORITHM="HS256"
-      - MONGO_LOCAL_URI="mongodb://root:example@mongo:27017"
+      - MONGO_LOCAL_URI=mongodb://root:example@mongo:27017
