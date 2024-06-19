@@ -23,7 +23,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   @override
   void initState() {
     super.initState();
-    _fetchTickets();
+    fetchTickets();
     _initializeCredentials();
   }
 
@@ -39,7 +39,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
     }
   }
 
-  Future<void> _fetchTickets() async {
+  Future<void> fetchTickets() async {
     final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
@@ -80,7 +80,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _fetchTickets,
+            onPressed: fetchTickets,
           ),
         ],
       ),
@@ -100,6 +100,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
               isExpanded: _opTickets[index].id == _clickedTicketId,
               onCardTapped: _handleCardTapped,
               credentials: _credentials,
+              fetchData: fetchTickets,
             );
           },
         ),
@@ -113,12 +114,14 @@ class TicketCard extends StatefulWidget {
   final bool isExpanded;
   final Function(String?) onCardTapped;
   final dynamic credentials;
+  final void Function()? fetchData; 
 
   const TicketCard({super.key,
     required this.ticket,
     required this.isExpanded,
     required this.onCardTapped,
     required this.credentials,
+    required this.fetchData,
   });
 
   @override
@@ -174,6 +177,7 @@ class _TicketCardState extends State<TicketCard> {
           content: Text('Ticket encerrado com sucesso!'),
         ),
       );
+      widget.fetchData!();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
