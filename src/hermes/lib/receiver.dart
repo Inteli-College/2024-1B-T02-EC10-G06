@@ -209,9 +209,9 @@ class _TicketCardState extends State<TicketCard> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
+                backgroundColor: Colors.purple[700],
               ),
-              child: const Text('Operar'),
+              child: const Text('Operar', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
             ),
           ],
         );
@@ -235,6 +235,7 @@ class _TicketCardState extends State<TicketCard> {
           content: Text('Ticket encaminhado com sucesso!'),
         ),
       );
+      widget.fetchData!();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -256,7 +257,7 @@ class _TicketCardState extends State<TicketCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.ticket.idPyxis,
+                'Status: ${widget.ticket.status}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -274,7 +275,7 @@ class _TicketCardState extends State<TicketCard> {
               ...widget.ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
               const SizedBox(height: 8),
               Text(
-                'Status: ${widget.ticket.status}',
+                widget.ticket.created_at.toString(),
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[700],
@@ -286,9 +287,9 @@ class _TicketCardState extends State<TicketCard> {
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow,
+                    backgroundColor: Colors.purple[700],
                   ),
-                  child: const Text('Operar Ticket'),
+                  child: const Text('Operar Ticket', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                 ),
               ) : Container(),
               widget.isExpanded && widget.ticket.operator_id == widget.credentials['user'] ? Align(
