@@ -155,7 +155,7 @@ class _TicketCardState extends State<TicketCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('Encerrar'),
+              child: const Text('Encerrar', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),),
             ),
           ],
         );
@@ -170,6 +170,7 @@ class _TicketCardState extends State<TicketCard> {
         'status': 'closed',
         'operator_id': widget.credentials['user'].toString(),
         }),
+        headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -298,7 +299,11 @@ class _TicketCardState extends State<TicketCard> {
                     backgroundColor: Colors.red,
                   ),
                   child: const Text('Encerrar Ticket',
-                  selectionColor: Color.fromARGB(255, 255, 255, 255),),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  
+                  ),
+                ),
                 ),
               ) : Container(),
             ],
