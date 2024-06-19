@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hermes/login.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hermes/receiver.dart';
 import 'package:hermes/services/notification.dart';
-import 'package:hermes/qr_code.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
