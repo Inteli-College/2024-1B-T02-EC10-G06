@@ -48,7 +48,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         
         _opTickets = _tickets.where((ticket) => 
-        (ticket.status == 'open' || ticket.operator_id == _credentials['username']) &&
+        (ticket.status == 'open' || ticket.operator_id == _credentials['user']) &&
         (ticket.status != 'closed'))
         .toList();
       });
@@ -280,7 +280,7 @@ class _TicketCardState extends State<TicketCard> {
                 ),
               ),
               const SizedBox(height: 16),
-              widget.isExpanded && widget.ticket.operator_id != widget.credentials['username'] ? Align(
+              widget.isExpanded && widget.ticket.operator_id != widget.credentials['user'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmOperate,
@@ -290,14 +290,15 @@ class _TicketCardState extends State<TicketCard> {
                   child: const Text('Operar Ticket'),
                 ),
               ) : Container(),
-              widget.isExpanded && widget.ticket.operator_id == widget.credentials['username'] ? Align(
+              widget.isExpanded && widget.ticket.operator_id == widget.credentials['user'] ? Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: _confirmClose,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                   ),
-                  child: const Text('Encerrar Ticket'),
+                  child: const Text('Encerrar Ticket',
+                  selectionColor: Color.fromARGB(255, 255, 255, 255),),
                 ),
               ) : Container(),
             ],
