@@ -9,9 +9,9 @@ services:
     container_name: bridge
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5672"]
-      interval: 30s
+      interval: 15s
       timeout: 10s
-      retries: 5
+      #retries: 5
 
   redis:
     container_name: redis_server
@@ -83,3 +83,4 @@ services:
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=TODOMEMAMA
       - ALGORITHM="HS256"
+      - MONGO_LOCAL_URI="mongodb://root:example@mongo:27017"

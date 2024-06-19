@@ -19,12 +19,19 @@ class _ReceiverPageState extends State<ReceiverPage> {
   String? _clickedTicketId;
   bool _isLoading = true;
   dynamic _credentials = {};
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     fetchTickets();
     _initializeCredentials();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   Future<void> _initializeCredentials() async {
@@ -104,6 +111,21 @@ class _ReceiverPageState extends State<ReceiverPage> {
             );
           },
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Casa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notificações',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }
