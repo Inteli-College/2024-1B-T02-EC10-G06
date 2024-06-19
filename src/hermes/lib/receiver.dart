@@ -165,7 +165,7 @@ class _TicketCardState extends State<TicketCard> {
       Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
         'status': 'closed',
-        'operator_id': widget.credentials['username'].toString(),
+        'operator_id': widget.credentials['user'].toString(),
         }),
     );
     if (response.statusCode == 200) {
