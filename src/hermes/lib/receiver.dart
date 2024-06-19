@@ -164,12 +164,8 @@ class _TicketCardState extends State<TicketCard> {
     final response = await http.put(
       Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
-        'idPyxis': widget.ticket.idPyxis,
-        'description': widget.ticket.description,
-        'body': widget.ticket.body.map((medication) => medication.toJson()).toList(),
         'status': 'closed',
-        'owner_id': widget.ticket.owner_id,
-        'operator_id': widget.credentials['username']
+        'operator_id': widget.credentials['username'].toString(),
         }),
     );
     if (response.statusCode == 200) {
@@ -222,12 +218,8 @@ class _TicketCardState extends State<TicketCard> {
     final response = await http.put( 
       Uri.parse('${dotenv.env["API_URL"]}/api/tickets/${widget.ticket.id}/status'),
       body: jsonEncode({
-        'idPyxis': widget.ticket.idPyxis,
-        'description': widget.ticket.description,
-        'body': widget.ticket.body.map((medication) => medication.toJson()).toList(),
         'status': 'operation',
-        'owner_id': widget.ticket.owner_id,
-        'operator_id': widget.credentials['username']
+        'operator_id': widget.credentials['user'].toString(),
         }),
         headers: {'Content-Type': 'application/json'},
     );

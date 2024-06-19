@@ -65,6 +65,8 @@ services:
       - auth
       - backend
     restart: on-failure
+
+    
   sink:
     build: ./sink
     depends_on:

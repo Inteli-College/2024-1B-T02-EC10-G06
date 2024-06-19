@@ -22,10 +22,6 @@ class TicketCreate(BaseModel):
     body: list
 
 class TicketUpdateStatus(BaseModel): 
-    idPyxis: str
-    description: str
-    owner_id: str
-    body: list
     status: str
     operator_id: str
 

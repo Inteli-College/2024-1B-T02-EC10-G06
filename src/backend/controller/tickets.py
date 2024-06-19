@@ -88,10 +88,11 @@ def update_response(db:Collection, ticket_id, ticket_update):
         "msg": str(ticket_id)
     }
 
-def update_status(db:Collection, ticket_id, status):
+def update_status(db:Collection, ticket_id, status, operator_id):
     db.update_one(
         {"_id": ObjectId(ticket_id)},
         {'$set':{
+            "operator_id": operator_id,
             "status": status
             }
         }
