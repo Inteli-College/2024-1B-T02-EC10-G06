@@ -7,6 +7,10 @@ services:
     ports:
       - "5672:5672"
     container_name: bridge
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "node_health_check"]
+      interval: 30s
+      timeout: 10s
 
   redis:
     container_name: redis_server
@@ -30,7 +34,8 @@ services:
     ports:
       - "5001:5001"
     depends_on:
-      - bridge
+      bridge:
+        condition: service_healthy
 
   mongo:
     build: ./mongo
@@ -70,7 +75,8 @@ services:
   sink:
     build: ./sink
     depends_on:
-      - backend
+      bridge:
+        condition: service_healthy
     restart: on-failure
     environment:
       - PYTHONUNBUFFERED=1
