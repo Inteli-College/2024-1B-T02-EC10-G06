@@ -8,10 +8,10 @@ services:
       - "5672:5672"
     container_name: bridge
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5672"]
-      interval: 15s
+      test: ["CMD", "rabbitmqctl", "node_health_check"]
+      interval: 30s
       timeout: 10s
-      #retries: 5
+      retries: 5
 
   redis:
     container_name: redis_server

@@ -50,7 +50,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
     final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+      final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         
