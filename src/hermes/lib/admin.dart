@@ -325,30 +325,29 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  _buildInfoCard(
+               Flex( direction: Axis.vertical, children: [
+              _buildInfoCard(
                     'Tickets Totais',
                     _tickets.length,
                     Colors.orange,
                   ),
-                  _buildInfoCard(
-                    'Abertos',
-                    _tickets.where((ticket) => ticket.status == 'open').length,
-                    Colors.red,
-                  ),
-                  _buildInfoCard(
+              _buildInfoCard(
+                'Abertos',
+                _tickets.where((ticket) => ticket.status == 'open').length,
+                Colors.red,
+              ),
+              _buildInfoCard(
                     'Em Operação',
                     _tickets.where((ticket) => ticket.status == 'operation').length,
                     Colors.yellow,
                   ),
-                  _buildInfoCard(
+              _buildInfoCard(
                     'Finalizados',
                     _tickets.where((ticket) => ticket.status == 'closed').length,
                     Colors.green,
                   ),
-                ],
-              ),
+              ]),
+             
               const SizedBox(height: 20),
               const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(
