@@ -26,9 +26,10 @@ class SucessoPage extends StatelessWidget {
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const QRCodePage()),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: const Text('Confirmar'),
