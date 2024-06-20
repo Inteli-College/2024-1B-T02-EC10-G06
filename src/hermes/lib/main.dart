@@ -75,6 +75,7 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
     );
   }
 
+  // ignore: unused_field
   late Timer _timer;
 
   void _startTimer() {
