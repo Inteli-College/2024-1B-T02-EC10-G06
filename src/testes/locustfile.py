@@ -367,13 +367,13 @@ class AdmUser(HttpUser):
         sort = random.randint(1, 10)
         id = pyxi_istance.get_random_id()
         pyxi_response = self.client.get(f"pyxis/{id}")
-        if pyxi_response.status_code == 200:
+        if pyxi_response:
             medicines = []
             rawData = {}
             if id != None:
                 for interador in range(10):
                     medicine_response = self.client.get(f"medicines/{medicine_istance.get_random_id(interador, sort)}")
-                    if medicine_response.status_code == 200:
+                    if medicine_response:
                         rawData = medicine_response.json()
                         medicines.append(rawData)
             pyxi = pyxi_response.json()
