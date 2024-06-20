@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
@@ -46,9 +45,7 @@ class _DashboardPageState extends State<DashboardPage> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: $e')),
-      );
+        print(e);
     } finally {
       setState(() {
         _isLoadingTickets = false;
@@ -75,9 +72,7 @@ class _DashboardPageState extends State<DashboardPage> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred: $e')),
-      );
+        print(e);
     } finally {
       setState(() {
         _isLoadingPyxis = false;
@@ -95,8 +90,10 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget _buildStatusByOwnerChart(List<Ticket> tickets) {
+  Widget _buildStatusByOperatorChart(List<Ticket> tickets) {
     final Map<String, Map<String, int>> ticketCounts = {};
+
+    tickets = tickets.where((ticket) => ticket.status == 'operation' || ticket.status == 'closed').toList();
 
     for (var ticket in tickets) {
       final operatorId = ticket.operator_id;
@@ -105,10 +102,8 @@ class _DashboardPageState extends State<DashboardPage> {
       if (!ticketCounts.containsKey(operatorId)) {
         ticketCounts[operatorId] = {'operation': 0, 'closed': 0};
       }
-
-      if (status == 'operation' || status == 'closed') {
-        ticketCounts[operatorId]![status] = (ticketCounts[operatorId]![status] ?? 0) + 1;
-      }
+      
+      ticketCounts[operatorId]![status] = (ticketCounts[operatorId]![status] ?? 0) + 1;
     }
 
     List<BarChartGroupData> barGroups = [];
@@ -129,9 +124,71 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
     xLabels[x] = operatorId;
-    print(xLabels[x]);
     x++;
   });
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          const Text('Status by Operator'),
+          SizedBox(
+            height: 200,
+            width: 200,
+            child: BarChart(
+              BarChartData(
+                barGroups: barGroups,
+                titlesData: FlTitlesData(
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) => Text(
+                        xLabels[value.toInt()] ?? '?',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusByOwnerChart(List<Ticket> tickets) {
+    final Map<String, int> ticketCounts = {};
+
+    for (var ticket in tickets) {
+      final ownerId = ticket.owner_id;
+
+      if (!ticketCounts.containsKey(ownerId)) {
+        ticketCounts[ownerId] = 0;
+      }
+
+      ticketCounts[ownerId] = (ticketCounts[ownerId] ?? 0) + 1;
+    }
+
+    List<BarChartGroupData> barGroups = [];
+    Map<int, String> xLabels = {};
+    int x = 0;
+
+    ticketCounts.forEach((ownerId, tickets) {
+      final ticketsCount = tickets.toDouble();
+    
+      barGroups.add(
+        BarChartGroupData(
+          x: x,
+          barRods: [
+            BarChartRodData(toY: ticketsCount, color: Colors.orange),
+          ],
+        ),
+      );
+      xLabels[x] = ownerId;
+      x++;
+    });
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -146,12 +203,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 barGroups: barGroups,
                 titlesData: FlTitlesData(
                   rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
                       getTitlesWidget: (value, meta) => Text(
                         xLabels[value.toInt()] ?? '?',
-                        style: const TextStyle(fontSize: 10),
                       ),
                     ),
                   ),
@@ -228,13 +285,13 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildPyxisTable(List<Pyxi> pyxis) {
     return DataTable(
       columns: const [
-        DataColumn(label: Text('ID')),
+        //DataColumn(label: Text('ID')),
         DataColumn(label: Text('Medicamento')),
         DataColumn(label: Text('Descrição')),
       ],
       rows: pyxis.map((pyxi) {
         return DataRow(cells: [
-          DataCell(Text(pyxi.id)),
+          //DataCell(Text(pyxi.id)),
           DataCell(Text(pyxi.medicine.name)),
           DataCell(Text(pyxi.description)),
         ]);
@@ -245,13 +302,13 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildMedicineTable(List<Pyxi> pyxis) {
     return DataTable(
       columns: const [
-        DataColumn(label: Text('ID')),
+        //DataColumn(label: Text('ID')),
         DataColumn(label: Text('Nome')),
         DataColumn(label: Text('Descrição')),
       ],
       rows: pyxis.map((pyxi) {
         return DataRow(cells: [
-          DataCell(Text(pyxi.medicine.id)),
+          //DataCell(Text(pyxi.medicine.id)),
           DataCell(Text(pyxi.medicine.name)),
           DataCell(Text(pyxi.medicine.description)),
         ]);
@@ -264,7 +321,7 @@ class _DashboardPageState extends State<DashboardPage> {
       children: tickets.map((ticket) {
         return TicketCard(
           ticket: ticket,
-          isExpanded: ticket.idPyxis == _clickedTicketId,
+          isExpanded: ticket.id == _clickedTicketId,
           onCardTapped: _handleCardTapped,
         );
       }).toList(),
@@ -356,6 +413,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     _buildStatusByOwnerChart(_tickets),
+                    _buildStatusByOperatorChart(_tickets),
                     _buildStatusPieChart(_tickets),
                   ],
                 ),
@@ -392,7 +450,7 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onCardTapped(ticket.idPyxis),
+      onTap: () => onCardTapped(ticket.id),
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         child: Padding(
@@ -400,15 +458,26 @@ class TicketCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(ticket.description, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
+              Text(ticket.status, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
               Text('ID Pyxis: ${ticket.idPyxis}'),
+              const SizedBox(height: 8),
               Text('Descrição: ${ticket.description}'),
-              Text('Status: ${ticket.status}'),
+              const SizedBox(height: 8),
               if (isExpanded) ...[
-                Text('Conteúdo: ${ticket.body.join(', ')}'),
-                Text('Data de Criação: ${ticket.created_at}'),
+                ...ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
+                const SizedBox(height: 8),
                 Text('Remetente: ${ticket.owner_id}'),
+                const SizedBox(height: 8),
+                Text('Data de Criação: ${ticket.created_at}'),
+                if (ticket.status == 'operation' || ticket.status == 'closed') ...[
+                  const SizedBox(height: 8),
+                  Text('Operador: ${ticket.operator_id}'),
+                  if (ticket.status == 'closed') ...[
+                    const SizedBox(height: 8),
+                    Text('Data de Encerramento: ${ticket.fixed_at}'),
+                  ],
+                ],   
               ],
             ],
           ),

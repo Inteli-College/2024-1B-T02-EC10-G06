@@ -1,5 +1,5 @@
 class Ticket {
-  final String? id;
+  final String id;
   final String idPyxis;
   final String description;
   final List<Medication> body;
