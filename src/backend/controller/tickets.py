@@ -89,6 +89,16 @@ def update_response(db:Collection, ticket_id, ticket_update):
     }
 
 def update_status(db:Collection, ticket_id, status, operator_id):
+    if status == "closed":
+        db.update_one(
+            {"_id": ObjectId(ticket_id)},
+            {'$set':{
+                "fixed_at": datetime.now(),
+                "operator_id": operator_id,
+                "status": status
+                }
+            }
+            )
     db.update_one(
         {"_id": ObjectId(ticket_id)},
         {'$set':{
