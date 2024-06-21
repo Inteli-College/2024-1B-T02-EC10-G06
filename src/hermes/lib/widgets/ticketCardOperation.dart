@@ -68,6 +68,7 @@ class _TicketCardState extends State<TicketCard> {
       body: jsonEncode({
         'status': 'closed',
         'operator_id': widget.credentials['user'].toString(),
+
         }),
         headers: {'Content-Type': 'application/json'},
     );

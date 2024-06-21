@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:badges/badges.dart' as badges;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:hermes/models.dart';
@@ -23,6 +23,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   bool _isLoading = true;
   dynamic _credentials = {};
   late int _selectedIndex = 0;
+  int ticketLen = 0;
 
   @override
   void initState() {
@@ -52,17 +53,21 @@ class _ReceiverPageState extends State<ReceiverPage> {
   }
 
   Future<void> fetchTickets() async {
-    final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
+    final response =
+        await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+      _tickets = _tickets.where((ticket) => ticket.status == 'open').toList();
+      ticketLen = _tickets.length;
       setState(() {
         _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        
-        _opTickets = _tickets.where((ticket) => 
-        (ticket.status == 'open' || ticket.operator_id == _credentials['user']) &&
-        (ticket.status != 'closed'))
-        .toList();
+        _opTickets = _tickets.where((ticket) =>
+                (ticket.status == 'open' ||
+                    ticket.operator_id == _credentials['user']) &&
+                (ticket.status != 'closed'))
+            .toList();
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -84,6 +89,8 @@ class _ReceiverPageState extends State<ReceiverPage> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,48 +104,61 @@ class _ReceiverPageState extends State<ReceiverPage> {
         ],
       ),
       body: _isLoading
-      ? const Center(child: CircularProgressIndicator())
-      : GestureDetector(
-        onTap: () {
-          setState(() {
-            _clickedTicketId = null;
-          });
-        },
-        child: ListView.builder(
-          itemCount: _opTickets.length,
-          itemBuilder: (context, index) {
-            return _selectedIndex == 1 ? 
-            Padding( 
-              padding: const EdgeInsets.only(left:16.0, right: 16.0, top: 4.0, bottom: 4.0),
-              child: TicketOpen.TicketCard(
-              ticket: _opTickets[index],
-              isExpanded: _opTickets[index].id == _clickedTicketId,
-              onCardTapped: _handleCardTapped,
-              credentials: _credentials,
-              fetchData: fetchTickets,
-              
-            ))
-            : Padding(
-              padding: const EdgeInsets.only(left:16.0, right: 16.0, top: 4.0, bottom: 4.0),
-              child: TicketOperation.TicketCard(
-              ticket: _opTickets[index],
-              isExpanded: _opTickets[index].id == _clickedTicketId,
-              onCardTapped: _handleCardTapped,
-              credentials: _credentials,
-              fetchData: fetchTickets,
-              
-            ));
-          },
-        ),
-      ),
+          ? const Center(child: CircularProgressIndicator())
+          : GestureDetector(
+              onTap: () {
+                setState(() {
+                  _clickedTicketId = null;
+                });
+              },
+              child: ListView.builder(
+                itemCount: _opTickets.length,
+                itemBuilder: (context, index) {
+                  return _selectedIndex == 1
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                          child: TicketOpen.TicketCard(
+                            ticket: _opTickets[index],
+                            isExpanded:
+                                _opTickets[index].id == _clickedTicketId,
+                            onCardTapped: _handleCardTapped,
+                            credentials: _credentials,
+                            fetchData: fetchTickets,
+                          ))
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                          child: TicketOperation.TicketCard(
+                            ticket: _opTickets[index],
+                            isExpanded:
+                                _opTickets[index].id == _clickedTicketId,
+                            onCardTapped: _handleCardTapped,
+                            credentials: _credentials,
+                            fetchData: fetchTickets,
+                          ));
+                },
+              ),
+            ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.toc),
             label: 'Tarefas',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: ticketLen <= 0 ? const Icon(Icons.notifications) : badges.Badge(
+              badgeStyle: const badges.BadgeStyle(
+                padding: EdgeInsets.all(8.0),
+                badgeColor: Colors.deepPurple,
+              ),
+              position: badges.BadgePosition.topEnd(top: -20, end: -15),
+              badgeContent:  Text('$ticketLen', style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),),
+              child: const Icon(Icons.notifications),
+            ),
             label: 'Notificações',
           ),
         ],
@@ -149,4 +169,3 @@ class _ReceiverPageState extends State<ReceiverPage> {
     );
   }
 }
-

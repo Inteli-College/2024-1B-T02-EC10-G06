@@ -23,20 +23,20 @@ class Publisher:
 
 
 
-        channel = self.getConnection.channel()
+        channel = self.getConnection().channel()
 
         channel.queue_declare(queue=name, durable=True)
         
     def exchangeDeclare(self,name:str,type :str = "fanout"):
 
-        channel = self.getConnection.channel()
+        channel = self.getConnection().channel()
 
         channel.exchange_declare(exchange=name,
                          exchange_type=type)
         
     def send(self,message:str,exchangeName:str,routingKey:str):
 
-        channel = self.getConnection.channel()
+        channel = self.getConnection().channel()
 
         print(f" [x] Sent {message}")
 
