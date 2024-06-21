@@ -28,6 +28,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
   @override
   void initState() {
     super.initState();
+    _startTimer();
     fetchTickets();
     _initializeCredentials();
   }
@@ -89,7 +90,15 @@ class _ReceiverPageState extends State<ReceiverPage> {
     });
   }
 
+  late Timer _timer;
 
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        fetchTickets();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
