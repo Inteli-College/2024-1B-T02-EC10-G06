@@ -21,20 +21,39 @@ class Publisher:
               
     def queueDeclare(self,name:str):
 
-        channel = self.connection.channel()
+
+
+        channel = self.getConnection.channel()
 
         channel.queue_declare(queue=name, durable=True)
         
     def exchangeDeclare(self,name:str,type :str = "fanout"):
-        channel = self.connection.channel()
+
+        channel = self.getConnection.channel()
+
         channel.exchange_declare(exchange=name,
                          exchange_type=type)
+        
     def send(self,message:str,exchangeName:str,routingKey:str):
-        channel = self.connection.channel()
+
+        channel = self.getConnection.channel()
+
         print(f" [x] Sent {message}")
+
         channel.basic_publish(exchange=exchangeName,
                       routing_key=routingKey,
                       body=message)
+        
     def sendLot(self,messageList: typing.Iterable):
+
         for message in messageList:
+
             self.send(message)
+
+    def getConnection(self):
+        if not self.connection or self.connection.is_closed:
+            self.connection = pika.BlockingConnection(
+                        pika.ConnectionParameters(
+                            host='bridge',
+                            port=5672))
+        return self.connection
