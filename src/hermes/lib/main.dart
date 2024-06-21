@@ -137,8 +137,8 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
                                       style: TextStyle(
                                           fontSize: 28, fontWeight: FontWeight.bold)),
                                   Text(
-                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                                    textAlign: TextAlign.left,
+                                    'Criação de tickets para a solicitação de medicamentos.' ,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize:
                                           20.0, // Ajuste o tamanho da fonte conforme necessário
@@ -154,8 +154,8 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
                                       style: TextStyle(
                                           fontSize: 28, fontWeight: FontWeight.bold)),
                                   Text(
-                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                                    textAlign: TextAlign.left,
+                                    'Recebimento e Gerenciamento de Tickets.' ,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize:
                                           20.0, // Ajuste o tamanho da fonte conforme necessário
@@ -171,8 +171,8 @@ class _MinhaPrimeiraTelaState extends State<MinhaPrimeiraTela> {
                                       style: TextStyle(
                                           fontSize: 28, fontWeight: FontWeight.bold)),
                                   Text(
-                                    'Gerenciamento de medicamentos \ncom qualidade dos Deuses.' ,
-                                    textAlign: TextAlign.left,
+                                    'Supervisão geral e análise de dados.' ,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontSize:
                                           20.0, // Ajuste o tamanho da fonte conforme necessário
