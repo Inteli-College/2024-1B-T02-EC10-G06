@@ -17,7 +17,7 @@ collection = tickets_db.get_collection("Tickets")
 class Consumer:
     def __init__(self):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='bridge',port=5672))
+            pika.ConnectionParameters(host='bridge',port=5672, credentials=pika.PlainCredentials('consumerUser', 'consumerPassword')))
         self.channel = self.connection.channel()
 
     def consume(self):
@@ -27,13 +27,13 @@ class Consumer:
         self.channel.start_consuming()
 
     def callback(self, ch, method, properties, body):
-        print(f" [x] Received {body}")
+        print(f" [+] Received {body}")
 
         ticket = json.loads(body)
         ticket_id = collection.insert_one(ticket).inserted_id
 
         ticket['id'] = str(ticket_id)
-        print(f" [x] Inserted {ticket}")
+        print(f" [+] Inserted {ticket}")
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
 

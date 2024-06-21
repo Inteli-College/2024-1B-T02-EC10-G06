@@ -5,7 +5,7 @@ from utils.publisher import Publisher
 import json
 
 
-producer = Publisher("bridge",5672)
+producer = Publisher("bridge",5672, user="consumerUser", password="consumerPassword")
 
 producer.exchangeDeclare("ticket")
 
