@@ -1,16 +1,18 @@
 class Ticket {
+  final String id;
   final String idPyxis;
-  final String descrition;
-  final List<String> body;
+  final String description;
+  final List<Medication> body;
   final DateTime created_at;
-  final DateTime fixed_at;
+  final String fixed_at;
   final String status;
   final String owner_id;
   final String operator_id;
 
   Ticket({
+    required this.id,
     required this.idPyxis,
-    required this.descrition,
+    required this.description,
     required this.body,
     required this.created_at,
     required this.fixed_at,
@@ -21,54 +23,85 @@ class Ticket {
 
   factory Ticket.fromJson(Map<String, dynamic> json) {
     return Ticket(
+      id:           json['id'],
       idPyxis:      json['idPyxis'],
-      descrition:   json['descrition'],
-      body:         List<String>.from(json['body']),
+      description:  json['description'],
+      body:         List<Medication>.from(json['body'].map((item) => Medication.fromJson(item))),
       created_at:   DateTime.parse(json['created_at']),
-      fixed_at:     DateTime.parse(json['fixed_at']),
+      fixed_at:     json['fixed_at'],
       status:       json['status'],
       owner_id:     json['owner_id'],
       operator_id:  json['operator_id'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'idPyxis': idPyxis,
+      'description': description,
+      'body': body.map((item) => item.toJson()).toList(),
+      'created_at': created_at.toIso8601String(),
+      'fixed_at': fixed_at,
+      'status': status,
+      'owner_id': owner_id,
+      'operator_id': operator_id,
+    };
+  }
 }
 
-class Medicine {
+class Medication {
   final String id;
   final String name;
-  final String descrition;
+  final String description;
 
-  Medicine({
+  Medication({
     required this.id,
     required this.name,
-    required this.descrition,
+    required this.description,
   });
 
-  factory Medicine.fromJson(Map<String, dynamic> json) {
-    return Medicine(
+  factory Medication.fromJson(Map<String, dynamic> json) {
+    return Medication(
       id: json['id'],
       name: json['name'],
-      descrition: json['descrition'],
+      description: json['description'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+    };
   }
 }
 
 class Pyxi {
   final String id;
-  final String descrition;
-  final Medicine medicine;
+  final String description;
+  final Medication medicine;
 
   Pyxi({
     required this.id,
-    required this.descrition,
+    required this.description,
     required this.medicine,
   });
 
   factory Pyxi.fromJson(Map<String, dynamic> json) {
     return Pyxi(
       id: json['id'],
-      descrition: json['descrition'],
-      medicine: Medicine.fromJson(json['medicine']),
+      description: json['description'],
+      medicine: Medication.fromJson(json['medicine']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'description': description,
+      'medicine': medicine.toJson(),
+    };
   }
 }

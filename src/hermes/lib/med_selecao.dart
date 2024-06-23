@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'sucesso.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MedSelecaoPage extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const MedSelecaoPage({Key? key, required this.data}) : super(key: key);
+  const MedSelecaoPage({super.key, required this.data});
 
   @override
   _MedSelecaoPageState createState() => _MedSelecaoPageState();
@@ -24,13 +25,20 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
   }
 
   Future<void> _fetchMedicines() async {
+    print('${dotenv.env['API_URL']}');
     final idPyxis = widget.data['idPyxis'];
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/$idPyxis'));
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/api/pyxis/$idPyxis'));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setState(() {
-        _medicines = List<Map<String, dynamic>>.from(data['medicines']);
-        _medicines.sort((a, b) => a['name'].compareTo(b['name']));
+        _medicines = List<Map<String, dynamic>>.from(data['medicines'])
+            .where((medicine) => medicine.containsKey('id') && medicine.containsKey('name'))
+            .toList();
+        _medicines.sort((a, b) {
+          final nameA = a['name'] ?? '';
+          final nameB = b['name'] ?? '';
+          return nameA.compareTo(nameB);
+        });
         _selectedMedicines = {for (var med in _medicines) med['id']: false};
         _isLoading = false;
       });
@@ -45,78 +53,79 @@ class _MedSelecaoPageState extends State<MedSelecaoPage> {
     });
   }
 
-Future<void> _onConfirmSelection() async {
-  final selectedMedicines = _selectedMedicines.entries
-      .where((entry) => entry.value)
-      .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key)['name'])
-      .toList();
+  Future<void> _onConfirmSelection() async {
+    final selectedMedicines = _selectedMedicines.entries
+        .where((entry) => entry.value)
+        .map((entry) => _medicines.firstWhere((med) => med['id'] == entry.key))
+        .toList();
 
-  final updatedData = {
-    ...widget.data,
-    'body': selectedMedicines,
-  };
+    final ticketData = {
+      'idPyxis': widget.data['idPyxis'],
+      'owner_id': '3', // Definido fixo conforme solicitado
+      'description': widget.data['description'],
+      'body': selectedMedicines,
+    };
 
-  // Converte o mapa para uma string JSON formatada com identação
-  String jsonString = JsonEncoder.withIndent('  ').convert(updatedData);
+    // Converte o mapa para uma string JSON formatada com indentação
+    String jsonString = const JsonEncoder.withIndent('  ').convert(ticketData);
 
-  // Imprime a string JSON no terminal
-  print(jsonString);
+    // Imprime a string JSON no terminal
+    print(jsonString);
 
-  final response = await http.post(
-    Uri.parse('http://172.17.0.1:5001/tickets/'),
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(updatedData),
-  );
-
-  if (response.statusCode == 200) {
-    // Sucesso ao criar o ticket
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Ticket criado com sucesso!')),
+    final response = await http.post(
+      Uri.parse('${dotenv.env['API_URL']}/api/tickets/'),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(ticketData),
     );
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => SucessoPage(),
-    ));
-  } else {
-    // Falha ao criar o ticket
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Falha ao criar o ticket')),
-    );
+
+    if (response.statusCode == 200) {
+      // Sucesso ao criar o ticket
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ticket criado com sucesso!')),
+      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => SucessoPage(),
+      ));
+    } else {
+      // Falha ao criar o ticket
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Falha ao criar o ticket')),
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleção de Medicamentos'),
+        title: const Text('Seleção de Medicamentos'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ListView(
                     children: [
-                      Text(
+                      const Text(
                         'Selecione os Medicamentos:',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       ..._medicines.map((medicine) {
                         return CheckboxListTile(
                           title: Text(medicine['name']),
-                          subtitle: Text(medicine['descrition']),
+                          subtitle: Text(medicine['description']),
                           value: _selectedMedicines[medicine['id']],
                           onChanged: (bool? value) {
                             _onMedicineSelected(medicine['id'], value);
                           },
                         );
-                      }).toList(),
-                      SizedBox(height: 60), // Padding to prevent overlap with the button
+                      }),
+                      const SizedBox(height: 60), // Padding to prevent overlap with the button
                     ],
                   ),
                 ),
@@ -126,7 +135,7 @@ Future<void> _onConfirmSelection() async {
                   right: 16,
                   child: ElevatedButton(
                     onPressed: _onConfirmSelection,
-                    child: Text('Confirmar Seleção'),
+                    child: const Text('Confirmar Seleção'),
                   ),
                 ),
               ],

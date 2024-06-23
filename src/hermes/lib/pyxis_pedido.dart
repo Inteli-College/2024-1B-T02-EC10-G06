@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'med_selecao.dart';
 import 'erro.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class Task {
   final String id;
@@ -13,7 +15,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] ?? '',
-      description: json['descrition'] ?? '', // Certifique-se de que o campo esteja correto
+      description: json['description'] ?? '', // Certifique-se de que o campo esteja correto
     );
   }
 }
@@ -21,7 +23,7 @@ class Task {
 class PyxisPedidoPage extends StatefulWidget {
   final String qrCode;
 
-  const PyxisPedidoPage({Key? key, required this.qrCode}) : super(key: key);
+  const PyxisPedidoPage({super.key, required this.qrCode});
 
   @override
   _PyxisPedidoPageState createState() => _PyxisPedidoPageState();
@@ -43,7 +45,8 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   }
 
   Future<void> _consultarPyxis() async {
-    final response = await http.get(Uri.parse('http://172.17.0.1:5001/pyxis/${widget.qrCode}'));
+    print('${dotenv.env['API_URL']}');
+    final response = await http.get(Uri.parse('${dotenv.env['API_URL']}/api/pyxis/${widget.qrCode}'));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         setState(() {
@@ -54,12 +57,12 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
         });
       } else {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
+          builder: (context) => const ErrorPage(message: 'Pyxis não encontrado - Código inválido'),
         ));
       }
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ErrorPage(message: 'QR Code inválido - Tente novamente'),
+        builder: (context) => const ErrorPage(message: 'QR Code inválido - Tente novamente'),
       ));
     }
   }
@@ -67,7 +70,7 @@ class _PyxisPedidoPageState extends State<PyxisPedidoPage> {
   void _onNextPressed() {
     final Map<String, dynamic> jsonToSend = {
       'idPyxis': widget.qrCode,
-      'descrition': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
+      'description': _descriptionController.text.isNotEmpty ? _descriptionController.text : 'Sem descrição',
     };
     print(jsonToSend);
     Navigator.push(

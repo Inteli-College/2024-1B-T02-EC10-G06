@@ -1,16 +1,18 @@
 import random
 
 class Pyxi():
-    def __init__(self, pyxis):
-        self.pyxis = pyxis
+    def __init__(self, pyxis): 
+        self.pyxis = pyxis 
         self.pyxis_id = []
 
     def add_pyxi(self, id):
-        if len(self.pyxis_id) < len(self.pyxis):
-            self.pyxis_id.append(id) # Lista de IDs dos pyxis_id
-
+        if len(self.pyxis) > 0:
+            self.pyxis_id.append(id)
+        
     def delete_pyxi(self, id):
-        self.pyxis_id.remove(id) # Lista de IDs dos pyxis_id
+        if id in self.pyxis_id:
+            self.pyxis_id.remove(id) # Lista de IDs dos pyxis_id
+        
 
     def get_random_id(self) -> str:
         end = len(self.pyxis_id) -1

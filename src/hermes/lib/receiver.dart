@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hermes/models.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:hermes/models.dart';
+import 'package:hermes/functions.dart';
+import 'package:hermes/widgets/ticketCard.dart' as TicketOpen;
+import 'package:hermes/widgets/ticketCardOperation.dart' as TicketOperation;
 
 class ReceiverPage extends StatefulWidget {
   const ReceiverPage({super.key});
@@ -13,75 +18,85 @@ class ReceiverPage extends StatefulWidget {
 
 class _ReceiverPageState extends State<ReceiverPage> {
   List<Ticket> _tickets = [];
-  List<Ticket> _openTickets = [];
+  List<Ticket> _opTickets = [];
   String? _clickedTicketId;
+  bool _isLoading = true;
+  dynamic _credentials = {};
+  late int _selectedIndex = 0;
+  int ticketLen = 0;
 
   @override
   void initState() {
     super.initState();
-    _fetchTickets();
+    _startTimer();
+    fetchTickets();
+    _initializeCredentials();
   }
 
-  Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('{dotenv.env["APII_URL"]}/tickets'));
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      print(index);
+      fetchTickets();
+    });
+  }
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
-      });
-    } else {
-      const String mockData = '''
-      [
-        {
-          "idPyxis": "1",
-          "descrition": "Sample ticket 1",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "1",
-          "operator_id": "2"
-        },
-        {
-          "idPyxis": "2",
-          "descrition": "Sample ticket 2",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "closed",
-          "owner_id": "2",
-          "operator_id": "3"
-        },
-        {
-          "idPyxis": "3",
-          "descrition": "Sample ticket 3",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "3",
-          "operator_id": "1"
-        }
-      ]
-      ''';
-
-      final List<dynamic> data = jsonDecode(mockData);
-      setState(() {
-        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _openTickets = _tickets.where((ticket) => ticket.status == 'open').toList();
-      });
+  Future<void> _initializeCredentials() async {
+    try {
+      String token = await getTokenFromStorage();
+      _credentials = await postToken(token);
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to initialize credentials: $e')),
+      );
     }
   }
 
-  void _handleCardTapped(String ticketId) {
+  Future<void> fetchTickets() async {
+    final response =
+        await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+      _tickets = _tickets.where((ticket) => ticket.status == 'open').toList();
+      ticketLen = _tickets.length;
+      setState(() {
+        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
+        _opTickets = _tickets.where((ticket) =>
+                (ticket.status == 'open' ||
+                    ticket.operator_id == _credentials['user']) &&
+                (ticket.status != 'closed'))
+            .toList();
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch tickets')),
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _handleCardTapped(String? ticketId) {
     setState(() {
       if (_clickedTicketId == ticketId) {
         _clickedTicketId = null;
       } else {
         _clickedTicketId = ticketId;
       }
+    });
+  }
+
+  late Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+   
+        fetchTickets();
+
     });
   }
 
@@ -92,206 +107,73 @@ class _ReceiverPageState extends State<ReceiverPage> {
         title: const Text('Tickets'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              // Add your profile button action here
-            },
+            icon: const Icon(Icons.refresh),
+            onPressed: fetchTickets,
           ),
         ],
       ),
-      body: GestureDetector(
-        onTap: () {
-          setState(() {
-            _clickedTicketId = null;
-          });
-        },
-        child: ListView.builder(
-          itemCount: _openTickets.length,
-          itemBuilder: (context, index) {
-            return TicketCard(
-              ticket: _openTickets[index],
-              isExpanded: _openTickets[index].idPyxis == _clickedTicketId,
-              onCardTapped: _handleCardTapped,
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class TicketCard extends StatefulWidget {
-  final Ticket ticket;
-  final bool isExpanded;
-  final Function(String) onCardTapped;
-
-  const TicketCard({super.key, 
-    required this.ticket,
-    required this.isExpanded,
-    required this.onCardTapped,
-  });
-
-  @override
-  _TicketCardState createState() => _TicketCardState();
-}
-
-class _TicketCardState extends State<TicketCard> {
-  void _toggleFunc() {
-    widget.onCardTapped(widget.ticket.idPyxis);
-  }
-
-  Future<void> _confirmClose() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Encerrar Ticket'),
-          content: const Text('Deseja encerrar o ticket?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : GestureDetector(
+              onTap: () {
+                setState(() {
+                  _clickedTicketId = null;
+                });
               },
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _closeTicket();
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+              child: ListView.builder(
+                itemCount: _opTickets.length,
+                itemBuilder: (context, index) {
+                  return _selectedIndex == 1
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                          child: TicketOpen.TicketCard(
+                            ticket: _opTickets[index],
+                            isExpanded:
+                                _opTickets[index].id == _clickedTicketId,
+                            onCardTapped: _handleCardTapped,
+                            credentials: _credentials,
+                            fetchData: fetchTickets,
+                          ))
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 4.0, bottom: 4.0),
+                          child: TicketOperation.TicketCard(
+                            ticket: _opTickets[index],
+                            isExpanded:
+                                _opTickets[index].id == _clickedTicketId,
+                            onCardTapped: _handleCardTapped,
+                            credentials: _credentials,
+                            fetchData: fetchTickets,
+                          ));
+                },
               ),
-              child: const Text('Encerrar'),
             ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _closeTicket() async {
-    final response = await http.put(
-      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/closed'),
-    );
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Ticket encerrado com sucesso!'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erro ao encerrar ticket!'),
-        ),
-      );
-    }
-    widget.onCardTapped(widget.ticket.idPyxis);
-  }
-
-    Future<void> _confirmOperate() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Operar Ticket'),
-          content: const Text('Deseja operar o ticket?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _closeTicket();
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
-              ),
-              child: const Text('Operar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _operateTicket() async {
-    final response = await http.put(
-      Uri.parse('https://api.hermes.com/tickets/${widget.ticket.idPyxis}/in_progress'),
-    );
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Ticket encaminhado com sucesso!'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erro ao encaminhar o ticket.'),
-        ),
-      );
-    }
-    widget.onCardTapped(widget.ticket.idPyxis);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: _toggleFunc,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.ticket.idPyxis,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                widget.ticket.descrition,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                ),
-              ),
-              const SizedBox(height: 8),
-              ...widget.ticket.body.map((medication) => Text(medication)),
-              const SizedBox(height: 16),
-              widget.isExpanded ? Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: _confirmClose,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
-                  child: const Text('Encerrar Ticket'),
-                ),
-              ) : Container(),
-              // const SizedBox(height: 16),
-              // widget.isExpanded ? Align(
-              //   alignment: Alignment.centerRight,
-              //   child: ElevatedButton(
-              //     onPressed: _confirmOperate,
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: Colors.yellow,
-              //     ),
-              //     child: const Text('Operar Ticket'),
-              //   ),
-              // ) : Container(),
-            ],
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.toc),
+            label: 'Tarefas',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: ticketLen <= 0 ? const Icon(Icons.notifications) : badges.Badge(
+              badgeStyle: const badges.BadgeStyle(
+                padding: EdgeInsets.all(8.0),
+                badgeColor: Colors.deepPurple,
+              ),
+              position: badges.BadgePosition.topEnd(top: -20, end: -15),
+              badgeContent:  Text('$ticketLen', style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),),
+              child: const Icon(Icons.notifications),
+            ),
+            label: 'Notificações',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }

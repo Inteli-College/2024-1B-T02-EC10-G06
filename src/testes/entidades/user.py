@@ -68,6 +68,8 @@ class UserInterface():
 
     def get_random_id(self) -> str:
         end = len(self.users_id) -1
+        if end <= 0:
+            return None
         sort = random.randint(0, end)
         return self.users_id[sort]
     

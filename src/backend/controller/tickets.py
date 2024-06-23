@@ -1,29 +1,33 @@
 from bson.objectid import ObjectId
 from datetime import datetime
 from pymongo.collection import Collection
-import json 
-from utils.kafka import ProducerController
+from utils.publisher import Publisher
+import json
 
 
+producer = Publisher("bridge",5672)
 
-def ticket_created(producer:ProducerController, db, raw_ticket):
+producer.exchangeDeclare("ticket")
+
+producer.queueDeclare("ticket_queue")
+
+def ticket_created(db, raw_ticket):
     ticket = {
             "idPyxis": raw_ticket.idPyxis,
-            "descrition": raw_ticket.descrition,
+            "description": raw_ticket.description,
             "body":  raw_ticket.body,
             "created_at": datetime.now(),
-            "fixed_at":"none",
-            "operator_id":"none",
+            "fixed_at":'None',
+            "operator_id":'None',
             "status": "open",
             "owner_id":raw_ticket.owner_id
             }
 
     # val = producer.produce("ticket", json.dumps(ticket, indent = 4, sort_keys=True, default=str) )
     # producer.flush()
-    ticket_id = db.insert_one(ticket).inserted_id
-    ticket['id'] = str(ticket_id)
-    
-    return {"msg":"Created"}
+    producer.send(json.dumps(ticket, indent = 4, sort_keys=True, default=str), "ticket", "ticket_queue")
+    #db.insert_one(ticket)
+    return {"msg":f"ticket sent to queue: {ticket}"}
     
 
 def all_tickets(db:Collection):
@@ -33,13 +37,13 @@ def all_tickets(db:Collection):
         tickets.append({
             "id":str(document["_id"]),
             "idPyxis": str(document["idPyxis"]),
-            "descrition": document["descrition"],
+            "description": document["description"],
             "body": document["body"],
+            "fixed_at": document["fixed_at"],
             "created_at": document["created_at"],
             "status": document["status"],
-            "fixed_at": document["fixed_at"],
-            "operator_id": document["operator_id"],
             "owner_id": document["owner_id"],
+            "operator_id": document["operator_id"]
         })
    # print("Toma ae os tickets: ", tickets)
     return tickets
@@ -52,20 +56,20 @@ def one_ticket(db:Collection, ticket_id):
     tickets = {
             "id":str(raw_tickets["_id"]),
             "idPyxis": str(raw_tickets["idPyxis"]),
-            "descrition": raw_tickets["descrition"],
+            "description": raw_tickets["description"],
             "body": raw_tickets["body"],
+            "fixed_at": raw_tickets["fixed_at"],
             "created_at": raw_tickets["created_at"],
             "status": raw_tickets["status"],
+            "owner_id": raw_tickets["owner_id"],
+            "operator_id": raw_tickets["operator_id"]
     }
     return tickets
 
 def delete_response(db:Collection, ticket_id):
     db.delete_one({"_id": ObjectId(ticket_id)})
     return {
-        "msg":{
-            "id":ticket_id,
-            "status":"Deletado com sucesso"
-        }
+        "msg": str(ticket_id)
     }
 
 
@@ -75,50 +79,35 @@ def update_response(db:Collection, ticket_id, ticket_update):
         {"_id": ObjectId(ticket_id)},
         {'$set':{
             "idPyxis": ticket_update.idPyxis,
-            "descrition": ticket_update.descrition,
+            "description": ticket_update.description,
             "body": ticket_update.body
             }
         }
         )
     return { 
-        "msg": {
-            "id":ticket_id,
-            "idPyxis": ticket_update.idPyxis,
-            "descrition": ticket_update.descrition,
-            "body": ticket_update.body,
-            "status":"Atualizado com sucesso"
-        }
+        "msg": str(ticket_id)
     }
 
-
-def status_to_closed(db:Collection, raw_ticket):
-    db.update_one(
-        {"_id": ObjectId(raw_ticket["_id"])},
-        {'$set':{
-            "status": "closed",
-            "fixed_at": datetime.now()
+def update_status(db:Collection, ticket_id, status, operator_id):
+    if status == "closed":
+        db.update_one(
+            {"_id": ObjectId(ticket_id)},
+            {'$set':{
+                "fixed_at": str(datetime.now()),
+                "operator_id": operator_id,
+                "status": status
+                }
             }
-        }
-        )
-    return { 
-        "msg": {
-            "id":str(raw_ticket["_id"]),
-            "status":"Fechado com sucesso"
-        }
-    }
-
-def status_to_inProgress(db:Collection, ticket_id, ticket_update):  
+            )
     db.update_one(
         {"_id": ObjectId(ticket_id)},
         {'$set':{
-            "status": "in_progress",
-            "operator_id": ticket_update.operator_id
+            "operator_id": operator_id,
+            "status": status
             }
         }
         )
     return { 
-        "msg": {
-            "id":ticket_id,
-            "status":"Em progresso"
-        }
+        "id": str(ticket_id),
+        "status": status
     }

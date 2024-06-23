@@ -8,6 +8,8 @@ import 'package:hermes/services/notification.dart';
 import 'package:hermes/admin.dart';
 import "package:hermes/functions.dart";
 
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -28,27 +30,26 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
+      // print('${dotenv.env['API_URL']}/auth/login/');
       final response = await http.post(
-        Uri.parse('${dotenv.env['API_URL']}/login/'),
+        Uri.parse('${dotenv.env['API_URL']}/auth/login/'),
         body: jsonEncode({
           'username': _usernameController.text,
           'password': _passwordController.text,
         }),
         headers: {'Content-Type': 'application/json'},
       );
-
       setState(() {
         _isLoading = false;
       });
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        var token = await getToken(response);
+        var token = getToken(response);
         saveToken(token);
-        final data = jsonDecode(response.body);
+        // final data = jsonDecode(response.body);
         print('Login successful: $token');
-
-        var permissionResponse = await http.get(
-          Uri.parse('${dotenv.env['API_URL']}/getPermission/'),
+        final permissionResponse = await http.get(
+          Uri.parse('${dotenv.env['API_URL']}/auth/getPermission'),
           headers: {
             'Authorization': "Bearer $token",
             'Content-Type': 'application/json',
@@ -86,9 +87,6 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to login';
-        // APAGAR DEPOIS
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()));
       });
     }
   }
@@ -99,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text('Login')),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(32.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -122,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
               TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
@@ -141,12 +139,24 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               _isLoading
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                              Colors.deepPurple),
+                          fixedSize: WidgetStateProperty.all<Size>(
+                              const Size(200, 60)),
+                        ),
                       onPressed: _login,
-                      child: const Text('Login'),
+                      child: const Text('Login', 
+                      style: TextStyle(
+                            letterSpacing: 1.0,
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ),
               const SizedBox(height: 20),
               _errorMessage.isNotEmpty

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 import 'package:hermes/models.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -26,103 +27,54 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> _fetchTickets() async {
-    final response = await http.get(Uri.parse('https://api.hermes.com/dashboard'));
+    setState(() {
+      _isLoadingTickets = true;
+    });
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
-        _isLoadingTickets = false;
-      });
-    } else {
-      const String mockData = '''
-      [
-        {
-          "idPyxis": "1",
-          "descrition": "Sample ticket 1",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "1",
-          "operator_id": "2"
-        },
-        {
-          "idPyxis": "2",
-          "descrition": "Sample ticket 2",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "closed",
-          "owner_id": "2",
-          "operator_id": "3"
-        },
-        {
-          "idPyxis": "3",
-          "descrition": "Sample ticket 3",
-          "body": ["Item 1", "Item 2"],
-          "created_at": "2022-01-01T00:00:00Z",
-          "fixed_at": "2022-01-01T00:00:00Z",
-          "status": "open",
-          "owner_id": "3",
-          "operator_id": "1"
-        }
-      ]
-      ''';
+    try {
+      final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/tickets/'));
 
-      final List<dynamic> data = jsonDecode(mockData);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+        setState(() {
+          _tickets = data.map<Ticket>((item) => Ticket.fromJson(item)).toList();
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to fetch tickets')),
+        );
+      }
+    } catch (e) {
+        print(e);
+    } finally {
       setState(() {
-        _tickets = data.map((item) => Ticket.fromJson(item)).toList();
         _isLoadingTickets = false;
       });
     }
   }
 
   Future<void> _fetchPyxis() async {
-    final response = await http.get(Uri.parse('https://api.hermes.com/pyxis'));
+    setState(() {
+      _isLoadingPyxis = true;
+    });
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
-        _isLoadingPyxis = false;
-      });
-    } else {
-      const String mockData = '''
-      [
-        {
-          "id": "1",
-          "descrition": "Sample pyxi 1",
-          "medicine": {
-            "id": "1",
-            "name": "Medicine 1",
-            "descrition": "Sample medicine 1"
-          }
-        },
-        {
-          "id": "2",
-          "descrition": "Sample pyxi 2",
-          "medicine": {
-            "id": "2",
-            "name": "Medicine 2",
-            "descrition": "Sample medicine 2"
-          }
-        },
-        {
-          "id": "3",
-          "descrition": "Sample pyxi 3",
-          "medicine": {
-            "id": "3",
-            "name": "Medicine 3",
-            "descrition": "Sample medicine 3"
-          }
-        }
-      ]
-      ''';
+    try {
+      final response = await http.get(Uri.parse('${dotenv.env["API_URL"]}/api/pyxis/'));
 
-      final List<dynamic> data = jsonDecode(mockData);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+        setState(() {
+          _pyxis = data.map<Pyxi>((item) => Pyxi.fromJson(item)).toList();
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to fetch pyxis')),
+        );
+      }
+    } catch (e) {
+        print(e);
+    } finally {
       setState(() {
-        _pyxis = data.map((item) => Pyxi.fromJson(item)).toList();
         _isLoadingPyxis = false;
       });
     }
@@ -138,34 +90,66 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  Widget _buildStatusBarChart(List<Ticket> tickets) {
-    final openTickets = tickets.where((ticket) => ticket.status == 'open').length;
-    final closedTickets = tickets.where((ticket) => ticket.status == 'closed').length;
+  Widget _buildStatusByOperatorChart(List<Ticket> tickets) {
+    final Map<String, Map<String, int>> ticketCounts = {};
+
+    tickets = tickets.where((ticket) => ticket.status == 'operation' || ticket.status == 'closed').toList();
+
+    for (var ticket in tickets) {
+      final operatorId = ticket.operator_id;
+      final status = ticket.status;
+
+      if (!ticketCounts.containsKey(operatorId)) {
+        ticketCounts[operatorId] = {'operation': 0, 'closed': 0};
+      }
+      
+      ticketCounts[operatorId]![status] = (ticketCounts[operatorId]![status] ?? 0) + 1;
+    }
+
+    List<BarChartGroupData> barGroups = [];
+    Map<int, String> xLabels = {};
+    int x = 0;
+
+    ticketCounts.forEach((operatorId, counts) {
+      final operationTickets = counts['operation']?.toDouble() ?? 0;
+      final closedTickets = counts['closed']?.toDouble() ?? 0;
+
+    barGroups.add(
+      BarChartGroupData(
+        x: x,
+        barRods: [
+          BarChartRodData(toY: operationTickets, color: Colors.yellow),
+          BarChartRodData(toY: closedTickets, color: Colors.green),
+        ],
+      ),
+    );
+    xLabels[x] = operatorId;
+    x++;
+  });
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Ticket Status'),
+          const Text('Status by Operator'),
           SizedBox(
             height: 200,
             width: 200,
             child: BarChart(
               BarChartData(
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(toY: openTickets.toDouble(), color: Colors.blue),
-                    ],
+                barGroups: barGroups,
+                titlesData: FlTitlesData(
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) => Text(
+                        xLabels[value.toInt()] ?? '?',
+                      ),
+                    ),
                   ),
-                  BarChartGroupData(
-                    x: 1,
-                    barRods: [
-                      BarChartRodData(toY: closedTickets.toDouble(), color: Colors.green),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -175,74 +159,60 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildStatusByOwnerChart(List<Ticket> tickets) {
-    final owner1OpenTickets = tickets.where((ticket) => ticket.status == 'open' && ticket.owner_id == '1').length;
-    final owner1ClosedTickets = tickets.where((ticket) => ticket.status == 'closed' && ticket.owner_id == '1').length;
-    final owner2OpenTickets = tickets.where((ticket) => ticket.status == 'open' && ticket.owner_id == '2').length;
-    final owner2ClosedTickets = tickets.where((ticket) => ticket.status == 'closed' && ticket.owner_id == '2').length;
+    final Map<String, int> ticketCounts = {};
+
+    for (var ticket in tickets) {
+      final ownerId = ticket.owner_id;
+
+      if (!ticketCounts.containsKey(ownerId)) {
+        ticketCounts[ownerId] = 0;
+      }
+
+      ticketCounts[ownerId] = (ticketCounts[ownerId] ?? 0) + 1;
+    }
+
+    List<BarChartGroupData> barGroups = [];
+    Map<int, String> xLabels = {};
+    int x = 0;
+
+    ticketCounts.forEach((ownerId, tickets) {
+      final ticketsCount = tickets.toDouble();
+    
+      barGroups.add(
+        BarChartGroupData(
+          x: x,
+          barRods: [
+            BarChartRodData(toY: ticketsCount, color: Colors.orange),
+          ],
+        ),
+      );
+      xLabels[x] = ownerId;
+      x++;
+    });
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Status by Owner'),
+          const Text('Status by Owner'),
           SizedBox(
             height: 200,
             width: 200,
             child: BarChart(
               BarChartData(
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(toY: owner1OpenTickets.toDouble(), color: Colors.blue),
-                      BarChartRodData(toY: owner1ClosedTickets.toDouble(), color: Colors.green),
-                    ],
+                barGroups: barGroups,
+                titlesData: FlTitlesData(
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) => Text(
+                        xLabels[value.toInt()] ?? '?',
+                      ),
+                    ),
                   ),
-                  BarChartGroupData(
-                    x: 1,
-                    barRods: [
-                      BarChartRodData(toY: owner2OpenTickets.toDouble(), color: Colors.blue),
-                      BarChartRodData(toY: owner2ClosedTickets.toDouble(), color: Colors.green),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSenderCountChart(List<Ticket> tickets) {
-    final senderCounts = tickets.map((ticket) => ticket.operator_id.length).toList();
-    final count2Senders = senderCounts.where((count) => count == 2).length;
-    final count3Senders = senderCounts.where((count) => count == 3).length;
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Text('Number of Senders per Ticket'),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: BarChart(
-              BarChartData(
-                barGroups: [
-                  BarChartGroupData(
-                    x: 0,
-                    barRods: [
-                      BarChartRodData(toY: count2Senders.toDouble(), color: Colors.orange),
-                    ],
-                  ),
-                  BarChartGroupData(
-                    x: 1,
-                    barRods: [
-                      BarChartRodData(toY: count3Senders.toDouble(), color: Colors.red),
-                    ],
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -253,13 +223,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget _buildStatusPieChart(List<Ticket> tickets) {
     final openTickets = tickets.where((ticket) => ticket.status == 'open').length;
+    final operationTickets = tickets.where((ticket) => ticket.status == 'operation').length;
     final closedTickets = tickets.where((ticket) => ticket.status == 'closed').length;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Proportion of Tickets by Status'),
+          const Text('Proportion of Tickets by Status'),
           SizedBox(
             height: 200,
             width: 200,
@@ -270,6 +241,11 @@ class _DashboardPageState extends State<DashboardPage> {
                     value: openTickets.toDouble(),
                     color: Colors.redAccent,
                     title: 'open',
+                  ),
+                  PieChartSectionData(
+                    value: operationTickets.toDouble(),
+                    color: Colors.yellow,
+                    title: 'operation',
                   ),
                   PieChartSectionData(
                     value: closedTickets.toDouble(),
@@ -309,15 +285,15 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildPyxisTable(List<Pyxi> pyxis) {
     return DataTable(
       columns: const [
-        DataColumn(label: Text('ID')),
+        //DataColumn(label: Text('ID')),
         DataColumn(label: Text('Medicamento')),
         DataColumn(label: Text('Descrição')),
       ],
       rows: pyxis.map((pyxi) {
         return DataRow(cells: [
-          DataCell(Text(pyxi.id)),
+          //DataCell(Text(pyxi.id)),
           DataCell(Text(pyxi.medicine.name)),
-          DataCell(Text(pyxi.descrition)),
+          DataCell(Text(pyxi.description)),
         ]);
       }).toList(),
     );
@@ -326,15 +302,15 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildMedicineTable(List<Pyxi> pyxis) {
     return DataTable(
       columns: const [
-        DataColumn(label: Text('ID')),
+        //DataColumn(label: Text('ID')),
         DataColumn(label: Text('Nome')),
         DataColumn(label: Text('Descrição')),
       ],
       rows: pyxis.map((pyxi) {
         return DataRow(cells: [
-          DataCell(Text(pyxi.medicine.id)),
+          //DataCell(Text(pyxi.medicine.id)),
           DataCell(Text(pyxi.medicine.name)),
-          DataCell(Text(pyxi.medicine.descrition)),
+          DataCell(Text(pyxi.medicine.description)),
         ]);
       }).toList(),
     );
@@ -345,7 +321,7 @@ class _DashboardPageState extends State<DashboardPage> {
       children: tickets.map((ticket) {
         return TicketCard(
           ticket: ticket,
-          isExpanded: ticket.idPyxis == _clickedTicketId,
+          isExpanded: ticket.id == _clickedTicketId,
           onCardTapped: _handleCardTapped,
         );
       }).toList(),
@@ -357,6 +333,15 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
+          actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              _fetchTickets();
+              _fetchPyxis();
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -397,13 +382,29 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  _buildInfoCard('Tickets Totais', _tickets.length, Colors.yellow),
-                  _buildInfoCard('Abertos', _tickets.where((ticket) => ticket.status == 'open').length, Colors.red),
-                  _buildInfoCard('Finalizados', _tickets.where((ticket) => ticket.status == 'closed').length, Colors.green),
-                ],
+               Flex( direction: Axis.vertical, children: [
+              _buildInfoCard(
+                    'Tickets Totais',
+                    _tickets.length,
+                    Colors.orange,
+                  ),
+              _buildInfoCard(
+                'Abertos',
+                _tickets.where((ticket) => ticket.status == 'open').length,
+                Colors.red,
               ),
+              _buildInfoCard(
+                    'Em Operação',
+                    _tickets.where((ticket) => ticket.status == 'operation').length,
+                    Colors.yellow,
+                  ),
+              _buildInfoCard(
+                    'Finalizados',
+                    _tickets.where((ticket) => ticket.status == 'closed').length,
+                    Colors.green,
+                  ),
+              ]),
+             
               const SizedBox(height: 20),
               const Text('Histórico de Tickets', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               SizedBox(
@@ -411,22 +412,21 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildStatusBarChart(_tickets),
                     _buildStatusByOwnerChart(_tickets),
-                    //_buildSenderCountChart(_tickets),
+                    _buildStatusByOperatorChart(_tickets),
                     _buildStatusPieChart(_tickets),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
               const Text('Tabela de Pyxis', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingPyxis ? CircularProgressIndicator() : _buildPyxisTable(_pyxis),
+              _isLoadingPyxis ? const CircularProgressIndicator() : _buildPyxisTable(_pyxis),
               const SizedBox(height: 20),
               const Text('Tabela de Medicamentos', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingPyxis ? CircularProgressIndicator() : _buildMedicineTable(_pyxis),
+              _isLoadingPyxis ? const CircularProgressIndicator() : _buildMedicineTable(_pyxis),
               const SizedBox(height: 20),
               const Text('Tickets Recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              _isLoadingTickets ? CircularProgressIndicator() : _buildRecentTickets(_tickets),
+              _isLoadingTickets ? const CircularProgressIndicator() : _buildRecentTickets(_tickets),
             ],
           ),
         ),
@@ -450,7 +450,7 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onCardTapped(ticket.idPyxis),
+      onTap: () => onCardTapped(ticket.id),
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         child: Padding(
@@ -458,17 +458,26 @@ class TicketCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(ticket.descrition, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10),
+              Text(ticket.status, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
               Text('ID Pyxis: ${ticket.idPyxis}'),
-              Text('Descrição: ${ticket.descrition}'),
-              Text('Status: ${ticket.status}'),
+              const SizedBox(height: 8),
+              Text('Descrição: ${ticket.description}'),
+              const SizedBox(height: 8),
               if (isExpanded) ...[
-                Text('Conteúdo: ${ticket.body.join(', ')}'),
-                Text('Data de Criação: ${ticket.created_at}'),
-                if (ticket.status == 'closed') Text('Data de Conclusão: ${ticket.fixed_at}'),
+                ...ticket.body.map((medication) => Text('${medication.name}: ${medication.description}')),
+                const SizedBox(height: 8),
                 Text('Remetente: ${ticket.owner_id}'),
-                Text('Operador: ${ticket.operator_id}'),
+                const SizedBox(height: 8),
+                Text('Data de Criação: ${ticket.created_at}'),
+                if (ticket.status == 'operation' || ticket.status == 'closed') ...[
+                  const SizedBox(height: 8),
+                  Text('Operador: ${ticket.operator_id}'),
+                  if (ticket.status == 'closed') ...[
+                    const SizedBox(height: 8),
+                    Text('Data de Encerramento: ${ticket.fixed_at}'),
+                  ],
+                ],   
               ],
             ],
           ),
