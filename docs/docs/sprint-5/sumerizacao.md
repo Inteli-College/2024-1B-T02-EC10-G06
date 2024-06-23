@@ -17,7 +17,7 @@ O código utiliza o framework Locust para simular carga em uma API RESTful, foca
 3. **Tarefas (Tasks) de Simulação:**
    - GET: Recuperação de medicamentos e pyxis.
    - POST: Criação de medicamentos e pyxis.
-   - PUT: operações como obter medicamento específico e pyxi específica, atualizar medicamento, e deletar medicamento estão comentadas ou incompletas.
+   - PUT: operações como obter medicamento específico e pyxi específica, atualizar medicamento.
 
 4. **Detalhes Importantes:**
    - Uso de `@task` para definir a frequência e importância de cada operação.

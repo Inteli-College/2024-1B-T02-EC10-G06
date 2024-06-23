@@ -16,7 +16,7 @@ O backend pode ser instalado e executado em uma máquina EC2 por exemplo na AWZ 
 ## Pré-requisitos
 Antes de começar, certifique-se de que sua máquina atende aos seguintes pré-requisitos:
 - Docker instalado
-- Docker Compose instalado
+- Git instalado
 
 ## Passos
 
@@ -46,20 +46,13 @@ ls
 *docker-compose.yaml*
 
 ### 4. Configure as Variáveis de Ambiente
-Se o projeto requer variáveis de ambiente, crie um arquivo `.env` no diretório raiz do projeto e defina as variáveis necessárias:
+Dentro da pasta src execulte o seguinte comando:
 
 ```env
-API_URL= {endereço da máquina disponiblizada : porta}
+./out.bat
 ```
 
-### 5. Construa as Imagens do Docker
-Caso precise construir as imagens antes de rodar os containers, execute:
-
-```sh
-docker-compose build
-```
-
-### 6. Execute o Docker Compose
+### 5. Execute o Docker Compose
 Para subir os containers definidos no arquivo `docker-compose.yml`, execute o comando:
 
 ```sh
