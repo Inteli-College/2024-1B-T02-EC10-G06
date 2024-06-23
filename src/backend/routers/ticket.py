@@ -50,15 +50,6 @@ def delete_ticket(ticket_id: str):
     return delete_response(db=collection, ticket_id=ticket_id)
 
 
-
-@router.put("/{ticket_id}/closed", response_model=TicketResponse)
-def update_ticket(ticket_id: str, ticket_update: TicketCreate):
-    ticket = one_ticket(collection, ticket_id=ticket_id)
-    if ticket is None:
-        raise HTTPException(status_code=404, detail="tickets not found")
-    return update_response(db=collection, ticket_id=ticket_id, ticket_update=ticket_update)
-
-
 @router.put("/{ticket_id}/status", response_model=UpdateResposnse)
 def update_ticket(ticket_id: str, ticket_update: TicketUpdateStatus):
     ticket = one_ticket(collection, ticket_id=ticket_id)
